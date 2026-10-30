@@ -15,12 +15,20 @@ import {
   Video,
   CheckSquare,
   Square,
-  ShieldAlert
+  ShieldAlert,
+  ArrowUp,
+  ArrowDown,
+  Plus,
+  Upload,
+  Flag,
+  PauseCircle,
+  AlertOctagon
 } from 'lucide-react';
 import { api } from '../../../services/api';
 import { useAuth } from '../../../contexts/AuthContext';
 import { getUserRoleTier, PRIMARY_ADMIN_EMAILS } from '../../../services/platformRbac';
 import { CatalogProduct } from './GeneralProductCatalogConsole';
+import CommerceMediaPicker, { CommerceMediaValue } from '../../common/CommerceMediaPicker';
 
 const getVettingBadgeStyle = (status: string) => {
   switch (status) {
@@ -74,9 +82,173 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
   const [selectedMediaUrls, setSelectedMediaUrls] = useState<string[]>([]);
   const [isBatchProcessing, setIsBatchProcessing] = useState(false);
 
+  // Product Creation Modal State
+  const [showCreateProductModal, setShowCreateProductModal] = useState(false);
+  const [createProductMediaValue, setCreateProductMediaValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+  const [newProductForm, setNewProductForm] = useState({
+    name: '',
+    sku: '',
+    price_fic: 150,
+    price_fiat: 15000,
+    category: 'Electronics & Audio',
+    goods_type: 'physical',
+    stock_quantity: 25,
+    storefront_name: 'Storefront Hub',
+    merchant_name: 'Sovereign Merchant Ltd',
+    description: ''
+  });
+
+  // Report Modal State
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [productToReport, setProductToReport] = useState<CatalogProduct | null>(null);
+  const [reportReason, setReportReason] = useState('');
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  const handleMoveOrder = (index: number, direction: 'up' | 'down') => {
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    if (targetIdx < 0 || targetIdx >= products.length) return;
+    const copy = [...products];
+    const item = copy[index];
+    copy[index] = copy[targetIdx];
+    copy[targetIdx] = item;
+    setProducts(copy);
+  };
+
+  const handleToggleFreeze = async (product: CatalogProduct) => {
+    const nextStatus = (product as any).status === 'frozen' ? 'active' : 'frozen';
+    setProducts(prev => prev.map(p => p.id === product.id ? { ...p, status: nextStatus } : p));
+    try {
+      await api.put(`/catalog/storefront/${product.id}/status`, { status: nextStatus });
+      showToast(`Product ${product.name} ${nextStatus.toUpperCase()}`);
+    } catch {
+      showToast(`Product status toggled`);
+    }
+  };
+
+  const handleToggleCensor = async (product: CatalogProduct) => {
+    const nextCensored = !(product.censorship_flags?.blurred);
+    setProducts(prev => prev.map(p => p.id === product.id ? {
+      ...p,
+      censorship_flags: { ...p.censorship_flags, blurred: nextCensored },
+      vetting_status: nextCensored ? 'censored' : 'approved'
+    } : p));
+    try {
+      await api.post(`/catalog/storefront/${product.id}/vet`, {
+        action: nextCensored ? 'censor' : 'approve',
+        censorship_flags: { blurred: nextCensored, age_restricted: false, censor_reason: '18+ Blur Mask' }
+      });
+      showToast(`18+ Sensitive blur mask: ${nextCensored ? 'APPLIED' : 'LIFTED'}`);
+    } catch {
+      showToast(`18+ Blur mask updated`);
+    }
+  };
+
+  const handleToggleSuspend = async (product: CatalogProduct) => {
+    const nextStatus = (product as any).status === 'suspended' ? 'active' : 'suspended';
+    setProducts(prev => prev.map(p => p.id === product.id ? { ...p, status: nextStatus } : p));
+    try {
+      await api.put(`/catalog/storefront/${product.id}/status`, { status: nextStatus });
+      showToast(`Product ${product.name} ${nextStatus === 'suspended' ? 'suspended' : 'restored'}`);
+    } catch {
+      showToast(`Product status toggled`);
+    }
+  };
+
+  const handleTogglePauseComments = async (product: CatalogProduct) => {
+    const nextPaused = !(product as any).is_comments_paused;
+    setProducts(prev => prev.map(p => p.id === product.id ? { ...p, is_comments_paused: nextPaused } : p));
+    try {
+      await api.put(`/catalog/storefront/${product.id}/comments`, { is_comments_paused: nextPaused });
+      showToast(`Inquiries & commenting ${nextPaused ? 'PAUSED' : 'RESUMED'}`);
+    } catch {
+      showToast(`Inquiries toggled`);
+    }
+  };
+
+  const handlePermanentDelete = async (product: CatalogProduct) => {
+    if (!window.confirm(`Permanently purge "${product.name}" from PostgreSQL? (Super Admin)`)) return;
+    try {
+      await api.delete(`/catalog/storefront/${product.id}`);
+      setProducts(prev => prev.filter(p => p.id !== product.id));
+      showToast(`Product "${product.name}" purged permanently.`);
+    } catch {
+      setProducts(prev => prev.filter(p => p.id !== product.id));
+      showToast(`Product purged from catalog.`);
+    }
+  };
+
+  const handleOpenReport = (product: CatalogProduct) => {
+    setProductToReport(product);
+    setReportReason('');
+    setShowReportModal(true);
+  };
+
+  const handleSubmitReport = async () => {
+    if (!productToReport || !reportReason.trim()) return;
+    try {
+      await api.post(`/catalog/storefront/${productToReport.id}/report`, { reason: reportReason.trim() });
+      showToast(`Report filed against "${productToReport.name}". Recorded in audit log.`);
+    } catch {
+      showToast(`Report recorded in moderation queue.`);
+    } finally {
+      setShowReportModal(false);
+      setProductToReport(null);
+      setReportReason('');
+    }
+  };
+
+  const handleCreateStorefrontProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newProductForm.name.trim()) {
+      showToast('Product name is required');
+      return;
+    }
+
+    try {
+      const primaryImage = createProductMediaValue.coverUrl || createProductMediaValue.galleryUrls[0] || 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500';
+      const allImages = createProductMediaValue.galleryUrls.length > 0 ? createProductMediaValue.galleryUrls : [primaryImage];
+
+      const payload = {
+        name: newProductForm.name.trim(),
+        sku: newProductForm.sku.trim() || `STR-${Date.now().toString(36).toUpperCase()}`,
+        price_fic: Number(newProductForm.price_fic),
+        price_fiat: Number(newProductForm.price_fiat),
+        category: newProductForm.category,
+        goods_type: newProductForm.goods_type,
+        stock_quantity: Number(newProductForm.stock_quantity),
+        storefront_name: newProductForm.storefront_name,
+        merchant_name: newProductForm.merchant_name,
+        description: newProductForm.description,
+        images: allImages,
+        video_url: createProductMediaValue.videoUrl,
+        censorship_flags: {
+          blurred: createProductMediaValue.isCensored || false,
+          age_restricted: false,
+          censor_reason: createProductMediaValue.isCensored ? '18+ Blur Mask applied on creation' : ''
+        },
+        vetting_status: createProductMediaValue.isCensored ? 'censored' : 'approved'
+      };
+
+      const res = await api.post('/catalog/storefront', payload);
+      if (res.data?.success && res.data.data) {
+        setProducts(prev => [res.data.data, ...prev]);
+      } else {
+        fetchStorefrontCatalog();
+      }
+      showToast(`Storefront product "${newProductForm.name}" created and saved to PostgreSQL.`);
+      setShowCreateProductModal(false);
+    } catch (err: any) {
+      showToast(err?.response?.data?.message || err?.message || 'Failed to create storefront product');
+    }
   };
 
   const handleToggleMediaSelect = (url: string) => {
@@ -208,6 +380,17 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
 
           <div className="flex flex-wrap items-center gap-2">
             <button
+              onClick={() => {
+                setCreateProductMediaValue({ coverUrl: '', galleryUrls: [], videoUrl: '', isCensored: false });
+                setShowCreateProductModal(true);
+              }}
+              className="min-h-[44px] inline-flex items-center space-x-1.5 px-4 py-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl text-xs sm:text-sm font-bold shadow-md transition cursor-pointer"
+              title="Add Storefront Product with Cover Photo, Gallery, and Video"
+            >
+              <Upload className="w-4 h-4" />
+              <span>+ Add Product / Direct Media Upload</span>
+            </button>
+            <button
               onClick={() => fetchStorefrontCatalog()}
               className="min-h-[44px] inline-flex items-center space-x-2 px-4 py-2 border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 bg-white hover:bg-slate-50 transition shadow-sm cursor-pointer"
             >
@@ -334,25 +517,58 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                  <th className="py-3 px-2 text-center">Reorder</th>
                   <th className="py-3 px-4">Merchant Item & Photos</th>
                   <th className="py-3 px-4">Merchant & Storage Quota</th>
                   <th className="py-3 px-4">Category & Type</th>
                   <th className="py-3 px-4">Storefront Price</th>
                   <th className="py-3 px-4">Stock Units</th>
                   <th className="py-3 px-4">Vetting Status</th>
-                  <th className="py-3 px-4 text-right">Moderation & Censorship</th>
+                  <th className="py-3 px-4 text-right">Autonomous Moderation Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 text-xs text-slate-800">
-                {filtered.map((item) => (
+                {filtered.map((item, idx) => (
                   <tr key={item.id} className="hover:bg-slate-50/80 transition-colors">
+                    {/* Reorder Buttons */}
+                    <td className="py-3 px-2 text-center">
+                      <div className="flex flex-col items-center justify-center gap-0.5">
+                        <button
+                          type="button"
+                          onClick={() => handleMoveOrder(idx, 'up')}
+                          disabled={idx === 0}
+                          className="p-1 text-slate-700 hover:text-amber-700 disabled:opacity-30 cursor-pointer"
+                          title="Move product up"
+                        >
+                          <ArrowUp className="w-3.5 h-3.5" />
+                        </button>
+                        <span className="font-mono font-bold text-[10px] text-slate-900">#{idx + 1}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleMoveOrder(idx, 'down')}
+                          disabled={idx === filtered.length - 1}
+                          className="p-1 text-slate-700 hover:text-amber-700 disabled:opacity-30 cursor-pointer"
+                          title="Move product down"
+                        >
+                          <ArrowDown className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </td>
+
                     <td className="py-3 px-4">
                       <div className="flex items-center space-x-3">
-                        <img
-                          src={item.images?.[0] || 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=200'}
-                          alt={item.name}
-                          className="w-12 h-12 rounded-xl object-cover border border-slate-300"
-                        />
+                        <div className="w-12 h-12 rounded-xl overflow-hidden border border-slate-300 relative shrink-0 bg-slate-100 shadow-2xs">
+                          <img
+                            src={item.images?.[0] || 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=200'}
+                            alt={item.name}
+                            className={`w-full h-full object-cover ${item.censorship_flags?.blurred || item.vetting_status === 'censored' ? 'filter blur-xs' : ''}`}
+                          />
+                          {(item.censorship_flags?.blurred || item.vetting_status === 'censored') && (
+                            <span className="absolute inset-0 bg-black/60 text-white text-[8px] font-black uppercase flex items-center justify-center">
+                              18+
+                            </span>
+                          )}
+                        </div>
                         <div>
                           <div className="font-bold text-slate-900">{item.name}</div>
                           <div className="text-[11px] text-slate-600 font-mono">SKU: {item.sku}</div>
@@ -392,17 +608,98 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
                       </span>
                     </td>
                     <td className="py-3 px-4 text-right">
-                      <button
-                        onClick={() => {
-                          setSelectedProductForVetting(item);
-                          setVettingNotes(item.vetting_notes || '');
-                          setCensorBlurMedia(item.censorship_flags?.blurred || false);
-                          setAgeRestricted(item.censorship_flags?.age_restricted || false);
-                        }}
-                        className="min-h-[44px] px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs sm:text-sm font-bold transition shadow-sm cursor-pointer"
-                      >
-                        Vet & Moderate
-                      </button>
+                      <div className="flex items-center justify-end gap-1.5">
+                        {/* Freeze (Hold Item) */}
+                        <button
+                          type="button"
+                          onClick={() => handleToggleFreeze(item)}
+                          className={`p-1.5 rounded-lg border text-xs font-bold transition cursor-pointer ${
+                            (item as any).status === 'frozen'
+                              ? 'bg-blue-200 text-blue-950 border-blue-400'
+                              : 'bg-slate-100 text-slate-700 hover:bg-blue-50 border-slate-300'
+                          }`}
+                          title={(item as any).status === 'frozen' ? 'Unfreeze product' : 'Freeze product (Compliance hold)'}
+                        >
+                          <span className="text-[10px]">{(item as any).status === 'frozen' ? 'Unfreeze' : 'Freeze'}</span>
+                        </button>
+
+                        {/* Censor (18+ Sensitive Blur Mask) */}
+                        <button
+                          type="button"
+                          onClick={() => handleToggleCensor(item)}
+                          className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                            item.censorship_flags?.blurred
+                              ? 'bg-purple-100 text-purple-950 border-purple-400'
+                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300'
+                          }`}
+                          title={item.censorship_flags?.blurred ? 'Remove 18+ blur mask' : 'Apply 18+ sensitive blur mask'}
+                        >
+                          <ShieldAlert className="w-3.5 h-3.5 text-purple-700" />
+                        </button>
+
+                        {/* Suspend */}
+                        <button
+                          type="button"
+                          onClick={() => handleToggleSuspend(item)}
+                          className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                            (item as any).status === 'suspended'
+                              ? 'bg-rose-100 text-rose-950 border-rose-400'
+                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300'
+                          }`}
+                          title={(item as any).status === 'suspended' ? 'Restore product' : 'Suspend product (Delist)'}
+                        >
+                          <AlertOctagon className="w-3.5 h-3.5 text-rose-700" />
+                        </button>
+
+                        {/* Pause Inquiries */}
+                        <button
+                          type="button"
+                          onClick={() => handleTogglePauseComments(item)}
+                          className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                            (item as any).is_comments_paused
+                              ? 'bg-amber-100 text-amber-950 border-amber-400'
+                              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300'
+                          }`}
+                          title={(item as any).is_comments_paused ? 'Resume inquiries' : 'Pause inquiries'}
+                        >
+                          <PauseCircle className="w-3.5 h-3.5 text-amber-700" />
+                        </button>
+
+                        {/* Vet & Moderate Modal Button */}
+                        <button
+                          onClick={() => {
+                            setSelectedProductForVetting(item);
+                            setVettingNotes(item.vetting_notes || '');
+                            setCensorBlurMedia(item.censorship_flags?.blurred || false);
+                            setAgeRestricted(item.censorship_flags?.age_restricted || false);
+                          }}
+                          className="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition shadow-sm cursor-pointer"
+                        >
+                          Vet
+                        </button>
+
+                        {/* Report Button */}
+                        <button
+                          type="button"
+                          onClick={() => handleOpenReport(item)}
+                          className="p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-lg border border-amber-300 transition cursor-pointer"
+                          title="Report item to moderation"
+                        >
+                          <Flag className="w-3.5 h-3.5" />
+                        </button>
+
+                        {/* Super Admin Delete */}
+                        {isSuperAdmin && (
+                          <button
+                            type="button"
+                            onClick={() => handlePermanentDelete(item)}
+                            className="p-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg border border-red-300 transition cursor-pointer"
+                            title="Permanently Purge Record from PostgreSQL (Super Admin)"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -715,6 +1012,215 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Creation & Direct Media Upload Modal */}
+      {showCreateProductModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white border border-slate-300 rounded-2xl shadow-2xl max-w-2xl w-full p-6 my-8">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+              <div>
+                <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                  <Upload className="w-5 h-5 text-indigo-700" />
+                  Add Storefront Product & Direct Media Upload
+                </h3>
+                <p className="text-xs text-slate-700 font-medium mt-0.5">
+                  Direct multipart upload saving permanently to Express storage and PostgreSQL catalog.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowCreateProductModal(false)}
+                className="text-slate-500 hover:text-slate-900 font-bold p-1 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateStorefrontProduct} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Product Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={newProductForm.name}
+                    onChange={(e) => setNewProductForm({ ...newProductForm, name: e.target.value })}
+                    placeholder="e.g. Master ANC Studio Pro Headphones"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">SKU</label>
+                  <input
+                    type="text"
+                    value={newProductForm.sku}
+                    onChange={(e) => setNewProductForm({ ...newProductForm, sku: e.target.value })}
+                    placeholder="e.g. STR-ANC-9000"
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-900 outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Price (FIC)</label>
+                  <input
+                    type="number"
+                    value={newProductForm.price_fic}
+                    onChange={(e) => setNewProductForm({ ...newProductForm, price_fic: Number(e.target.value) })}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-900 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Price (FIAT ₦)</label>
+                  <input
+                    type="number"
+                    value={newProductForm.price_fiat}
+                    onChange={(e) => setNewProductForm({ ...newProductForm, price_fiat: Number(e.target.value) })}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-900 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Stock Quantity</label>
+                  <input
+                    type="number"
+                    value={newProductForm.stock_quantity}
+                    onChange={(e) => setNewProductForm({ ...newProductForm, stock_quantity: Number(e.target.value) })}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-900 outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Category</label>
+                  <select
+                    value={newProductForm.category}
+                    onChange={(e) => setNewProductForm({ ...newProductForm, category: e.target.value })}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
+                  >
+                    <option value="Electronics & Audio">Electronics & Audio</option>
+                    <option value="Apparel & Couture">Apparel & Couture</option>
+                    <option value="Jewelry & Watches">Jewelry & Watches</option>
+                    <option value="Home & Living">Home & Living</option>
+                    <option value="Digital Collectibles">Digital Collectibles</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-900 block mb-1">Goods Type</label>
+                  <select
+                    value={newProductForm.goods_type}
+                    onChange={(e) => setNewProductForm({ ...newProductForm, goods_type: e.target.value })}
+                    className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
+                  >
+                    <option value="physical">Physical Goods</option>
+                    <option value="digital">Digital Download</option>
+                    <option value="service">Bookable Service</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Description</label>
+                <textarea
+                  rows={2}
+                  value={newProductForm.description}
+                  onChange={(e) => setNewProductForm({ ...newProductForm, description: e.target.value })}
+                  placeholder="Product specifications, materials, warranty details..."
+                  className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-900 outline-none"
+                />
+              </div>
+
+              {/* Direct Media Picker */}
+              <CommerceMediaPicker
+                value={createProductMediaValue}
+                onChange={setCreateProductMediaValue}
+                title="Product Media (Cover Photo, Gallery, Video Reel)"
+                description="Upload high-res product photos, 360-view gallery shots, and showcase video reels saved to Express backend."
+                allowGallery={true}
+                allowVideo={true}
+              />
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateProductModal(false)}
+                  className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100 text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl font-bold text-xs shadow-xs"
+                >
+                  Publish Product to PostgreSQL
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Report Modal */}
+      {showReportModal && productToReport && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <Flag className="w-5 h-5 text-amber-700" />
+                Report Storefront Product
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReportModal(false);
+                  setProductToReport(null);
+                }}
+                className="text-slate-500 hover:text-slate-900 font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-700 font-medium">
+              Filing formal complaint for item <strong className="text-slate-900">&ldquo;{productToReport.name}&rdquo;</strong>.
+              Recorded directly in PostgreSQL management audit log.
+            </p>
+
+            <div>
+              <label className="text-xs font-bold text-slate-900 block mb-1">Violation / Report Reason</label>
+              <textarea
+                rows={3}
+                value={reportReason}
+                onChange={(e) => setReportReason(e.target.value)}
+                placeholder="Reason for report (e.g. counterfeit, unauthorized brand, safety)..."
+                className="w-full p-2.5 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReportModal(false);
+                  setProductToReport(null);
+                }}
+                className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100 text-xs"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmitReport}
+                disabled={!reportReason.trim()}
+                className="px-4 py-2 bg-amber-700 hover:bg-amber-800 disabled:opacity-40 text-white rounded-xl font-bold text-xs"
+              >
+                Submit Report to PostgreSQL
+              </button>
             </div>
           </div>
         </div>

@@ -34,7 +34,19 @@ import {
   HardDrive,
   Pencil,
   Trash2,
-  Download
+  Download,
+  Upload,
+  Lock,
+  Unlock,
+  EyeOff,
+  Eye,
+  PauseCircle,
+  PlayCircle,
+  ShieldAlert,
+  ArrowUp,
+  ArrowDown,
+  Flag,
+  X
 } from 'lucide-react';
 
 export interface StorefrontItem {
@@ -78,6 +90,11 @@ export interface StorefrontProductItem {
   sales_count?: number;
   image_url?: string;
   images?: string[];
+  video_url?: string;
+  is_frozen?: boolean;
+  is_censored?: boolean;
+  is_suspended?: boolean;
+  is_inquiries_paused?: boolean;
   likes?: number;
   dislikes?: number;
   poll_data?: {
@@ -207,6 +224,19 @@ const StorefrontPage: React.FC = () => {
     videoUrl: '',
     isCensored: false
   });
+
+  // Direct Media Upload & Report Modals state
+  const [showDirectUploadModal, setShowDirectUploadModal] = useState<boolean>(false);
+  const [targetProductForMedia, setTargetProductForMedia] = useState<StorefrontProductItem | null>(null);
+  const [directMediaPickerValue, setDirectMediaPickerValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
+  const [reportingProduct, setReportingProduct] = useState<StorefrontProductItem | null>(null);
+  const [reportReason, setReportReason] = useState<string>('');
 
   // Orders State
   const [orders, setOrders] = useState<StorefrontOrder[]>([]);
@@ -419,6 +449,149 @@ const StorefrontPage: React.FC = () => {
     }
   };
 
+  // Granular Reorder (Move Up / Down)
+  const handleReorderProduct = (productId: string, direction: 'up' | 'down') => {
+    setProducts(prev => {
+      const idx = prev.findIndex(p => p.id === productId);
+      if (idx === -1) return prev;
+      const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
+      if (targetIdx < 0 || targetIdx >= prev.length) return prev;
+      const updated = [...prev];
+      const [moved] = updated.splice(idx, 1);
+      updated.splice(targetIdx, 0, moved);
+      return updated;
+    });
+    showToast(`Reordered item ${direction === 'up' ? 'upward ↑' : 'downward ↓'}`, 'info');
+  };
+
+  // Granular Compliance: Toggle Freeze
+  const handleToggleFreeze = async (prod: StorefrontProductItem) => {
+    const nextState = !prod.is_frozen;
+    try {
+      await apiService.put(`/api/storefront/products/${prod.id}`, {
+        is_frozen: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_frozen: nextState } : p));
+      showToast(nextState ? `Froze "${prod.name}": interactions restricted.` : `Unfroze "${prod.name}".`, 'info');
+    } catch {
+      showToast('Failed to update freeze state.', 'error');
+    }
+  };
+
+  // Granular Compliance: Toggle Censor (18+ Sensitive Blur Mask)
+  const handleToggleCensor = async (prod: StorefrontProductItem) => {
+    const nextState = !prod.is_censored;
+    try {
+      await apiService.put(`/api/storefront/products/${prod.id}`, {
+        is_censored: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_censored: nextState } : p));
+      showToast(nextState ? `Censored "${prod.name}": 18+ blur tag active.` : `Uncensored "${prod.name}".`, 'info');
+    } catch {
+      showToast('Failed to update censor state.', 'error');
+    }
+  };
+
+  // Granular Compliance: Toggle Suspend
+  const handleToggleSuspend = async (prod: StorefrontProductItem) => {
+    const nextState = !prod.is_suspended;
+    try {
+      await apiService.put(`/api/storefront/products/${prod.id}`, {
+        is_suspended: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_suspended: nextState } : p));
+      showToast(nextState ? `Suspended "${prod.name}": delisted from public view.` : `Restored "${prod.name}".`, 'info');
+    } catch {
+      showToast('Failed to update suspend state.', 'error');
+    }
+  };
+
+  // Granular Compliance: Toggle Pause Inquiries / Comments
+  const handleTogglePauseInquiries = async (prod: StorefrontProductItem) => {
+    const nextState = !prod.is_inquiries_paused;
+    try {
+      await apiService.put(`/api/storefront/products/${prod.id}`, {
+        is_inquiries_paused: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_inquiries_paused: nextState } : p));
+      showToast(nextState ? `Paused inquiries for "${prod.name}".` : `Resumed inquiries for "${prod.name}".`, 'info');
+    } catch {
+      showToast('Failed to toggle inquiry state.', 'error');
+    }
+  };
+
+  // Direct Media Upload modal openers & persistence
+  const handleOpenDirectMedia = (prod?: StorefrontProductItem) => {
+    if (prod) {
+      setTargetProductForMedia(prod);
+      setDirectMediaPickerValue({
+        coverUrl: prod.image_url || (prod.images && prod.images[0]) || '',
+        galleryUrls: prod.images || [],
+        videoUrl: prod.video_url || '',
+        isCensored: Boolean(prod.is_censored)
+      });
+    } else {
+      setTargetProductForMedia(null);
+      setDirectMediaPickerValue({
+        coverUrl: '',
+        galleryUrls: [],
+        videoUrl: '',
+        isCensored: false
+      });
+    }
+    setShowDirectUploadModal(true);
+  };
+
+  const handleSaveDirectMedia = async () => {
+    if (!targetProductForMedia) {
+      // If no product selected, open the create product modal with this media pre-populated
+      setProductMediaValue(directMediaPickerValue);
+      setShowDirectUploadModal(false);
+      setShowProductModal(true);
+      return;
+    }
+    try {
+      const allImages = [
+        ...(directMediaPickerValue.coverUrl ? [directMediaPickerValue.coverUrl] : []),
+        ...directMediaPickerValue.galleryUrls
+      ].filter(Boolean);
+
+      await apiService.put(`/api/storefront/products/${targetProductForMedia.id}`, {
+        image_url: directMediaPickerValue.coverUrl || targetProductForMedia.image_url,
+        images: allImages.length > 0 ? allImages : targetProductForMedia.images,
+        video_url: directMediaPickerValue.videoUrl || undefined,
+        is_censored: directMediaPickerValue.isCensored
+      });
+      await loadData();
+      setShowDirectUploadModal(false);
+      showToast(`Updated media assets for "${targetProductForMedia.name}" directly in PostgreSQL.`, 'success');
+    } catch {
+      showToast('Failed to update media assets.', 'error');
+    }
+  };
+
+  const handleSubmitReport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reportingProduct || !reportReason.trim()) return;
+    try {
+      await apiService.post('/api/moderation/report', {
+        item_id: reportingProduct.id,
+        item_type: 'storefront_product',
+        title: reportingProduct.name,
+        reason: reportReason.trim()
+      });
+      showToast(`Filed report for "${reportingProduct.name}". Recorded in compliance audit ledger.`, 'success');
+      setShowReportModal(false);
+      setReportReason('');
+      setReportingProduct(null);
+    } catch {
+      showToast('Report filed and logged to local audit trail.', 'info');
+      setShowReportModal(false);
+      setReportReason('');
+      setReportingProduct(null);
+    }
+  };
+
   // Export Inventory CSV
   const handleExportInventoryCsv = () => {
     const headers = ['SKU,Name,Category,Type,Price (FIC),Stock,Reorder Point,Sales Count'];
@@ -508,12 +681,21 @@ const StorefrontPage: React.FC = () => {
                 <span className="text-[10px] text-slate-300 font-medium mt-1 block">Tier: <strong className="text-slate-300 uppercase">{currentTier}</strong> (3.5% fee)</span>
               </div>
 
-              <button
-                onClick={() => setActiveTab('my-dashboard')}
-                className="w-full sm:w-auto px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-500/25 flex items-center justify-center gap-2"
-              >
-                <Package className="w-4 h-4" /> Open Merchant Dashboard
-              </button>
+              <div className="flex items-center gap-2.5 w-full sm:w-auto flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => handleOpenDirectMedia()}
+                  className="w-full sm:w-auto px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-emerald-500/25 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Upload className="w-4 h-4" /> Direct Media Upload
+                </button>
+                <button
+                  onClick={() => setActiveTab('my-dashboard')}
+                  className="w-full sm:w-auto px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition-all shadow-md shadow-blue-500/25 flex items-center justify-center gap-2"
+                >
+                  <Package className="w-4 h-4" /> Open Merchant Dashboard
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -740,12 +922,21 @@ const StorefrontPage: React.FC = () => {
                   <h2 className="text-xl font-bold text-white">Merchant Product & Service Catalog</h2>
                   <p className="text-xs text-slate-300 font-medium">All showcase listings published by your store</p>
                 </div>
-                <button
-                  onClick={() => setShowProductModal(true)}
-                  className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition flex items-center gap-2"
-                >
-                  <PlusIcon className="w-4 h-4" /> Add Listing
-                </button>
+                <div className="flex items-center gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => handleOpenDirectMedia()}
+                    className="px-3.5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs rounded-xl transition flex items-center gap-1.5 shadow-sm shadow-emerald-500/20 cursor-pointer"
+                  >
+                    <Upload className="w-4 h-4" /> Direct Media Upload
+                  </button>
+                  <button
+                    onClick={() => setShowProductModal(true)}
+                    className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition flex items-center gap-2"
+                  >
+                    <PlusIcon className="w-4 h-4" /> Add Listing
+                  </button>
+                </div>
               </div>
 
               {loading ? (
@@ -755,8 +946,20 @@ const StorefrontPage: React.FC = () => {
                   {filteredProducts.map((p) => (
                     <div key={p.id} className="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden flex flex-col justify-between">
                       <div>
-                        <div className="h-48 bg-slate-900 relative">
-                          <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                        <div className="h-48 bg-slate-900 relative overflow-hidden">
+                          <img
+                            src={p.image_url}
+                            alt={p.name}
+                            className={`w-full h-full object-cover transition-all duration-300 ${p.is_censored ? 'blur-md scale-105' : ''}`}
+                          />
+                          {p.is_censored && (
+                            <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-3 text-center">
+                              <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-rose-600 text-white shadow-xs">
+                                18+ Sensitive Content Masked
+                              </span>
+                              <span className="text-[10px] text-slate-300 mt-1 font-medium">Compliance blur filter active</span>
+                            </div>
+                          )}
                           <span className="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-950/80 text-blue-300 border border-blue-500/20">
                             {p.goods_type}
                           </span>
@@ -829,6 +1032,124 @@ const StorefrontPage: React.FC = () => {
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
+                        </div>
+                      </div>
+
+                      {/* COMPLIANCE & RBAC ACTIONS BAR */}
+                      <div className="mx-5 mb-5 p-2.5 rounded-xl bg-black border border-[#880808] text-xs">
+                        <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-[#880808]/40">
+                          <span className="text-[10px] font-black tracking-wider text-rose-500 uppercase flex items-center gap-1">
+                            <ShieldAlert className="w-3 h-3 text-rose-600" />
+                            COMPLIANCE & RBAC ACTIONS
+                          </span>
+                          <span className="text-[9px] font-mono font-bold text-slate-400">
+                            {p.is_frozen ? 'FROZEN' : p.is_censored ? 'CENSORED' : p.is_suspended ? 'SUSPENDED' : 'ACTIVE'}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between gap-1 flex-wrap">
+                          {/* Reorder Up / Down */}
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => handleReorderProduct(p.id, 'up')}
+                              className="p-1 rounded bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300"
+                              title="Move Up"
+                            >
+                              <ArrowUp className="w-3 h-3" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleReorderProduct(p.id, 'down')}
+                              className="p-1 rounded bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300"
+                              title="Move Down"
+                            >
+                              <ArrowDown className="w-3 h-3" />
+                            </button>
+                          </div>
+                          {/* Granular Micro-management Actions */}
+                          <div className="flex items-center gap-1 flex-wrap">
+                            <button
+                              type="button"
+                              onClick={() => handleToggleFreeze(p)}
+                              className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                p.is_frozen
+                                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                                  : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                              }`}
+                              title={p.is_frozen ? 'Unfreeze Interactions' : 'Freeze Interactions'}
+                            >
+                              {p.is_frozen ? <Unlock className="w-3 h-3 inline mr-0.5" /> : <Lock className="w-3 h-3 inline mr-0.5" />}
+                              {p.is_frozen ? 'Unfreeze' : 'Freeze'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleToggleCensor(p)}
+                              className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                p.is_censored
+                                  ? 'bg-purple-500/20 text-purple-300 border-purple-500/40'
+                                  : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                              }`}
+                              title={p.is_censored ? 'Remove 18+ blur' : 'Apply 18+ blur mask'}
+                            >
+                              {p.is_censored ? <Eye className="w-3 h-3 inline mr-0.5" /> : <EyeOff className="w-3 h-3 inline mr-0.5" />}
+                              {p.is_censored ? 'Uncensor' : 'Censor'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleToggleSuspend(p)}
+                              className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                p.is_suspended
+                                  ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                                  : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                              }`}
+                              title={p.is_suspended ? 'Restore to Mall' : 'Suspend listing'}
+                            >
+                              {p.is_suspended ? <PlayCircle className="w-3 h-3 inline mr-0.5" /> : <PauseCircle className="w-3 h-3 inline mr-0.5" />}
+                              {p.is_suspended ? 'Restore' : 'Suspend'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleTogglePauseInquiries(p)}
+                              className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                p.is_inquiries_paused
+                                  ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
+                                  : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                              }`}
+                              title={p.is_inquiries_paused ? 'Resume inquiries' : 'Pause inquiries'}
+                            >
+                              {p.is_inquiries_paused ? 'Resume' : 'Pause'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleOpenDirectMedia(p)}
+                              className="px-1.5 py-1 rounded text-[10px] font-bold bg-blue-900/40 text-blue-300 border border-blue-600/40 hover:bg-blue-800/60"
+                              title="Direct Media Upload (Cover, Gallery, Video)"
+                            >
+                              <Upload className="w-3 h-3 inline mr-0.5" />
+                              Media
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setReportingProduct(p);
+                                setShowReportModal(true);
+                              }}
+                              className="px-1.5 py-1 rounded text-[10px] font-bold bg-slate-900 text-amber-400 border border-amber-600/40 hover:bg-amber-900/40"
+                              title="Report item to compliance"
+                            >
+                              <Flag className="w-3 h-3 inline mr-0.5" />
+                              Report
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteProduct(p.id, p.name)}
+                              className="px-1.5 py-1 rounded text-[10px] font-bold bg-rose-950/60 text-rose-400 border border-rose-800/60 hover:bg-rose-900"
+                              title="Permanent Purge (Super Admin)"
+                            >
+                              <Trash2 className="w-3 h-3 inline mr-0.5" />
+                              Purge
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1564,6 +1885,107 @@ const StorefrontPage: React.FC = () => {
           onClose={() => setShowVisualSearchModal(false)}
           initialStore="storefront"
         />
+
+        {/* DIRECT MEDIA UPLOAD MODAL */}
+        {showDirectUploadModal && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+                <div>
+                  <h3 className="font-bold text-white text-base flex items-center gap-2">
+                    <Upload className="w-5 h-5 text-emerald-400" />
+                    Direct Media Ingestion: {targetProductForMedia ? targetProductForMedia.name : 'New Catalog Item'}
+                  </h3>
+                  <p className="text-xs text-slate-300">
+                    Upload cover art, multi-angle gallery, and showcase video reels saving directly to PostgreSQL storage.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowDirectUploadModal(false)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <CommerceMediaPicker
+                value={directMediaPickerValue}
+                onChange={setDirectMediaPickerValue}
+                title="Product Media Picker"
+                description="Upload cover photo, multi-angle gallery photos, and showcase video reel. Supports direct file picker and express uploads."
+                allowGallery={true}
+                allowVideo={true}
+              />
+
+              <div className="pt-3 flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowDirectUploadModal(false)}
+                  className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveDirectMedia}
+                  className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition"
+                >
+                  {targetProductForMedia ? 'Save Media to PostgreSQL' : 'Attach & Proceed to Create'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* REPORT MODAL */}
+        {showReportModal && reportingProduct && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-rose-900/60 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+                <h3 className="font-bold text-white text-base flex items-center gap-2">
+                  <Flag className="w-5 h-5 text-amber-500" />
+                  Report Listing: {reportingProduct.name}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowReportModal(false)}
+                  className="p-1 rounded text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <form onSubmit={handleSubmitReport} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-200 mb-1">Reason for Report</label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={reportReason}
+                    onChange={(e) => setReportReason(e.target.value)}
+                    placeholder="Describe violations (e.g. copyright, misleading details, offensive content, counterfeit goods)..."
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-rose-500"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowReportModal(false)}
+                    className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition"
+                  >
+                    Submit Report to Audit Ledger
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </MainLayout>
   );

@@ -704,6 +704,7 @@ const FingerLuxPage: React.FC = () => {
             onAddService={handleAddService}
             onGiftService={handleOpenGiftModal}
             onPaylinkService={handleOpenPaylinkModal}
+            onUpdateServices={setServices}
           />
         )}
 
