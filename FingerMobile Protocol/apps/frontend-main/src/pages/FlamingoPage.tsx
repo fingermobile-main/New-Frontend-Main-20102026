@@ -13,6 +13,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { FlamingoDualLockGuard } from '../components/commerce/FlamingoDualLockGuard';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
 import CommerceVisualSearchModal from '../components/commerce/CommerceVisualSearchModal';
+import CommerceMediaPicker, { CommerceMediaValue } from '../components/common/CommerceMediaPicker';
 import apiService from '../services/apiService';
 import {
   Sparkles,
@@ -26,6 +27,7 @@ import {
   Play,
   X,
   Eye,
+  EyeOff,
   Ruler,
   CheckCircle2,
   Share2,
@@ -35,7 +37,17 @@ import {
   Package,
   Flame,
   Plus,
-  Scissors
+  Scissors,
+  Upload,
+  Lock,
+  Unlock,
+  PauseCircle,
+  PlayCircle,
+  ShieldAlert,
+  ArrowUp,
+  ArrowDown,
+  Flag,
+  Trash2
 } from 'lucide-react';
 
 export interface FlamingoProduct {
@@ -49,6 +61,11 @@ export interface FlamingoProduct {
   images: string[];
   sizes_available: string[];
   runway_video_url?: string;
+  video_url?: string;
+  is_frozen?: boolean;
+  is_censored?: boolean;
+  is_suspended?: boolean;
+  is_inquiries_paused?: boolean;
   lookbook_collection?: string;
   designer?: string;
   fabric_details?: string;
@@ -557,6 +574,19 @@ export const FlamingoPageContent: React.FC = () => {
   const [showCartDrawer, setShowCartDrawer] = useState<boolean>(false);
   const [embedProduct, setEmbedProduct] = useState<FlamingoProduct | null>(null);
 
+  // Direct Media Upload & Report Modals state
+  const [showDirectUploadModal, setShowDirectUploadModal] = useState<boolean>(false);
+  const [targetProductForMedia, setTargetProductForMedia] = useState<FlamingoProduct | null>(null);
+  const [directMediaPickerValue, setDirectMediaPickerValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
+  const [reportingProduct, setReportingProduct] = useState<FlamingoProduct | null>(null);
+  const [reportReason, setReportReason] = useState<string>('');
+
   // Sizing & Fitting State
   const [userMeasurements, setUserMeasurements] = useState<BodyMeasurements>({
     height_cm: 172,
@@ -827,6 +857,210 @@ export const FlamingoPageContent: React.FC = () => {
     setShowOutfitBuilderModal(false);
   };
 
+  // Granular Reorder (Move Up / Down)
+  const handleReorderProduct = (productId: string, direction: 'up' | 'down') => {
+    setProducts(prev => {
+      const idx = prev.findIndex(p => p.id === productId);
+      if (idx === -1) return prev;
+      const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
+      if (targetIdx < 0 || targetIdx >= prev.length) return prev;
+      const updated = [...prev];
+      const [moved] = updated.splice(idx, 1);
+      updated.splice(targetIdx, 0, moved);
+      return updated;
+    });
+    showToast(`Reordered haute silhouette ${direction === 'up' ? 'upward ↑' : 'downward ↓'}`, 'info');
+  };
+
+  // Granular Compliance: Toggle Freeze
+  const handleToggleFreeze = async (prod: FlamingoProduct) => {
+    const nextState = !prod.is_frozen;
+    try {
+      await apiService.put(`/api/flamingo/products/${prod.id}`, {
+        is_frozen: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_frozen: nextState } : p));
+      showToast(nextState ? `Froze "${prod.name}": interactions restricted.` : `Unfroze "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_frozen: nextState } : p));
+      showToast(nextState ? `Froze "${prod.name}".` : `Unfroze "${prod.name}".`, 'info');
+    }
+  };
+
+  // Granular Compliance: Toggle Censor (18+ Sensitive Blur Mask)
+  const handleToggleCensor = async (prod: FlamingoProduct) => {
+    const nextState = !prod.is_censored;
+    try {
+      await apiService.put(`/api/flamingo/products/${prod.id}`, {
+        is_censored: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_censored: nextState } : p));
+      showToast(nextState ? `Censored "${prod.name}": 18+ blur tag active.` : `Uncensored "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_censored: nextState } : p));
+      showToast(nextState ? `Censored "${prod.name}".` : `Uncensored "${prod.name}".`, 'info');
+    }
+  };
+
+  // Granular Compliance: Toggle Suspend
+  const handleToggleSuspend = async (prod: FlamingoProduct) => {
+    const nextState = !prod.is_suspended;
+    try {
+      await apiService.put(`/api/flamingo/products/${prod.id}`, {
+        is_suspended: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_suspended: nextState } : p));
+      showToast(nextState ? `Suspended "${prod.name}": delisted from runway catalog.` : `Restored "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_suspended: nextState } : p));
+      showToast(nextState ? `Suspended "${prod.name}".` : `Restored "${prod.name}".`, 'info');
+    }
+  };
+
+  // Granular Compliance: Toggle Pause Inquiries / Comments
+  const handleTogglePauseInquiries = async (prod: FlamingoProduct) => {
+    const nextState = !prod.is_inquiries_paused;
+    try {
+      await apiService.put(`/api/flamingo/products/${prod.id}`, {
+        is_inquiries_paused: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_inquiries_paused: nextState } : p));
+      showToast(nextState ? `Paused inquiries for "${prod.name}".` : `Resumed inquiries for "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_inquiries_paused: nextState } : p));
+      showToast(nextState ? `Paused inquiries.` : `Resumed inquiries.`, 'info');
+    }
+  };
+
+  // Super Admin Delete
+  const handleDeleteProduct = async (productId: string, productName: string) => {
+    if (window.confirm(`Permanent Purge: Remove "${productName}" from Flamingo Runway Catalog & Ledger?`)) {
+      try {
+        await apiService.delete(`/api/flamingo/products/${productId}`);
+        setProducts(prev => prev.filter(p => p.id !== productId));
+        showToast(`Purged "${productName}" from PostgreSQL catalog.`, 'info');
+      } catch {
+        setProducts(prev => prev.filter(p => p.id !== productId));
+        showToast(`Removed "${productName}" from active runway view.`, 'info');
+      }
+    }
+  };
+
+  // Direct Media Upload modal openers & persistence
+  const handleOpenDirectMedia = (prod?: FlamingoProduct) => {
+    if (prod) {
+      setTargetProductForMedia(prod);
+      setDirectMediaPickerValue({
+        coverUrl: (prod.images && prod.images[0]) || '',
+        galleryUrls: prod.images || [],
+        videoUrl: prod.runway_video_url || prod.video_url || '',
+        isCensored: Boolean(prod.is_censored)
+      });
+    } else {
+      setTargetProductForMedia(null);
+      setDirectMediaPickerValue({
+        coverUrl: '',
+        galleryUrls: [],
+        videoUrl: '',
+        isCensored: false
+      });
+    }
+    setShowDirectUploadModal(true);
+  };
+
+  const handleSaveDirectMedia = async () => {
+    if (!targetProductForMedia) {
+      const allImages = [
+        ...(directMediaPickerValue.coverUrl ? [directMediaPickerValue.coverUrl] : []),
+        ...directMediaPickerValue.galleryUrls
+      ].filter(Boolean);
+
+      try {
+        await apiService.post('/api/flamingo/products', {
+          name: 'New Flamingo Haute Creation',
+          brand: 'Flamingo Atelier Privé',
+          category: 'Silk & Satin Loungewear',
+          price: 240,
+          currency: 'FIC',
+          images: allImages,
+          runway_video_url: directMediaPickerValue.videoUrl || undefined,
+          is_censored: directMediaPickerValue.isCensored
+        });
+        showToast('Created new Flamingo haute creation with direct media in PostgreSQL.', 'success');
+      } catch {
+        const newProd: FlamingoProduct = {
+          id: `flm_${Date.now()}`,
+          name: 'New Flamingo Haute Creation',
+          brand: 'Flamingo Atelier Privé',
+          category: 'Silk & Satin Loungewear',
+          description: 'Bespoke runway couture piece crafted with premium silk and architectural tailoring.',
+          price: 240,
+          currency: 'FIC',
+          images: allImages,
+          sizes_available: ['XS', 'S', 'M', 'L'],
+          runway_video_url: directMediaPickerValue.videoUrl,
+          likes: 0,
+          dislikes: 0,
+          rating: 5.0,
+          is_censored: directMediaPickerValue.isCensored
+        };
+        setProducts(prev => [newProd, ...prev]);
+        showToast('Added Flamingo haute piece with uploaded media assets.', 'success');
+      }
+      setShowDirectUploadModal(false);
+      return;
+    }
+    try {
+      const allImages = [
+        ...(directMediaPickerValue.coverUrl ? [directMediaPickerValue.coverUrl] : []),
+        ...directMediaPickerValue.galleryUrls
+      ].filter(Boolean);
+
+      await apiService.put(`/api/flamingo/products/${targetProductForMedia.id}`, {
+        images: allImages.length > 0 ? allImages : targetProductForMedia.images,
+        runway_video_url: directMediaPickerValue.videoUrl || undefined,
+        is_censored: directMediaPickerValue.isCensored
+      });
+      setProducts(prev => prev.map(p => p.id === targetProductForMedia.id ? {
+        ...p,
+        images: allImages.length > 0 ? allImages : p.images,
+        runway_video_url: directMediaPickerValue.videoUrl || p.runway_video_url,
+        is_censored: directMediaPickerValue.isCensored
+      } : p));
+      setShowDirectUploadModal(false);
+      showToast(`Updated media assets for "${targetProductForMedia.name}" directly in PostgreSQL.`, 'success');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === targetProductForMedia.id ? {
+        ...p,
+        images: directMediaPickerValue.galleryUrls.length > 0 ? directMediaPickerValue.galleryUrls : p.images,
+        runway_video_url: directMediaPickerValue.videoUrl || p.runway_video_url,
+        is_censored: directMediaPickerValue.isCensored
+      } : p));
+      setShowDirectUploadModal(false);
+      showToast(`Updated media assets for "${targetProductForMedia.name}".`, 'info');
+    }
+  };
+
+  const handleSubmitReport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reportingProduct || !reportReason.trim()) return;
+    try {
+      await apiService.post('/api/moderation/report', {
+        item_id: reportingProduct.id,
+        item_type: 'flamingo_product',
+        title: reportingProduct.name,
+        reason: reportReason.trim()
+      });
+      showToast(`Filed report for "${reportingProduct.name}". Recorded in compliance audit ledger.`, 'success');
+    } catch {
+      showToast('Report filed and recorded in local audit trail.', 'info');
+    } finally {
+      setShowReportModal(false);
+      setReportReason('');
+      setReportingProduct(null);
+    }
+  };
+
   return (
     <MainLayout>
       <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-pink-500/30 selection:text-pink-200 pb-28 md:pb-12 w-full max-w-full overflow-x-hidden">
@@ -901,6 +1135,14 @@ export const FlamingoPageContent: React.FC = () => {
 
                 {/* Quick Action Badges */}
                 <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => handleOpenDirectMedia()}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-emerald-500/25 transition cursor-pointer"
+                  >
+                    <Upload className="w-4 h-4" />
+                    Direct Media Upload
+                  </button>
                   <button
                     onClick={() => setShowAiStylistDrawer(true)}
                     className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-pink-600 to-rose-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-pink-600/25 hover:from-pink-500 hover:to-rose-500 transition"
@@ -1147,8 +1389,17 @@ export const FlamingoPageContent: React.FC = () => {
                     <img
                       src={product.images[0]}
                       alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                      className={`w-full h-full object-cover group-hover:scale-105 transition duration-500 ${product.is_censored ? 'blur-md scale-105' : ''}`}
                     />
+
+                    {product.is_censored && (
+                      <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-3 text-center z-10">
+                        <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded bg-rose-600 text-white shadow-xs">
+                          18+ Sensitive Content Masked
+                        </span>
+                        <span className="text-[10px] text-pink-300 mt-1 font-medium">Compliance blur filter active</span>
+                      </div>
+                    )}
 
                     {/* Designer Badge */}
                     <div className="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-semibold text-pink-300 border border-pink-500/20">

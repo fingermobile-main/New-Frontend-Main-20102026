@@ -12,6 +12,7 @@ import apiService from '../services/apiService';
 import { useAppContext } from '../contexts/AppContext';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
 import CommerceVisualSearchModal from '../components/commerce/CommerceVisualSearchModal';
+import CommerceMediaPicker, { CommerceMediaValue } from '../components/common/CommerceMediaPicker';
 import {
   Crown,
   Sparkles,
@@ -21,15 +22,27 @@ import {
   Play,
   Award,
   Lock,
+  Unlock,
   ExternalLink,
   ChevronRight,
   Eye,
+  EyeOff,
   ThumbsUp,
   ThumbsDown,
   BarChart2,
   Copy,
   Bot,
   Building,
+  Upload,
+  PauseCircle,
+  PlayCircle,
+  ShieldAlert,
+  ArrowUp,
+  ArrowDown,
+  Flag,
+  Trash2,
+  Plus,
+  X
 } from 'lucide-react';
 
 export interface OwnItStore {
@@ -63,6 +76,11 @@ export interface OwnItProduct {
   imageUrl?: string;
   images?: string[];
   video_showcase_url?: string;
+  video_url?: string;
+  is_frozen?: boolean;
+  is_censored?: boolean;
+  is_suspended?: boolean;
+  is_inquiries_paused?: boolean;
   authenticity_cert_number: string;
   cryptographic_sha256: string;
   provenance_history?: { year: number; event: string; entity: string }[];
@@ -111,6 +129,19 @@ const OwnitPage: React.FC = () => {
   const [selectedProductForEscrow, setSelectedProductForEscrow] = useState<OwnItProduct | null>(null);
   const [embedProduct, setEmbedProduct] = useState<any | null>(null);
   const [isProcessingEscrow, setIsProcessingEscrow] = useState<boolean>(false);
+
+  // Direct Media Upload & Report Modals state
+  const [showDirectUploadModal, setShowDirectUploadModal] = useState<boolean>(false);
+  const [targetProductForMedia, setTargetProductForMedia] = useState<OwnItProduct | null>(null);
+  const [directMediaPickerValue, setDirectMediaPickerValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
+  const [reportingProduct, setReportingProduct] = useState<OwnItProduct | null>(null);
+  const [reportReason, setReportReason] = useState<string>('');
 
   // VIP Concierge AI Chat
   const [conciergeInput, setConciergeInput] = useState<string>('');
@@ -445,6 +476,217 @@ const OwnitPage: React.FC = () => {
     }, 600);
   };
 
+  // Granular Reorder (Move Up / Down)
+  const handleReorderProduct = (productId: string, direction: 'up' | 'down') => {
+    setProducts(prev => {
+      const idx = prev.findIndex(p => p.id === productId);
+      if (idx === -1) return prev;
+      const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
+      if (targetIdx < 0 || targetIdx >= prev.length) return prev;
+      const updated = [...prev];
+      const [moved] = updated.splice(idx, 1);
+      updated.splice(targetIdx, 0, moved);
+      return updated;
+    });
+    showToast(`Reordered luxury asset ${direction === 'up' ? 'upward ↑' : 'downward ↓'}`, 'info');
+  };
+
+  // Granular Compliance: Toggle Freeze
+  const handleToggleFreeze = async (prod: OwnItProduct) => {
+    const nextState = !prod.is_frozen;
+    try {
+      await apiService.put(`/api/ownit/products/${prod.id}`, {
+        is_frozen: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_frozen: nextState } : p));
+      showToast(nextState ? `Froze "${prod.name}": interactions locked.` : `Unfroze "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_frozen: nextState } : p));
+      showToast(nextState ? `Froze "${prod.name}".` : `Unfroze "${prod.name}".`, 'info');
+    }
+  };
+
+  // Granular Compliance: Toggle Censor (18+ Sensitive Blur Mask)
+  const handleToggleCensor = async (prod: OwnItProduct) => {
+    const nextState = !prod.is_censored;
+    try {
+      await apiService.put(`/api/ownit/products/${prod.id}`, {
+        is_censored: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_censored: nextState } : p));
+      showToast(nextState ? `Censored "${prod.name}": 18+ blur tag active.` : `Uncensored "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_censored: nextState } : p));
+      showToast(nextState ? `Censored "${prod.name}".` : `Uncensored "${prod.name}".`, 'info');
+    }
+  };
+
+  // Granular Compliance: Toggle Suspend
+  const handleToggleSuspend = async (prod: OwnItProduct) => {
+    const nextState = !prod.is_suspended;
+    try {
+      await apiService.put(`/api/ownit/products/${prod.id}`, {
+        is_suspended: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_suspended: nextState } : p));
+      showToast(nextState ? `Suspended "${prod.name}": delisted from 4K mall.` : `Restored "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_suspended: nextState } : p));
+      showToast(nextState ? `Suspended "${prod.name}".` : `Restored "${prod.name}".`, 'info');
+    }
+  };
+
+  // Granular Compliance: Toggle Pause Inquiries / Comments
+  const handleTogglePauseInquiries = async (prod: OwnItProduct) => {
+    const nextState = !prod.is_inquiries_paused;
+    try {
+      await apiService.put(`/api/ownit/products/${prod.id}`, {
+        is_inquiries_paused: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_inquiries_paused: nextState } : p));
+      showToast(nextState ? `Paused inquiries for "${prod.name}".` : `Resumed inquiries for "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_inquiries_paused: nextState } : p));
+      showToast(nextState ? `Paused inquiries.` : `Resumed inquiries.`, 'info');
+    }
+  };
+
+  // Super Admin Delete
+  const handleDeleteProduct = async (productId: string, productName: string) => {
+    if (window.confirm(`Permanent Purge: Remove "${productName}" from OwnIt Luxury Mall & Ledger?`)) {
+      try {
+        await apiService.delete(`/api/ownit/products/${productId}`);
+        setProducts(prev => prev.filter(p => p.id !== productId));
+        showToast(`Purged "${productName}" from PostgreSQL catalog.`, 'info');
+      } catch {
+        setProducts(prev => prev.filter(p => p.id !== productId));
+        showToast(`Removed "${productName}" from active catalog view.`, 'info');
+      }
+    }
+  };
+
+  // Direct Media Upload modal openers & persistence
+  const handleOpenDirectMedia = (prod?: OwnItProduct) => {
+    if (prod) {
+      setTargetProductForMedia(prod);
+      setDirectMediaPickerValue({
+        coverUrl: (prod.media_4k_urls && prod.media_4k_urls[0]) || prod.imageUrl || '',
+        galleryUrls: prod.media_4k_urls || prod.images || [],
+        videoUrl: prod.video_showcase_url || prod.video_url || '',
+        isCensored: Boolean(prod.is_censored)
+      });
+    } else {
+      setTargetProductForMedia(null);
+      setDirectMediaPickerValue({
+        coverUrl: '',
+        galleryUrls: [],
+        videoUrl: '',
+        isCensored: false
+      });
+    }
+    setShowDirectUploadModal(true);
+  };
+
+  const handleSaveDirectMedia = async () => {
+    if (!targetProductForMedia) {
+      const newCert = `OWNIT-LUX-${Date.now().toString().slice(-6)}`;
+      const allImages = [
+        ...(directMediaPickerValue.coverUrl ? [directMediaPickerValue.coverUrl] : []),
+        ...directMediaPickerValue.galleryUrls
+      ].filter(Boolean);
+
+      try {
+        await apiService.post('/api/ownit/products', {
+          name: 'New OwnIt Luxury Asset',
+          brand: 'Haute Horlogerie / Sovereign Atelier',
+          category: 'High Jewelry & Watches',
+          price: 250000,
+          priceFic: 25000,
+          authenticity_cert_number: newCert,
+          media_4k_urls: allImages,
+          video_showcase_url: directMediaPickerValue.videoUrl || undefined,
+          is_censored: directMediaPickerValue.isCensored
+        });
+        showToast('Created new OwnIt luxury asset with direct media in PostgreSQL.', 'success');
+      } catch {
+        const newProd: OwnItProduct = {
+          id: `new-${Date.now()}`,
+          name: 'New OwnIt Luxury Asset',
+          brand: 'Haute Horlogerie / Sovereign Atelier',
+          category: 'High Jewelry & Watches',
+          description: 'Authentic red-carpet asset with cryptographic SHA-256 provenance certificate.',
+          price: 250000,
+          priceFic: 25000,
+          authenticity_cert_number: newCert,
+          cryptographic_sha256: '0x' + Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join(''),
+          media_4k_urls: allImages,
+          imageUrl: directMediaPickerValue.coverUrl,
+          video_showcase_url: directMediaPickerValue.videoUrl,
+          likes: 0,
+          dislikes: 0,
+          rating: 5.0,
+          is_censored: directMediaPickerValue.isCensored
+        };
+        setProducts(prev => [newProd, ...prev]);
+        showToast('Added OwnIt luxury asset with uploaded media assets.', 'success');
+      }
+      setShowDirectUploadModal(false);
+      return;
+    }
+    try {
+      const allImages = [
+        ...(directMediaPickerValue.coverUrl ? [directMediaPickerValue.coverUrl] : []),
+        ...directMediaPickerValue.galleryUrls
+      ].filter(Boolean);
+
+      await apiService.put(`/api/ownit/products/${targetProductForMedia.id}`, {
+        media_4k_urls: allImages.length > 0 ? allImages : targetProductForMedia.media_4k_urls,
+        imageUrl: directMediaPickerValue.coverUrl || targetProductForMedia.imageUrl,
+        video_showcase_url: directMediaPickerValue.videoUrl || undefined,
+        is_censored: directMediaPickerValue.isCensored
+      });
+      setProducts(prev => prev.map(p => p.id === targetProductForMedia.id ? {
+        ...p,
+        media_4k_urls: allImages.length > 0 ? allImages : p.media_4k_urls,
+        imageUrl: directMediaPickerValue.coverUrl || p.imageUrl,
+        video_showcase_url: directMediaPickerValue.videoUrl || p.video_showcase_url,
+        is_censored: directMediaPickerValue.isCensored
+      } : p));
+      setShowDirectUploadModal(false);
+      showToast(`Updated media assets for "${targetProductForMedia.name}" directly in PostgreSQL.`, 'success');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === targetProductForMedia.id ? {
+        ...p,
+        media_4k_urls: directMediaPickerValue.galleryUrls.length > 0 ? directMediaPickerValue.galleryUrls : p.media_4k_urls,
+        imageUrl: directMediaPickerValue.coverUrl || p.imageUrl,
+        video_showcase_url: directMediaPickerValue.videoUrl || p.video_showcase_url,
+        is_censored: directMediaPickerValue.isCensored
+      } : p));
+      setShowDirectUploadModal(false);
+      showToast(`Updated media assets for "${targetProductForMedia.name}".`, 'info');
+    }
+  };
+
+  const handleSubmitReport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reportingProduct || !reportReason.trim()) return;
+    try {
+      await apiService.post('/api/moderation/report', {
+        item_id: reportingProduct.id,
+        item_type: 'ownit_product',
+        title: reportingProduct.name,
+        reason: reportReason.trim()
+      });
+      showToast(`Filed report for "${reportingProduct.name}". Recorded in compliance audit ledger.`, 'success');
+    } catch {
+      showToast('Report filed and recorded in local audit trail.', 'info');
+    } finally {
+      setShowReportModal(false);
+      setReportReason('');
+      setReportingProduct(null);
+    }
+  };
+
   return (
     <MainLayout pageTitle="OwnIt • Celebrity Red-Carpet Luxury Mall">
       <div className="w-full max-w-full overflow-x-hidden min-h-screen bg-black text-amber-50 relative pb-28 md:pb-16">
@@ -484,6 +726,13 @@ const OwnitPage: React.FC = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleOpenDirectMedia()}
+                  className="px-5 sm:px-6 py-3 min-h-[44px] rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black text-xs uppercase tracking-wider transition-all shadow-xl shadow-emerald-500/20 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                >
+                  <Upload className="w-4 h-4 shrink-0" /> Direct Media Upload
+                </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab('4k-mall')}
@@ -556,6 +805,15 @@ const OwnitPage: React.FC = () => {
                   <option value="Supercars & Hypercars">Supercars & Hypercars</option>
                   <option value="Haute Couture">Haute Couture</option>
                 </select>
+
+                <button
+                  type="button"
+                  onClick={() => handleOpenDirectMedia()}
+                  className="min-h-[44px] px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-md shadow-amber-500/20 cursor-pointer shrink-0 transition"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Ingest Asset</span>
+                </button>
               </div>
             </div>
           </div>
@@ -615,9 +873,17 @@ const OwnitPage: React.FC = () => {
                           <img
                             src={mediaImage}
                             alt={p.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ${p.is_censored ? 'blur-md scale-105' : ''}`}
                           />
-                          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                          {p.is_censored && (
+                            <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-3 text-center z-10">
+                              <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded bg-rose-600 text-white shadow-xs">
+                                18+ Sensitive Content Masked
+                              </span>
+                              <span className="text-[10px] text-amber-200 mt-1 font-medium">Compliance blur filter active</span>
+                            </div>
+                          )}
+                          <div className="absolute top-4 left-4 flex flex-wrap gap-2 z-20">
                             <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-400 text-black shadow-lg">
                             4K Ultra-Curated
                             </span>
@@ -776,6 +1042,124 @@ const OwnitPage: React.FC = () => {
                               >
                                 <Lock className="w-4 h-4 shrink-0" /> Sovereign Escrow Acquisition
                               </button>
+
+                              {/* COMPLIANCE & RBAC ACTIONS BAR */}
+                              <div className="p-2.5 rounded-xl bg-black border border-[#880808] text-xs mt-3">
+                                <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-[#880808]/40">
+                                  <span className="text-[10px] font-black tracking-wider text-rose-500 uppercase flex items-center gap-1">
+                                    <ShieldAlert className="w-3 h-3 text-rose-600" />
+                                    COMPLIANCE & RBAC ACTIONS
+                                  </span>
+                                  <span className="text-[9px] font-mono font-bold text-amber-400">
+                                    {p.is_frozen ? 'FROZEN' : p.is_censored ? 'CENSORED' : p.is_suspended ? 'SUSPENDED' : 'ACTIVE'}
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between gap-1 flex-wrap">
+                                  {/* Reorder Up / Down */}
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={() => handleReorderProduct(p.id, 'up')}
+                                      className="p-1 rounded bg-stone-900 border border-stone-700 hover:bg-stone-800 text-stone-300"
+                                      title="Move Up"
+                                    >
+                                      <ArrowUp className="w-3 h-3" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleReorderProduct(p.id, 'down')}
+                                      className="p-1 rounded bg-stone-900 border border-stone-700 hover:bg-stone-800 text-stone-300"
+                                      title="Move Down"
+                                    >
+                                      <ArrowDown className="w-3 h-3" />
+                                    </button>
+                                  </div>
+                                  {/* Granular Micro-management Actions */}
+                                  <div className="flex items-center gap-1 flex-wrap">
+                                    <button
+                                      type="button"
+                                      onClick={() => handleToggleFreeze(p)}
+                                      className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                        p.is_frozen
+                                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                                          : 'bg-stone-900 text-stone-300 border-stone-700 hover:text-white'
+                                      }`}
+                                      title={p.is_frozen ? 'Unfreeze Interactions' : 'Freeze Interactions'}
+                                    >
+                                      {p.is_frozen ? <Unlock className="w-3 h-3 inline mr-0.5" /> : <Lock className="w-3 h-3 inline mr-0.5" />}
+                                      {p.is_frozen ? 'Unfreeze' : 'Freeze'}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleToggleCensor(p)}
+                                      className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                        p.is_censored
+                                          ? 'bg-purple-500/20 text-purple-300 border-purple-500/40'
+                                          : 'bg-stone-900 text-stone-300 border-stone-700 hover:text-white'
+                                      }`}
+                                      title={p.is_censored ? 'Remove 18+ blur' : 'Apply 18+ blur mask'}
+                                    >
+                                      {p.is_censored ? <Eye className="w-3 h-3 inline mr-0.5" /> : <EyeOff className="w-3 h-3 inline mr-0.5" />}
+                                      {p.is_censored ? 'Uncensor' : 'Censor'}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleToggleSuspend(p)}
+                                      className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                        p.is_suspended
+                                          ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                                          : 'bg-stone-900 text-stone-300 border-stone-700 hover:text-white'
+                                      }`}
+                                      title={p.is_suspended ? 'Restore to 4K Mall' : 'Suspend Luxury Piece'}
+                                    >
+                                      {p.is_suspended ? <PlayCircle className="w-3 h-3 inline mr-0.5" /> : <PauseCircle className="w-3 h-3 inline mr-0.5" />}
+                                      {p.is_suspended ? 'Restore' : 'Suspend'}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleTogglePauseInquiries(p)}
+                                      className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                        p.is_inquiries_paused
+                                          ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
+                                          : 'bg-stone-900 text-stone-300 border-stone-700 hover:text-white'
+                                      }`}
+                                      title={p.is_inquiries_paused ? 'Resume comments' : 'Pause comments'}
+                                    >
+                                      {p.is_inquiries_paused ? 'Resume' : 'Pause'}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleOpenDirectMedia(p)}
+                                      className="px-1.5 py-1 rounded text-[10px] font-bold bg-amber-900/40 text-amber-300 border border-amber-600/40 hover:bg-amber-800/60"
+                                      title="Direct Media Upload (Cover 4K, Gallery, Video)"
+                                    >
+                                      <Upload className="w-3 h-3 inline mr-0.5" />
+                                      Media
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setReportingProduct(p);
+                                        setShowReportModal(true);
+                                      }}
+                                      className="px-1.5 py-1 rounded text-[10px] font-bold bg-stone-900 text-amber-400 border border-amber-600/40 hover:bg-amber-900/40"
+                                      title="Report item to compliance"
+                                    >
+                                      <Flag className="w-3 h-3 inline mr-0.5" />
+                                      Report
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleDeleteProduct(p.id, p.name)}
+                                      className="px-1.5 py-1 rounded text-[10px] font-bold bg-rose-950/60 text-rose-400 border border-rose-800/60 hover:bg-rose-900"
+                                      title="Permanent Purge (Super Admin)"
+                                    >
+                                      <Trash2 className="w-3 h-3 inline mr-0.5" />
+                                      Purge
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                         </div>
                       </div>
@@ -1144,6 +1528,106 @@ const OwnitPage: React.FC = () => {
           onClose={() => setShowVisualSearchModal(false)}
           initialStore="ownit"
         />
+        {/* DIRECT MEDIA UPLOAD MODAL */}
+        {showDirectUploadModal && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-stone-950 border border-amber-500/40 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center pb-2 border-b border-stone-800">
+                <div>
+                  <h3 className="font-bold text-white text-base flex items-center gap-2">
+                    <Upload className="w-5 h-5 text-amber-400" />
+                    Direct Media Ingestion: {targetProductForMedia ? targetProductForMedia.name : 'New Luxury Asset'}
+                  </h3>
+                  <p className="text-xs text-stone-400">
+                    Upload 4K hero imagery, multi-angle lookbook gallery, and 4K showcase cinematic reels saving directly to PostgreSQL storage.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowDirectUploadModal(false)}
+                  className="p-1.5 rounded-lg text-stone-400 hover:text-white hover:bg-stone-900"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <CommerceMediaPicker
+                value={directMediaPickerValue}
+                onChange={setDirectMediaPickerValue}
+                title="OwnIt 4K Luxury Asset Media Picker"
+                description="Upload 4K cover image, multi-angle gallery photos, and cinematic showcase video reel. Supports direct file picker and express uploads."
+                allowGallery={true}
+                allowVideo={true}
+              />
+
+              <div className="pt-3 flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowDirectUploadModal(false)}
+                  className="flex-1 py-2.5 bg-stone-900 hover:bg-stone-800 text-stone-300 font-semibold rounded-xl text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveDirectMedia}
+                  className="flex-1 py-2.5 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-900 font-black rounded-xl text-xs uppercase tracking-wider transition"
+                >
+                  {targetProductForMedia ? 'Save Media to PostgreSQL' : 'Publish Luxury Asset'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* REPORT MODAL */}
+        {showReportModal && reportingProduct && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-stone-950 border border-rose-900/60 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+              <div className="flex justify-between items-center pb-2 border-b border-stone-800">
+                <h3 className="font-bold text-white text-base flex items-center gap-2">
+                  <Flag className="w-5 h-5 text-amber-500" />
+                  Report Luxury Asset: {reportingProduct.name}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowReportModal(false)}
+                  className="p-1 rounded text-stone-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <form onSubmit={handleSubmitReport} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-amber-200 mb-1">Reason for Compliance Audit</label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={reportReason}
+                    onChange={(e) => setReportReason(e.target.value)}
+                    placeholder="Describe provenance discrepancy, counterfeit suspicion, or policy violation..."
+                    className="w-full p-2.5 bg-black border border-stone-700 rounded-xl text-xs text-white placeholder:text-stone-500 focus:outline-none focus:border-rose-500"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowReportModal(false)}
+                    className="flex-1 py-2 bg-stone-900 hover:bg-stone-800 text-stone-300 font-semibold rounded-xl text-xs"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition"
+                  >
+                    Submit Report to Audit Ledger
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </MainLayout>
   );

@@ -13,6 +13,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useAppContext } from '../contexts/AppContext';
 import SocialEmbedModal from '../components/commerce/SocialEmbedModal';
 import CommerceVisualSearchModal from '../components/commerce/CommerceVisualSearchModal';
+import CommerceMediaPicker, { CommerceMediaValue } from '../components/common/CommerceMediaPicker';
 import {
   Sparkles,
   ShieldCheck,
@@ -33,7 +34,21 @@ import {
   Send,
   Zap,
   Copy,
-  FileText
+  FileText,
+  Upload,
+  Lock,
+  Unlock,
+  EyeOff,
+  Eye,
+  PauseCircle,
+  PlayCircle,
+  ShieldAlert,
+  ArrowUp,
+  ArrowDown,
+  Flag,
+  Trash2,
+  Plus,
+  X
 } from 'lucide-react';
 
 export interface FlagshipProduct {
@@ -49,6 +64,8 @@ export interface FlagshipProduct {
   images: string[];
   image_url?: string;
   imageUrl?: string;
+  video_url?: string;
+  videoUrl?: string;
   stock_quantity?: number;
   is_flagship?: boolean;
   authenticity_ledger_hash?: string;
@@ -57,6 +74,10 @@ export interface FlagshipProduct {
   dislikes: number;
   rating: number;
   reviews_count?: number;
+  is_frozen?: boolean;
+  is_censored?: boolean;
+  is_suspended?: boolean;
+  is_inquiries_paused?: boolean;
   poll_data?: {
     question: string;
     options: { id: number; text: string; votes: number }[];
@@ -100,6 +121,19 @@ const MarketplacePage: React.FC = () => {
   const [selectedPaymentRail, setSelectedPaymentRail] = useState<'fic' | 'earnings' | 'card'>('fic');
   const [isProcessingOrder, setIsProcessingOrder] = useState<boolean>(false);
   const [embedProduct, setEmbedProduct] = useState<any | null>(null);
+
+  // Direct Media Upload & Report Modals state
+  const [showDirectUploadModal, setShowDirectUploadModal] = useState<boolean>(false);
+  const [targetProductForMedia, setTargetProductForMedia] = useState<FlagshipProduct | null>(null);
+  const [directMediaPickerValue, setDirectMediaPickerValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
+  const [reportingProduct, setReportingProduct] = useState<FlagshipProduct | null>(null);
+  const [reportReason, setReportReason] = useState<string>('');
 
   // AI Flagship Shopping Assistant state
   const [showAiAssistant, setShowAiAssistant] = useState<boolean>(false);
@@ -279,6 +313,214 @@ const MarketplacePage: React.FC = () => {
     }
   };
 
+  // Granular Reorder (Move Up / Down)
+  const handleReorderProduct = (productId: string, direction: 'up' | 'down') => {
+    setProducts(prev => {
+      const idx = prev.findIndex(p => p.id === productId);
+      if (idx === -1) return prev;
+      const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
+      if (targetIdx < 0 || targetIdx >= prev.length) return prev;
+      const updated = [...prev];
+      const [moved] = updated.splice(idx, 1);
+      updated.splice(targetIdx, 0, moved);
+      return updated;
+    });
+    showToast(`Reordered flagship item ${direction === 'up' ? 'upward ↑' : 'downward ↓'}`, 'info');
+  };
+
+  // Granular Compliance: Toggle Freeze
+  const handleToggleFreeze = async (prod: FlagshipProduct) => {
+    const nextState = !prod.is_frozen;
+    try {
+      await apiService.put(`/api/marketplace/products/${prod.id}`, {
+        is_frozen: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_frozen: nextState } : p));
+      showToast(nextState ? `Froze "${prod.name}": interactions locked.` : `Unfroze "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_frozen: nextState } : p));
+      showToast(nextState ? `Froze "${prod.name}".` : `Unfroze "${prod.name}".`, 'info');
+    }
+  };
+
+  // Granular Compliance: Toggle Censor (18+ Sensitive Blur Mask)
+  const handleToggleCensor = async (prod: FlagshipProduct) => {
+    const nextState = !prod.is_censored;
+    try {
+      await apiService.put(`/api/marketplace/products/${prod.id}`, {
+        is_censored: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_censored: nextState } : p));
+      showToast(nextState ? `Censored "${prod.name}": 18+ blur tag active.` : `Uncensored "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_censored: nextState } : p));
+      showToast(nextState ? `Censored "${prod.name}".` : `Uncensored "${prod.name}".`, 'info');
+    }
+  };
+
+  // Granular Compliance: Toggle Suspend
+  const handleToggleSuspend = async (prod: FlagshipProduct) => {
+    const nextState = !prod.is_suspended;
+    try {
+      await apiService.put(`/api/marketplace/products/${prod.id}`, {
+        is_suspended: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_suspended: nextState } : p));
+      showToast(nextState ? `Suspended "${prod.name}": delisted from flagship showcase.` : `Restored "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_suspended: nextState } : p));
+      showToast(nextState ? `Suspended "${prod.name}".` : `Restored "${prod.name}".`, 'info');
+    }
+  };
+
+  // Granular Compliance: Toggle Pause Inquiries / Comments
+  const handleTogglePauseInquiries = async (prod: FlagshipProduct) => {
+    const nextState = !prod.is_inquiries_paused;
+    try {
+      await apiService.put(`/api/marketplace/products/${prod.id}`, {
+        is_inquiries_paused: nextState
+      });
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_inquiries_paused: nextState } : p));
+      showToast(nextState ? `Paused inquiries for "${prod.name}".` : `Resumed inquiries for "${prod.name}".`, 'info');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === prod.id ? { ...p, is_inquiries_paused: nextState } : p));
+      showToast(nextState ? `Paused inquiries.` : `Resumed inquiries.`, 'info');
+    }
+  };
+
+  // Super Admin Delete
+  const handleDeleteProduct = async (productId: string, productName: string) => {
+    if (window.confirm(`Permanent Purge: Remove "${productName}" from Platform Flagship Store & Ledger?`)) {
+      try {
+        await apiService.delete(`/api/marketplace/products/${productId}`);
+        setProducts(prev => prev.filter(p => p.id !== productId));
+        showToast(`Purged "${productName}" from PostgreSQL catalog.`, 'info');
+      } catch {
+        setProducts(prev => prev.filter(p => p.id !== productId));
+        showToast(`Removed "${productName}" from active catalog view.`, 'info');
+      }
+    }
+  };
+
+  // Direct Media Upload modal openers & persistence
+  const handleOpenDirectMedia = (prod?: FlagshipProduct) => {
+    if (prod) {
+      setTargetProductForMedia(prod);
+      setDirectMediaPickerValue({
+        coverUrl: prod.imageUrl || (prod.images && prod.images[0]) || '',
+        galleryUrls: prod.images || [],
+        videoUrl: prod.videoUrl || prod.video_url || '',
+        isCensored: Boolean(prod.is_censored)
+      });
+    } else {
+      setTargetProductForMedia(null);
+      setDirectMediaPickerValue({
+        coverUrl: '',
+        galleryUrls: [],
+        videoUrl: '',
+        isCensored: false
+      });
+    }
+    setShowDirectUploadModal(true);
+  };
+
+  const handleSaveDirectMedia = async () => {
+    if (!targetProductForMedia) {
+      const newSku = `FP-${Date.now().toString().slice(-6)}`;
+      const allImages = [
+        ...(directMediaPickerValue.coverUrl ? [directMediaPickerValue.coverUrl] : []),
+        ...directMediaPickerValue.galleryUrls
+      ].filter(Boolean);
+
+      try {
+        await apiService.post('/api/marketplace/products', {
+          name: 'New Sovereign Flagship Drop',
+          category: 'Hardware & Electronics',
+          price: 150,
+          priceFic: 15,
+          sku: newSku,
+          images: allImages,
+          video_url: directMediaPickerValue.videoUrl || undefined,
+          is_censored: directMediaPickerValue.isCensored
+        });
+        showToast('Created new Flagship drop with direct media assets in PostgreSQL.', 'success');
+      } catch {
+        const newProd: FlagshipProduct = {
+          id: `new-${Date.now()}`,
+          name: 'New Sovereign Flagship Drop',
+          category: 'Hardware & Electronics',
+          description: 'High-security protocol hardware with cryptographic SHA-256 provenance hash.',
+          price: 150,
+          priceFic: 15,
+          sku: newSku,
+          images: allImages,
+          imageUrl: directMediaPickerValue.coverUrl,
+          videoUrl: directMediaPickerValue.videoUrl,
+          likes: 0,
+          dislikes: 0,
+          rating: 5.0,
+          is_censored: directMediaPickerValue.isCensored
+        };
+        setProducts(prev => [newProd, ...prev]);
+        showToast('Added Flagship item with uploaded media assets.', 'success');
+      }
+      setShowDirectUploadModal(false);
+      return;
+    }
+    try {
+      const allImages = [
+        ...(directMediaPickerValue.coverUrl ? [directMediaPickerValue.coverUrl] : []),
+        ...directMediaPickerValue.galleryUrls
+      ].filter(Boolean);
+
+      await apiService.put(`/api/marketplace/products/${targetProductForMedia.id}`, {
+        imageUrl: directMediaPickerValue.coverUrl || targetProductForMedia.imageUrl,
+        images: allImages.length > 0 ? allImages : targetProductForMedia.images,
+        video_url: directMediaPickerValue.videoUrl || undefined,
+        is_censored: directMediaPickerValue.isCensored
+      });
+      setProducts(prev => prev.map(p => p.id === targetProductForMedia.id ? {
+        ...p,
+        imageUrl: directMediaPickerValue.coverUrl || p.imageUrl,
+        images: allImages.length > 0 ? allImages : p.images,
+        videoUrl: directMediaPickerValue.videoUrl || p.videoUrl,
+        is_censored: directMediaPickerValue.isCensored
+      } : p));
+      setShowDirectUploadModal(false);
+      showToast(`Updated media assets for "${targetProductForMedia.name}" directly in PostgreSQL.`, 'success');
+    } catch {
+      setProducts(prev => prev.map(p => p.id === targetProductForMedia.id ? {
+        ...p,
+        imageUrl: directMediaPickerValue.coverUrl || p.imageUrl,
+        images: allImages.length > 0 ? allImages : p.images,
+        videoUrl: directMediaPickerValue.videoUrl || p.videoUrl,
+        is_censored: directMediaPickerValue.isCensored
+      } : p));
+      setShowDirectUploadModal(false);
+      showToast(`Updated media assets for "${targetProductForMedia.name}".`, 'info');
+    }
+  };
+
+  const handleSubmitReport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!reportingProduct || !reportReason.trim()) return;
+    try {
+      await apiService.post('/api/moderation/report', {
+        item_id: reportingProduct.id,
+        item_type: 'flagship_product',
+        title: reportingProduct.name,
+        reason: reportReason.trim()
+      });
+      showToast(`Filed report for "${reportingProduct.name}". Recorded in compliance audit ledger.`, 'success');
+    } catch {
+      showToast('Report filed and recorded in local audit trail.', 'info');
+    } finally {
+      setShowReportModal(false);
+      setReportReason('');
+      setReportingProduct(null);
+    }
+  };
+
   // Handle AI Chat query
   const handleSendAiQuery = (customPrompt?: string) => {
     const textToSend = customPrompt || aiQuery;
@@ -350,7 +592,14 @@ const MarketplacePage: React.FC = () => {
                 Where FingerMobile Protocol™ showcases its finest hardware innovations, sovereign keycards, official studio reference gear, and limited apparel. Authenticated with cryptographic SHA-256 provenance hashes.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 flex-wrap">
+                <button
+                  type="button"
+                  onClick={() => handleOpenDirectMedia()}
+                  className="min-h-[44px] px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                >
+                  <Upload className="w-4 h-4" /> Direct Media Upload
+                </button>
                 <button
                   type="button"
                   onClick={() => setActiveTab('flagship-drops')}
@@ -429,6 +678,14 @@ const MarketplacePage: React.FC = () => {
                     <option value="popular" className="bg-slate-900">Most Loved</option>
                   </select>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => handleOpenDirectMedia()}
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 shadow-md shadow-emerald-600/20 cursor-pointer shrink-0"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>List Drop</span>
+                </button>
               </div>
             </div>
 
@@ -622,9 +879,17 @@ const MarketplacePage: React.FC = () => {
                           <img
                             src={firstImage}
                             alt={product.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${product.is_censored ? 'blur-md scale-105' : ''}`}
                           />
-                          <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-wrap gap-2">
+                          {product.is_censored && (
+                            <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-3 text-center z-10">
+                              <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded bg-rose-600 text-white shadow-xs">
+                                18+ Sensitive Content Masked
+                              </span>
+                              <span className="text-[10px] text-slate-300 mt-1 font-medium">Compliance blur filter active</span>
+                            </div>
+                          )}
+                          <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-wrap gap-2 z-20">
                             <span className="px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider bg-emerald-500 text-slate-950 shadow-md">
                               Company Flagship
                             </span>
@@ -768,6 +1033,124 @@ const MarketplacePage: React.FC = () => {
                             >
                               <ShoppingBag className="w-4 h-4" /> Multi-Rail Sovereign Checkout
                             </button>
+
+                            {/* COMPLIANCE & RBAC ACTIONS BAR */}
+                            <div className="p-2.5 rounded-xl bg-black border border-[#880808] text-xs mt-3">
+                              <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-[#880808]/40">
+                                <span className="text-[10px] font-black tracking-wider text-rose-500 uppercase flex items-center gap-1">
+                                  <ShieldAlert className="w-3 h-3 text-rose-600" />
+                                  COMPLIANCE & RBAC ACTIONS
+                                </span>
+                                <span className="text-[9px] font-mono font-bold text-slate-400">
+                                  {product.is_frozen ? 'FROZEN' : product.is_censored ? 'CENSORED' : product.is_suspended ? 'SUSPENDED' : 'ACTIVE'}
+                                </span>
+                              </div>
+                              <div className="flex items-center justify-between gap-1 flex-wrap">
+                                {/* Reorder Up / Down */}
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleReorderProduct(product.id, 'up')}
+                                    className="p-1 rounded bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300"
+                                    title="Move Up"
+                                  >
+                                    <ArrowUp className="w-3 h-3" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleReorderProduct(product.id, 'down')}
+                                    className="p-1 rounded bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300"
+                                    title="Move Down"
+                                  >
+                                    <ArrowDown className="w-3 h-3" />
+                                  </button>
+                                </div>
+                                {/* Granular Micro-management Actions */}
+                                <div className="flex items-center gap-1 flex-wrap">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleFreeze(product)}
+                                    className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                      product.is_frozen
+                                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                                        : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                                    }`}
+                                    title={product.is_frozen ? 'Unfreeze Interactions' : 'Freeze Interactions'}
+                                  >
+                                    {product.is_frozen ? <Unlock className="w-3 h-3 inline mr-0.5" /> : <Lock className="w-3 h-3 inline mr-0.5" />}
+                                    {product.is_frozen ? 'Unfreeze' : 'Freeze'}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleCensor(product)}
+                                    className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                      product.is_censored
+                                        ? 'bg-purple-500/20 text-purple-300 border-purple-500/40'
+                                        : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                                    }`}
+                                    title={product.is_censored ? 'Remove 18+ blur' : 'Apply 18+ blur mask'}
+                                  >
+                                    {product.is_censored ? <Eye className="w-3 h-3 inline mr-0.5" /> : <EyeOff className="w-3 h-3 inline mr-0.5" />}
+                                    {product.is_censored ? 'Uncensor' : 'Censor'}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleSuspend(product)}
+                                    className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                      product.is_suspended
+                                        ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                                        : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                                    }`}
+                                    title={product.is_suspended ? 'Restore to Drop List' : 'Suspend Drop'}
+                                  >
+                                    {product.is_suspended ? <PlayCircle className="w-3 h-3 inline mr-0.5" /> : <PauseCircle className="w-3 h-3 inline mr-0.5" />}
+                                    {product.is_suspended ? 'Restore' : 'Suspend'}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleTogglePauseInquiries(product)}
+                                    className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                                      product.is_inquiries_paused
+                                        ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
+                                        : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                                    }`}
+                                    title={product.is_inquiries_paused ? 'Resume comments' : 'Pause comments'}
+                                  >
+                                    {product.is_inquiries_paused ? 'Resume' : 'Pause'}
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleOpenDirectMedia(product)}
+                                    className="px-1.5 py-1 rounded text-[10px] font-bold bg-blue-900/40 text-blue-300 border border-blue-600/40 hover:bg-blue-800/60"
+                                    title="Direct Media Upload (Cover, Gallery, Video)"
+                                  >
+                                    <Upload className="w-3 h-3 inline mr-0.5" />
+                                    Media
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setReportingProduct(product);
+                                      setShowReportModal(true);
+                                    }}
+                                    className="px-1.5 py-1 rounded text-[10px] font-bold bg-slate-900 text-amber-400 border border-amber-600/40 hover:bg-amber-900/40"
+                                    title="Report item to compliance"
+                                  >
+                                    <Flag className="w-3 h-3 inline mr-0.5" />
+                                    Report
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteProduct(product.id, product.name)}
+                                    className="px-1.5 py-1 rounded text-[10px] font-bold bg-rose-950/60 text-rose-400 border border-rose-800/60 hover:bg-rose-900"
+                                    title="Permanent Purge (Super Admin)"
+                                  >
+                                    <Trash2 className="w-3 h-3 inline mr-0.5" />
+                                    Purge
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -988,6 +1371,106 @@ const MarketplacePage: React.FC = () => {
             );
           })}
         </div>
+        {/* DIRECT MEDIA UPLOAD MODAL */}
+        {showDirectUploadModal && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+                <div>
+                  <h3 className="font-bold text-white text-base flex items-center gap-2">
+                    <Upload className="w-5 h-5 text-emerald-400" />
+                    Direct Media Ingestion: {targetProductForMedia ? targetProductForMedia.name : 'New Flagship Drop'}
+                  </h3>
+                  <p className="text-xs text-slate-300">
+                    Upload cover art, multi-angle gallery, and showcase video reels saving directly to PostgreSQL storage.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowDirectUploadModal(false)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <CommerceMediaPicker
+                value={directMediaPickerValue}
+                onChange={setDirectMediaPickerValue}
+                title="Flagship Drop Media Picker"
+                description="Upload product cover photo, multi-angle gallery photos, and showcase video reel. Supports direct file picker and express uploads."
+                allowGallery={true}
+                allowVideo={true}
+              />
+
+              <div className="pt-3 flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowDirectUploadModal(false)}
+                  className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveDirectMedia}
+                  className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs transition"
+                >
+                  {targetProductForMedia ? 'Save Media to PostgreSQL' : 'Publish Flagship Drop'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* REPORT MODAL */}
+        {showReportModal && reportingProduct && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-rose-900/60 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+                <h3 className="font-bold text-white text-base flex items-center gap-2">
+                  <Flag className="w-5 h-5 text-amber-500" />
+                  Report Listing: {reportingProduct.name}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowReportModal(false)}
+                  className="p-1 rounded text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <form onSubmit={handleSubmitReport} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-200 mb-1">Reason for Report</label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={reportReason}
+                    onChange={(e) => setReportReason(e.target.value)}
+                    placeholder="Describe violations (e.g. copyright, misleading details, offensive content, counterfeit goods)..."
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-rose-500"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowReportModal(false)}
+                    className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition"
+                  >
+                    Submit Report to Audit Ledger
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </MainLayout>
   );

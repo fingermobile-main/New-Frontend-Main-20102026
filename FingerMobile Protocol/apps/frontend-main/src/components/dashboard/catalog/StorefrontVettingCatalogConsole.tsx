@@ -125,7 +125,7 @@ export const StorefrontVettingCatalogConsole: React.FC = () => {
 
   const handleToggleFreeze = async (product: CatalogProduct) => {
     const nextStatus = (product as any).status === 'frozen' ? 'active' : 'frozen';
-    setProducts(prev => prev.map(p => p.id === product.id ? { ...p, status: nextStatus } : p));
+    setProducts(prev => prev.map(p => p.id === product.id ? { ...p, status: nextStatus as any } : p));
     try {
       await api.put(`/catalog/storefront/${product.id}/status`, { status: nextStatus });
       showToast(`Product ${product.name} ${nextStatus.toUpperCase()}`);
