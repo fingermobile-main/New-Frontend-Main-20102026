@@ -61,8 +61,10 @@ export interface VoiceLineLogPayload {
 
 export interface VoiceLineSettings {
   volume: number; // 0.0 to 1.0 (default 0.35)
-  audioPlaybackRate: number; // Media audio playback speed: defaults to 1.0 (natural uploaded media rate) unless explicitly changed by author/user
-  utteranceRate: number; // Speech synthesis (TTS) utterance cadence: independent from media audio, calibrated to 0.60 for deliberate spoken cadence
+  audioPlaybackRate: number; // Media audio playback speed: defaults to 0.88 unless explicitly changed by author/user
+  utteranceRate: number; // Speech synthesis (TTS) utterance cadence: calibrated to 0.46 for deliberate spoken cadence
+  pitch?: number; // Vocal pitch/timbre (0.4 to 1.6, default 0.80 for warm deep African resonance)
+  bassBoostDb?: number; // Low-shelf bass boost in dB at 180Hz (0.0 to 18.0, default 6.0dB)
   playbackRate?: number; // Backward compatibility alias mapping to audioPlaybackRate
   enabled: boolean; // Global master toggle
   microservices: {
@@ -82,6 +84,8 @@ const DEFAULT_SETTINGS: VoiceLineSettings = {
   volume: 0.35, // 35% device/system speaker volume
   audioPlaybackRate: 0.88, // Deliberate, relaxed natural playback speed (0.88x)
   utteranceRate: 0.46, // Calibrated spoken speech synthesis utterance rate (0.46x) for authentic human cadence
+  pitch: 0.80, // Rich warm bass vocal resonance (0.80)
+  bassBoostDb: 6.0, // +6.0dB acoustic low-shelf bass booster at 180Hz
   playbackRate: 0.88,
   enabled: true,
   microservices: {
