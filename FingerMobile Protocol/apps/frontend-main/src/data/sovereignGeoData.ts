@@ -444,3 +444,4 @@ export const KNOWN_VPN_PROVIDERS: VpnProviderItem[] = [
   { id: 'digitalocean', name: 'DigitalOcean Droplets / VPN Hosting Nodes', category: 'datacenter_proxy', sampleSubnets: ['138.68.0.0/16', '142.93.0.0/16'] },
   { id: 'hetzner', name: 'Hetzner Online Anonymous Cloud Relays', category: 'datacenter_proxy', sampleSubnets: ['168.119.0.0/16', '135.181.0.0/16'] }
 ];
+
