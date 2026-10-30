@@ -47,6 +47,7 @@ class CanaryAdsController {
     this.getAnnouncements = this.getAnnouncements.bind(this);
     this.createAnnouncement = this.createAnnouncement.bind(this);
     this.likeAnnouncement = this.likeAnnouncement.bind(this);
+    this.uploadMedia = this.uploadMedia.bind(this);
   }
 
   /**
@@ -1361,6 +1362,66 @@ class CanaryAdsController {
     } catch (err) {
       logger.error('Error in likeAnnouncement:', err);
       return res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+  }
+
+  /**
+   * Upload Media for Canary Ad Campaigns
+   * Supports media (video or image banner), thumbnail (cover photo), and multiple carousel images
+   */
+  async uploadMedia(req, res) {
+    try {
+      const files = req.files || {};
+      const results = {
+        mediaUrl: '',
+        thumbnailUrl: '',
+        coverUrl: '',
+        images: []
+      };
+
+      if (files.video && files.video.length > 0) {
+        results.mediaUrl = `/uploads/canary/${files.video[0].filename}`;
+      } else if (files.media && files.media.length > 0) {
+        const m = files.media[0];
+        results.mediaUrl = `/uploads/canary/${m.filename}`;
+      }
+
+      if (files.cover && files.cover.length > 0) {
+        results.coverUrl = `/uploads/canary/${files.cover[0].filename}`;
+        results.thumbnailUrl = results.thumbnailUrl || results.coverUrl;
+      }
+
+      if (files.thumbnail && files.thumbnail.length > 0) {
+        results.thumbnailUrl = `/uploads/canary/${files.thumbnail[0].filename}`;
+        results.coverUrl = results.coverUrl || results.thumbnailUrl;
+      }
+
+      if (files.images && files.images.length > 0) {
+        results.images = files.images.map(img => `/uploads/canary/${img.filename}`);
+        if (!results.mediaUrl && results.images.length > 0) {
+          results.mediaUrl = results.images[0];
+        }
+      }
+
+      if (req.file) {
+        const url = `/uploads/canary/${req.file.filename}`;
+        if (req.file.mimetype.startsWith('video/')) {
+          results.mediaUrl = url;
+        } else {
+          results.thumbnailUrl = url;
+          results.coverUrl = url;
+          if (!results.mediaUrl) results.mediaUrl = url;
+        }
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'Canary ad media uploaded successfully to Express backend',
+        data: results
+      });
+    } catch (err) {
+      logger.error('Error in Canary uploadMedia:', err);
+      return res.status(500).json({ success: false, error: err.message });
     }
   }
 }

@@ -267,17 +267,7 @@ const SupportPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-sm p-6 border border-slate-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div className="flex items-center">
-            <div className="bg-amber-100 p-2.5 rounded-2xl mr-3 border border-amber-300 text-amber-700">
-              <UserCircleIcon className="h-6 w-6" />
-            </div>
-            <div>
-              <p className="text-slate-700 text-xs font-semibold">Your current FIC balance</p>
-              <p className="font-black text-xl text-slate-900">{ficBalance.toFixed(2)} FIC</p>
-            </div>
-          </div>
-
+        <div className="bg-white rounded-3xl shadow-sm p-6 border border-slate-300 flex flex-col sm:flex-row justify-center items-center gap-4">
           <div className="flex flex-col sm:flex-row gap-3">
             <a
               href="mailto:info@fingermobileprotocol.com"

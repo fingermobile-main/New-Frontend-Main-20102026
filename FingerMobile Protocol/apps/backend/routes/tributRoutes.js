@@ -33,12 +33,29 @@ const upload = multer({
 // Hardware device media upload endpoints
 router.post('/upload', upload.single('media'), tributController.uploadMedia);
 router.post('/upload-multiple', upload.array('media', 20), tributController.uploadMedia);
+const mediaPackUpload = upload.fields([
+  { name: 'images', maxCount: 10 },
+  { name: 'cover', maxCount: 1 },
+  { name: 'video', maxCount: 5 }
+]);
+router.post('/upload-pack', mediaPackUpload, tributController.uploadMediaPack.bind(tributController));
 router.get('/uploads', tributController.getUploads);
+
+// Tribut overview & admin endpoints
+router.get('/overview', tributController.getOverview.bind(tributController));
+router.get('/admin/pins', tributController.getAllPinsAdmin.bind(tributController));
+router.post('/pins/reorder', tributController.reorderPins.bind(tributController));
 
 // Tribut pins & posts endpoints
 router.post('/pins', tributController.createPin);
 router.get('/pins', tributController.getPins);
+router.put('/pins/:id', tributController.updatePin.bind(tributController));
 router.patch('/pins/:id/pin-status', tributController.togglePinStatus);
+router.patch('/pins/:id/freeze', tributController.toggleFreeze.bind(tributController));
+router.patch('/pins/:id/censor', tributController.toggleCensor.bind(tributController));
+router.patch('/pins/:id/suspend', tributController.toggleSuspend.bind(tributController));
+router.patch('/pins/:id/pause-comments', tributController.togglePauseComments.bind(tributController));
+router.post('/pins/:id/report', tributController.reportPin.bind(tributController));
 router.delete('/pins/batch', tributController.batchDeletePins);
 router.delete('/pins/:id', tributController.deletePin);
 

@@ -360,21 +360,11 @@ const ContactUsPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-slate-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div className="flex items-center">
-              <div className="bg-yellow-100 p-2 rounded-lg mr-3">
-                <UserCircleIcon className="h-5 w-5 text-yellow-600" />
-              </div>
-              <div>
-                <p className="text-gray-600 text-sm">Your current FIC balance</p>
-                <p className="font-bold text-lg text-gray-900">{ficBalance.toFixed(2)} FIC</p>
-              </div>
-            </div>
-
+          <div className="mt-8 pt-6 border-t border-slate-300 flex flex-col sm:flex-row justify-center items-center gap-4">
             <div className="flex flex-col sm:flex-row gap-3">
               <a
                 href="mailto:fingermobileprotocol@gmail.com"
-                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center"
+                className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold text-sm hover:from-blue-700 hover:to-indigo-700 transition-colors flex items-center justify-center shadow-sm"
               >
                 Email Support
                 <ArrowRightIcon className="h-4 w-4 ml-2" />
@@ -384,7 +374,7 @@ const ContactUsPage: React.FC = () => {
                 href="https://fingermobileprotocol.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors flex items-center justify-center"
+                className="px-5 py-2.5 bg-white border border-slate-300 text-slate-800 rounded-xl font-bold text-sm hover:bg-slate-50 transition-colors flex items-center justify-center shadow-sm"
               >
                 Visit Website
               </a>

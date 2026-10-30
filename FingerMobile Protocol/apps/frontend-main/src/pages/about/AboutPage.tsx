@@ -1030,38 +1030,6 @@ const AboutPage: React.FC = () => {
           </div>
         )}
 
-        {/* Global Financial Action Toolbar */}
-        <div className="bg-white rounded-2xl border border-slate-300 shadow-sm p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-blue-100 border border-blue-300 text-blue-900">
-              <DollarSign className="w-6 h-6" />
-            </div>
-            <div>
-              <p className="text-xs font-bold uppercase text-slate-600">Your Live FIC Balance</p>
-              <p className="text-2xl font-black text-slate-900">{ficBalance.toFixed(2)} FIC</p>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={onOpenGiftModal}
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm transition-colors focus:ring-2 focus:ring-blue-500"
-            >
-              <Gift className="w-4 h-4" />
-              Send Gift (FIC)
-            </button>
-            <button
-              type="button"
-              onClick={onOpenPaylinkModal}
-              className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm transition-colors focus:ring-2 focus:ring-emerald-500"
-            >
-              <LinkIcon className="w-4 h-4" />
-              Create Paylink
-            </button>
-          </div>
-        </div>
-
         {/* Sovereign Mobile Navigation Quick Dock */}
         <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 py-2 px-3 flex items-center justify-around gap-1 shadow-lg md:hidden">
           <button

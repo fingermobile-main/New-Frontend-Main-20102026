@@ -244,6 +244,7 @@ const LoansQrMasterConsolePage = lazy(() => import('../pages/admin/LoansQrMaster
 const TrendsSwarmMasterConsolePage = lazy(() => import('../pages/admin/TrendsSwarmMasterConsolePage'));
 const CommunicationsVoipMasterConsolePage = lazy(() => import('../pages/admin/CommunicationsVoipMasterConsolePage'));
 const LuminaGalleryMasterConsolePage = lazy(() => import('../pages/admin/LuminaGalleryMasterConsolePage'));
+const TributMasterConsolePage = lazy(() => import('../pages/admin/TributMasterConsolePage'));
 const SoundOceanMasterConsolePage = lazy(() => import('../pages/admin/SoundOceanMasterConsolePage'));
 const SoundRiverMasterConsolePage = lazy(() => import('../pages/admin/SoundRiverMasterConsolePage'));
 const SubscriptionModelsMasterConsolePage = lazy(() => import('../pages/admin/SubscriptionModelsMasterConsolePage'));
@@ -684,6 +685,11 @@ export const routes: RouteObject[] = [
           { path: '/lumina-console', element: <LuminaGalleryMasterConsolePage /> },
           { path: '/collectibles-console', element: <LuminaGalleryMasterConsolePage /> },
           { path: '/dashboard/lumina-gallery', element: <LuminaGalleryMasterConsolePage /> },
+          { path: '/admin/tribut', element: <TributMasterConsolePage /> },
+          { path: '/admin/tribut-console', element: <TributMasterConsolePage /> },
+          { path: '/tribut-console', element: <TributMasterConsolePage /> },
+          { path: '/dashboard/tribut', element: <TributMasterConsolePage /> },
+          { path: '/dashboard/tribut-console', element: <TributMasterConsolePage /> },
           { path: '/businessorganizations', element: <BusinessOrganizationsConsolePage /> },
           { path: '/admin/content', element: <ContentAdminDashboardPage /> },
           { path: '/contentadmindashboard', element: <ContentAdminDashboardPage /> },

@@ -5,9 +5,42 @@
  */
 
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const canaryAdsController = require('../controllers/canaryAdsController');
 
 const router = express.Router();
+
+// Multer storage for Canary ad media (images, cover photos, videos)
+const canaryUploadDir = path.join(__dirname, '../public/uploads/canary');
+if (!fs.existsSync(canaryUploadDir)) {
+  fs.mkdirSync(canaryUploadDir, { recursive: true });
+}
+
+const canaryStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, canaryUploadDir),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase() || '.webp';
+    const clean = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9_-]/g, '_');
+    cb(null, `canary_${Date.now()}_${clean}${ext}`);
+  }
+});
+
+const canaryUpload = multer({
+  storage: canaryStorage,
+  limits: { fileSize: 100 * 1024 * 1024 } // 100MB limit for high-res video and banners
+});
+
+// Canary Media Upload (Supports image, cover photo, video)
+router.post('/upload-media', canaryUpload.fields([
+  { name: 'media', maxCount: 1 },
+  { name: 'thumbnail', maxCount: 1 },
+  { name: 'cover', maxCount: 1 },
+  { name: 'images', maxCount: 10 },
+  { name: 'video', maxCount: 1 }
+]), canaryAdsController.uploadMedia);
+router.post('/upload', canaryUpload.single('file'), canaryAdsController.uploadMedia);
 
 // 0. Base Ads List (For /api/ads and /api/canary root)
 router.get('/', canaryAdsController.getAllAds);
