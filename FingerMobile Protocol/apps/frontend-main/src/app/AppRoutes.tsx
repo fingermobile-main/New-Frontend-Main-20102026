@@ -222,6 +222,7 @@ const CorporateGovernanceMasterConsolePage = lazy(() => import('../pages/admin/C
 const SystemInfraMasterConsolePage = lazy(() => import('../pages/admin/SystemInfraMasterConsolePage'));
 const CreationCatalogMasterConsolePage = lazy(() => import('../pages/admin/CreationCatalogMasterConsolePage'));
 const SecurityDefConMasterConsolePage = lazy(() => import('../pages/admin/SecurityDefConMasterConsolePage'));
+const VoiceLineMasterConsolePage = lazy(() => import('../pages/admin/VoiceLineMasterConsolePage'));
 const CreatorMonetizationMasterConsolePage = lazy(() => import('../pages/admin/CreatorMonetizationMasterConsolePage'));
 const ContentModerationMasterConsolePage = lazy(() => import('../pages/admin/ContentModerationMasterConsolePage'));
 const RbacPermissionsMasterConsolePage = lazy(() => import('../pages/admin/RbacPermissionsMasterConsolePage'));
@@ -897,6 +898,9 @@ export const routes: RouteObject[] = [
           { path: '/admin/subscription-models', element: <SubscriptionModelsMasterConsolePage /> },
           { path: '/admin/support-care', element: <SupportCareMasterConsolePage /> },
           { path: '/admin/system-infra', element: <SystemInfraMasterConsolePage /> },
+          { path: '/admin/voiceline', element: <VoiceLineMasterConsolePage /> },
+          { path: '/voiceline-console', element: <VoiceLineMasterConsolePage /> },
+          { path: '/voicelines', element: <VoiceLineMasterConsolePage /> },
 
           // Common Dead-Link Resolution & Feature Redirect Aliases
           { path: '/financials/my-wallet', element: redirectTo('/wallet') },

@@ -194,6 +194,8 @@ class VoiceLineService {
             audioPlaybackRate: resolvedAudioRate,
             utteranceRate: resolvedUtteranceRate,
             playbackRate: resolvedAudioRate,
+            pitch: typeof parsed.pitch === 'number' ? parsed.pitch : DEFAULT_SETTINGS.pitch,
+            bassBoostDb: typeof parsed.bassBoostDb === 'number' ? parsed.bassBoostDb : DEFAULT_SETTINGS.bassBoostDb,
             enabled: typeof parsed.enabled === 'boolean' ? parsed.enabled : DEFAULT_SETTINGS.enabled,
             microservices: {
               ...DEFAULT_SETTINGS.microservices,
@@ -288,6 +290,28 @@ class VoiceLineService {
 
   public setPlaybackRate(rate: number): void {
     this.setAudioPlaybackRate(rate);
+  }
+
+  public getPitch(): number {
+    return this.settings.pitch ?? 0.80;
+  }
+
+  public setPitch(pitch: number): void {
+    const clampedPitch = Math.max(0.4, Math.min(1.6, pitch));
+    this.saveSettings({ pitch: clampedPitch });
+  }
+
+  public getBassBoostDb(): number {
+    return this.settings.bassBoostDb ?? 6.0;
+  }
+
+  public setBassBoostDb(db: number): void {
+    const clampedDb = Math.max(0.0, Math.min(18.0, db));
+    this.saveSettings({ bassBoostDb: clampedDb });
+  }
+
+  public speakCustomText(text: string): void {
+    this.speakVoiceLineText(text, this.settings.volume);
   }
 
   public isMicroserviceVoiceLineEnabled(microservice: string): boolean {
@@ -479,7 +503,7 @@ class VoiceLineService {
           const bassFilter = ctx.createBiquadFilter();
           bassFilter.type = 'lowshelf';
           bassFilter.frequency.setValueAtTime(180, now);
-          bassFilter.gain.setValueAtTime(6.0, now);
+          bassFilter.gain.setValueAtTime(this.getBassBoostDb(), now);
           bassFilter.connect(ctx.destination);
           destinationNode = bassFilter;
         } catch {
@@ -522,7 +546,7 @@ class VoiceLineService {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.volume = volume;
       utterance.rate = this.getUtteranceRate();
-      utterance.pitch = 0.80; // Rich warm bass vocal resonance (lowered for natural human body)
+      utterance.pitch = this.getPitch(); // Rich warm bass vocal resonance (lowered for natural human body)
 
       // Select natural English voice if present
       const voices = window.speechSynthesis.getVoices();

@@ -2575,6 +2575,7 @@ const MasterDashboardPage: React.FC = () => {
               { id: 'leaderboards-console', label: 'Cross-Engine Leadership', badge: '6 Pillars' },
               { id: 'dancia4tv-console', label: 'Dancia-4Tv Video Console', badge: 'Live Sync' },
               { id: 'stercs-defense', label: 'STERCS Command & DefCon', badge: 'DefCon 5-1' },
+              { id: 'voiceline-console', label: 'VoiceLine Cadence & Studio', badge: '0.46x / +6dB Bass' },
               { id: 'platform-domains-console', label: 'Community & Creator Data', badge: 'All Domains' },
               { id: 'platform-operations-console', label: 'Games & Platform Operations', badge: '12 Domains' },
               { id: 'commerce-growth', label: 'Commerce & Growth', badge: '7' },
@@ -3066,6 +3067,13 @@ const MasterDashboardPage: React.FC = () => {
             {activeTab === 'stercs-defense' && (
               <div className="space-y-6">
                 <StercsControlCenter />
+              </div>
+            )}
+
+            {/* Dedicated VoiceLine Cadence, Bass & Studio Console Tab */}
+            {(activeTab === 'voiceline-console' || activeTab === 'voicelines') && (
+              <div className="space-y-6">
+                <StercsControlCenter defaultTab="voicelines" />
               </div>
             )}
 

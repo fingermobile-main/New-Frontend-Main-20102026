@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   ShieldCheckIcon,
   ExclamationTriangleIcon,
@@ -111,8 +112,40 @@ const SAMPLE_VOICE_PREVIEWS = [
   { id: 'hallmarks', label: '"Divine" (Hallmarks)', category: 'hallmarks' as const },
 ];
 
-const StercsControlCenter: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'defcon' | 'heatmap' | 'voicelines'>('defcon');
+export interface StercsControlCenterProps {
+  defaultTab?: 'defcon' | 'heatmap' | 'voicelines';
+}
+
+const StercsControlCenter: React.FC<StercsControlCenterProps> = ({ defaultTab }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const getInitialTab = (): 'defcon' | 'heatmap' | 'voicelines' => {
+    const sub = searchParams.get('subtab') || searchParams.get('tab') || searchParams.get('view') || searchParams.get('section');
+    if (sub === 'voicelines' || sub === 'voiceline') return 'voicelines';
+    if (sub === 'heatmap') return 'heatmap';
+    if (sub === 'defcon') return 'defcon';
+    return defaultTab || 'defcon';
+  };
+  const [activeTab, setActiveTab] = useState<'defcon' | 'heatmap' | 'voicelines'>(getInitialTab);
+
+  useEffect(() => {
+    const sub = searchParams.get('subtab') || searchParams.get('view') || searchParams.get('section');
+    if (sub === 'voicelines' || sub === 'voiceline') {
+      setActiveTab('voicelines');
+    } else if (sub === 'heatmap') {
+      setActiveTab('heatmap');
+    } else if (sub === 'defcon') {
+      setActiveTab('defcon');
+    }
+  }, [searchParams]);
+
+  const handleTabClick = (tab: 'defcon' | 'heatmap' | 'voicelines') => {
+    setActiveTab(tab);
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.set('subtab', tab);
+      return next;
+    }, { replace: true });
+  };
   const [defconState, setDefconState] = useState<DefConState>({
     currentLevel: 5,
     status: 'peace_time',
@@ -144,6 +177,8 @@ const StercsControlCenter: React.FC = () => {
   const [voiceSettings, setVoiceSettings] = useState<VoiceLineSettings>(() =>
     voiceLineServiceInstance.getSettings()
   );
+  const [testPhrase, setTestPhrase] = useState('Welcome to FingerMobile Sovereign Protocol, the voice lines are live.');
+  const [isPlayingTest, setIsPlayingTest] = useState(false);
 
   const fetchDefConState = useCallback(async () => {
     setLoadingDefcon(true);
@@ -332,6 +367,24 @@ const StercsControlCenter: React.FC = () => {
     setVoiceSettings({ ...voiceLineServiceInstance.getSettings() });
   };
 
+  const handleBassBoostChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const db = parseFloat(e.target.value);
+    voiceLineServiceInstance.setBassBoostDb(db);
+    setVoiceSettings({ ...voiceLineServiceInstance.getSettings() });
+  };
+
+  const handlePitchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const pitch = parseFloat(e.target.value);
+    voiceLineServiceInstance.setPitch(pitch);
+    setVoiceSettings({ ...voiceLineServiceInstance.getSettings() });
+  };
+
+  const handleSpeakCustom = (textToSpeak?: string) => {
+    setIsPlayingTest(true);
+    voiceLineServiceInstance.speakCustomText(textToSpeak || testPhrase);
+    setTimeout(() => setIsPlayingTest(false), 2000);
+  };
+
   const handleToggleVoiceMicroservice = (msKey: string) => {
     const current = !!voiceSettings.microservices[msKey];
     voiceLineServiceInstance.setMicroserviceVoiceLineEnabled(msKey, !current);
@@ -404,7 +457,7 @@ const StercsControlCenter: React.FC = () => {
       {/* Tabs */}
       <div className="mb-6 flex border-b border-slate-200">
         <button
-          onClick={() => setActiveTab('defcon')}
+          onClick={() => handleTabClick('defcon')}
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-black transition-colors ${
             activeTab === 'defcon'
               ? 'border-slate-900 text-slate-900'
@@ -415,7 +468,7 @@ const StercsControlCenter: React.FC = () => {
           DefCon & Command (Levels 5 - 1)
         </button>
         <button
-          onClick={() => setActiveTab('heatmap')}
+          onClick={() => handleTabClick('heatmap')}
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-black transition-colors ${
             activeTab === 'heatmap'
               ? 'border-slate-900 text-slate-900'
@@ -426,7 +479,7 @@ const StercsControlCenter: React.FC = () => {
           Universal Geo-Restrictions & Heatmaps
         </button>
         <button
-          onClick={() => setActiveTab('voicelines')}
+          onClick={() => handleTabClick('voicelines')}
           className={`flex items-center gap-2 border-b-2 px-4 py-2.5 text-xs font-black transition-colors ${
             activeTab === 'voicelines'
               ? 'border-slate-900 text-slate-900'
@@ -853,7 +906,7 @@ const StercsControlCenter: React.FC = () => {
         </div>
       )}
 
-      {/* TAB 3: VOICE LINE CADENCE & STUDIO */}
+      {/* TAB 3: VOICE LINE CADENCE, BASS & STUDIO */}
       {activeTab === 'voicelines' && (
         <div className="space-y-6">
           <div className="rounded-xl border border-purple-200 bg-purple-50 p-4">
@@ -861,39 +914,39 @@ const StercsControlCenter: React.FC = () => {
               <SpeakerWaveIcon className="h-5 w-5 flex-shrink-0 text-purple-600" />
               <div>
                 <h4 className="text-xs font-black text-purple-950">
-                  Global Voice Lines Cadence, Volume & Studio Console
+                  Global Voice Lines Cadence, Bass & Studio Console
                 </h4>
                 <p className="mt-0.5 text-xs text-purple-900">
-                  Calibrate natural African voice line tempo, sound level, and microservice integration. Utterance speech is calibrated to a relaxed 0.60x cadence, while recorded audio media plays at its uploaded 1.00x rate unless adjusted.
+                  Calibrate natural African voice line tempo, rich acoustic bass boost (+6.0 dB at 180 Hz), sound level, and microservice integration. Utterance speech is calibrated to a relaxed 0.46x cadence, media audio to 0.88x, and vocal pitch to 0.80 for warm human body resonance.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {/* Spoken Speech Synthesis (TTS) Utterance Cadence Controller */}
             <div className="rounded-xl border border-slate-300 bg-white p-5 shadow-sm">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black uppercase text-slate-900">Spoken Utterance Cadence</span>
                 <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-black text-emerald-400">
-                  {(voiceSettings.utteranceRate ?? 0.60).toFixed(2)}x
+                  {(voiceSettings.utteranceRate ?? 0.46).toFixed(2)}x
                 </span>
               </div>
               <p className="mt-1 text-[11px] text-slate-700">
-                Independent speech synthesis tempo (0.30x to 1.50x). Baseline standard is 0.60x.
+                Independent speech synthesis tempo (0.30x to 1.50x). Baseline calibrated standard is 0.46x.
               </p>
               <input
                 type="range"
                 min="0.3"
                 max="1.5"
-                step="0.05"
-                value={voiceSettings.utteranceRate ?? 0.60}
+                step="0.02"
+                value={voiceSettings.utteranceRate ?? 0.46}
                 onChange={handleUtteranceRateChange}
                 className="mt-4 w-full accent-slate-900"
               />
               <div className="mt-2 flex justify-between text-[10px] font-bold text-slate-600">
                 <span>0.30x (Slow)</span>
-                <span className="text-emerald-700 font-black">0.60x (Spoken Standard)</span>
+                <span className="text-emerald-700 font-black">0.46x (African Standard)</span>
                 <span>1.50x (Fast)</span>
               </div>
             </div>
@@ -903,24 +956,24 @@ const StercsControlCenter: React.FC = () => {
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black uppercase text-slate-900">Audio Media Playback Rate</span>
                 <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-black text-cyan-400">
-                  {(voiceSettings.audioPlaybackRate ?? 1.0).toFixed(2)}x
+                  {(voiceSettings.audioPlaybackRate ?? 0.88).toFixed(2)}x
                 </span>
               </div>
               <p className="mt-1 text-[11px] text-slate-700">
-                Preserves recorded/uploaded media original speed (1.00x) unless modified by author/user.
+                Preserves recorded/uploaded media original speed (calibrated relaxed 0.88x tempo).
               </p>
               <input
                 type="range"
                 min="0.5"
                 max="2.0"
-                step="0.05"
-                value={voiceSettings.audioPlaybackRate ?? 1.0}
+                step="0.02"
+                value={voiceSettings.audioPlaybackRate ?? 0.88}
                 onChange={handleAudioPlaybackRateChange}
                 className="mt-4 w-full accent-cyan-700"
               />
               <div className="mt-2 flex justify-between text-[10px] font-bold text-slate-600">
-                <span>0.50x (0.5x)</span>
-                <span className="text-cyan-800 font-black">1.00x (Natural Media)</span>
+                <span>0.50x (Slow)</span>
+                <span className="text-cyan-800 font-black">0.88x (Calibrated Tempo)</span>
                 <span>2.00x (2.0x)</span>
               </div>
             </div>
@@ -950,6 +1003,135 @@ const StercsControlCenter: React.FC = () => {
                 <span className="text-emerald-700 font-black">35% (Comfort Volume)</span>
                 <span>100% (Max)</span>
               </div>
+            </div>
+
+            {/* Acoustic Low-Shelf Bass Booster Controller */}
+            <div className="rounded-xl border border-slate-300 bg-white p-5 shadow-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black uppercase text-slate-900">Acoustic Bass Booster (180 Hz)</span>
+                <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-black text-amber-400">
+                  +{(voiceSettings.bassBoostDb ?? 6.0).toFixed(1)} dB
+                </span>
+              </div>
+              <p className="mt-1 text-[11px] text-slate-700">
+                Web Audio Biquad low-shelf filter for deep grounded human warmth. Baseline is +6.0 dB.
+              </p>
+              <input
+                type="range"
+                min="0.0"
+                max="18.0"
+                step="0.5"
+                value={voiceSettings.bassBoostDb ?? 6.0}
+                onChange={handleBassBoostChange}
+                className="mt-4 w-full accent-amber-600"
+              />
+              <div className="mt-2 flex justify-between text-[10px] font-bold text-slate-600">
+                <span>0 dB (Flat)</span>
+                <span className="text-amber-700 font-black">+6.0 dB (Warm Resonance)</span>
+                <span>+18 dB (Heavy Bass)</span>
+              </div>
+            </div>
+
+            {/* Pitch & Timbre Controller */}
+            <div className="rounded-xl border border-slate-300 bg-white p-5 shadow-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black uppercase text-slate-900">Vocal Pitch & Timbre</span>
+                <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-black text-purple-400">
+                  {(voiceSettings.pitch ?? 0.80).toFixed(2)}
+                </span>
+              </div>
+              <p className="mt-1 text-[11px] text-slate-700">
+                Lowers fundamental vocal frequency for authoritative, deep African resonance.
+              </p>
+              <input
+                type="range"
+                min="0.4"
+                max="1.6"
+                step="0.05"
+                value={voiceSettings.pitch ?? 0.80}
+                onChange={handlePitchChange}
+                className="mt-4 w-full accent-purple-600"
+              />
+              <div className="mt-2 flex justify-between text-[10px] font-bold text-slate-600">
+                <span>0.40 (Deep Baritone)</span>
+                <span className="text-purple-700 font-black">0.80 (Rich African Body)</span>
+                <span>1.60 (High Treble)</span>
+              </div>
+            </div>
+
+            {/* Quick Presets / Calibrated Defaults */}
+            <div className="rounded-xl border border-slate-300 bg-white p-5 shadow-sm flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-black uppercase text-slate-900">Calibrated Presets</span>
+                <p className="mt-1 text-[11px] text-slate-700">
+                  One-tap recalibration to official African VoiceLine acoustic targets.
+                </p>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    voiceLineServiceInstance.setUtteranceRate(0.46);
+                    voiceLineServiceInstance.setAudioPlaybackRate(0.88);
+                    voiceLineServiceInstance.setBassBoostDb(6.0);
+                    voiceLineServiceInstance.setPitch(0.80);
+                    voiceLineServiceInstance.setVolume(0.35);
+                    setVoiceSettings({ ...voiceLineServiceInstance.getSettings() });
+                  }}
+                  className="px-3 py-2 bg-slate-900 text-white rounded-lg text-xs font-black hover:bg-slate-800 transition cursor-pointer"
+                >
+                  Apply Calibrated Standard
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    voiceLineServiceInstance.setUtteranceRate(0.40);
+                    voiceLineServiceInstance.setBassBoostDb(9.0);
+                    voiceLineServiceInstance.setPitch(0.75);
+                    setVoiceSettings({ ...voiceLineServiceInstance.getSettings() });
+                  }}
+                  className="px-3 py-2 bg-amber-50 border border-amber-300 text-amber-950 rounded-lg text-xs font-black hover:bg-amber-100 transition cursor-pointer"
+                >
+                  Extra Bass & Deliberate
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Live Interactive Spoken Phrase Testing Sandbox */}
+          <div className="rounded-xl border border-slate-300 bg-white p-5 shadow-sm space-y-3">
+            <h4 className="text-xs font-black uppercase text-slate-900 flex items-center gap-2">
+              <SpeakerWaveIcon className="w-4 h-4 text-emerald-600" />
+              Live Interactive Speech & Bass Audition Sandbox
+            </h4>
+            <p className="text-xs text-slate-700">
+              Type any phrase below to audition the exact cadence ({(voiceSettings.utteranceRate ?? 0.46).toFixed(2)}x), bass shelf (+{(voiceSettings.bassBoostDb ?? 6.0).toFixed(1)} dB), and pitch ({(voiceSettings.pitch ?? 0.80).toFixed(2)}) in your browser:
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="text"
+                value={testPhrase}
+                onChange={(e) => setTestPhrase(e.target.value)}
+                placeholder="Enter test phrase..."
+                className="flex-1 p-2.5 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="button"
+                onClick={() => handleSpeakCustom()}
+                disabled={isPlayingTest}
+                className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black transition cursor-pointer shadow-sm flex items-center justify-center gap-2"
+              >
+                <PlayIcon className="w-4 h-4" />
+                <span>{isPlayingTest ? 'Speaking...' : 'Speak with VoiceLine Engine'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => voiceLineServiceInstance.playCommentaryVoiceLine('forum')}
+                className="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-black transition cursor-pointer shadow-sm flex items-center justify-center gap-2"
+              >
+                <SpeakerWaveIcon className="w-4 h-4 text-emerald-400" />
+                <span>Play Harmonic Bass Chime</span>
+              </button>
             </div>
           </div>
 
