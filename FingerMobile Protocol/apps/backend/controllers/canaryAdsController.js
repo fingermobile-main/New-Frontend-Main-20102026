@@ -48,6 +48,8 @@ class CanaryAdsController {
     this.createAnnouncement = this.createAnnouncement.bind(this);
     this.likeAnnouncement = this.likeAnnouncement.bind(this);
     this.uploadMedia = this.uploadMedia.bind(this);
+    this.getPricingRules = this.getPricingRules.bind(this);
+    this.updatePricingRule = this.updatePricingRule.bind(this);
   }
 
   /**
