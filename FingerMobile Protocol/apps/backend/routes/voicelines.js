@@ -4,6 +4,14 @@ const voicelines = require('../controllers/voicelinesController.js');
 const { authenticate } = require('../middleware/authenticate');
 const router = express.Router();
 
+// Settings & System Configuration Persistence
+router.get('/settings', voicelines.getSettings);
+router.post('/settings', voicelines.saveSettings);
+router.put('/settings', voicelines.saveSettings);
+
+// All VoiceLines Catalog (Universal Non-Repeating Rotation)
+router.get('/all', voicelines.getAllClips);
+
 // Categories & Discovery
 router.get('/categories', voicelines.getCategories);
 router.get('/categories/:category', voicelines.getClips);
