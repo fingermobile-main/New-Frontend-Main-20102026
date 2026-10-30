@@ -142,6 +142,7 @@ services:
   # PhoneInfoga - OSINT Phone Intelligence & Reconnaissance Sidecar
   phoneinfoga:
     image: sundowndev/phoneinfoga:latest
+    platform: linux/amd64
     container_name: fingermobile_phoneinfoga
     restart: unless-stopped
     command: "serve --port 5002"
