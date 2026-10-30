@@ -12,6 +12,7 @@ import {
   CheckCircleIcon,
   PlayIcon,
   KeyIcon,
+  CloudArrowUpIcon,
 } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import voiceLineServiceInstance, {
@@ -179,6 +180,9 @@ const StercsControlCenter: React.FC<StercsControlCenterProps> = ({ defaultTab })
   );
   const [testPhrase, setTestPhrase] = useState('Welcome to FingerMobile Sovereign Protocol, the voice lines are live.');
   const [isPlayingTest, setIsPlayingTest] = useState(false);
+  const [isSavingVoiceSettings, setIsSavingVoiceSettings] = useState(false);
+  const [lastSavedTimestamp, setLastSavedTimestamp] = useState<string | null>(null);
+  const [rotationStatus, setRotationStatus] = useState(() => voiceLineServiceInstance.getRotationStatus());
 
   const fetchDefConState = useCallback(async () => {
     setLoadingDefcon(true);
@@ -211,6 +215,11 @@ const StercsControlCenter: React.FC<StercsControlCenterProps> = ({ defaultTab })
   useEffect(() => {
     void fetchDefConState();
     void fetchGeoRestrictions();
+    // Hydrate VoiceLine settings from PostgreSQL backend on mount
+    voiceLineServiceInstance.syncSettingsWithBackend().then((synced) => {
+      setVoiceSettings({ ...synced });
+      setRotationStatus(voiceLineServiceInstance.getRotationStatus());
+    }).catch(() => {});
   }, [fetchDefConState, fetchGeoRestrictions]);
 
   const handleSetDefCon = async (level: number) => {
@@ -389,6 +398,53 @@ const StercsControlCenter: React.FC<StercsControlCenterProps> = ({ defaultTab })
     const current = !!voiceSettings.microservices[msKey];
     voiceLineServiceInstance.setMicroserviceVoiceLineEnabled(msKey, !current);
     setVoiceSettings({ ...voiceLineServiceInstance.getSettings() });
+  };
+
+  const handleSaveVoiceLineSettings = async () => {
+    setIsSavingVoiceSettings(true);
+    setActionMessage(null);
+    try {
+      const res = await voiceLineServiceInstance.persistSettingsToBackend(voiceSettings);
+      if (res.success) {
+        const timeStr = new Date().toLocaleTimeString();
+        setLastSavedTimestamp(timeStr);
+        setVoiceSettings({ ...res.settings });
+        setRotationStatus(voiceLineServiceInstance.getRotationStatus());
+        setActionMessage({
+          type: 'success',
+          text: `VoiceLine preferences successfully saved to PostgreSQL database (voiceline_system_settings) at ${timeStr}.`
+        });
+      } else {
+        setActionMessage({
+          type: 'error',
+          text: `Notice: ${res.message}`
+        });
+      }
+    } catch (err) {
+      setActionMessage({
+        type: 'error',
+        text: err instanceof Error ? err.message : 'Error persisting settings to PostgreSQL.'
+      });
+    } finally {
+      setIsSavingVoiceSettings(false);
+    }
+  };
+
+  const handleReloadFromDatabase = async () => {
+    try {
+      const synced = await voiceLineServiceInstance.syncSettingsWithBackend();
+      setVoiceSettings({ ...synced });
+      setRotationStatus(voiceLineServiceInstance.getRotationStatus());
+      setActionMessage({
+        type: 'success',
+        text: 'VoiceLine preferences reloaded directly from PostgreSQL database.'
+      });
+    } catch {
+      setActionMessage({
+        type: 'error',
+        text: 'Could not reach backend PostgreSQL database.'
+      });
+    }
   };
 
   const currentLevelInfo = DEFCON_LEVELS.find((d) => d.level === defconState.currentLevel) || DEFCON_LEVELS[0];
@@ -923,6 +979,72 @@ const StercsControlCenter: React.FC<StercsControlCenterProps> = ({ defaultTab })
             </div>
           </div>
 
+          {/* PostgreSQL Database Persistence & Library Rotation Banner */}
+          <div className="rounded-xl border border-slate-300 bg-white p-5 shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2.5">
+                  <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100" />
+                  <span className="text-xs font-black uppercase tracking-wider text-slate-900">
+                    PostgreSQL Persistence Engine: Active
+                  </span>
+                  <span className="rounded-md border border-slate-300 bg-slate-100 px-2 py-0.5 text-[11px] font-bold text-slate-800">
+                    voiceline_system_settings
+                  </span>
+                </div>
+                <p className="text-xs text-slate-700">
+                  Preferences are persisted to the PostgreSQL database and immediately apply to all connected clients and microservices.
+                  {lastSavedTimestamp && (
+                    <span className="ml-2 font-bold text-emerald-800">
+                      • Last saved to PostgreSQL at {lastSavedTimestamp}
+                    </span>
+                  )}
+                </p>
+                <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-medium text-slate-600">
+                  <span className="inline-flex items-center gap-1 rounded bg-purple-50 border border-purple-200 px-2 py-0.5 font-bold text-purple-950">
+                    104 African VoiceLines
+                  </span>
+                  <span>•</span>
+                  <span className="inline-flex items-center gap-1 rounded bg-emerald-50 border border-emerald-200 px-2 py-0.5 font-bold text-emerald-950">
+                    Universal Non-Repeating Shuffled Deck: {rotationStatus.remainingInDeck} / {rotationStatus.totalAvailable} remaining
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleReloadFromDatabase}
+                  className="px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800 hover:bg-slate-50 transition shadow-sm flex items-center gap-2 cursor-pointer"
+                  title="Reload settings from PostgreSQL database"
+                >
+                  <ArrowPathIcon className="h-4 w-4 text-slate-600" />
+                  <span>Reload from DB</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleSaveVoiceLineSettings}
+                  disabled={isSavingVoiceSettings}
+                  className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-emerald-700 text-white text-xs font-black transition shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                >
+                  {isSavingVoiceSettings ? (
+                    <>
+                      <ArrowPathIcon className="h-4 w-4 animate-spin text-emerald-400" />
+                      <span>Saving to PostgreSQL...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CloudArrowUpIcon className="h-4 w-4 text-emerald-400" />
+                      <span>Save VoiceLine Preferences to PostgreSQL</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {/* Spoken Speech Synthesis (TTS) Utterance Cadence Controller */}
             <div className="rounded-xl border border-slate-300 bg-white p-5 shadow-sm">
@@ -1142,8 +1264,8 @@ const StercsControlCenter: React.FC<StercsControlCenterProps> = ({ defaultTab })
               Enable or silence automated cultured African commentary voice lines per microservice:
             </p>
 
-            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-6">
-              {['forum', 'hallmarks', 'mii', 'groups', 'lushpressies', 'blogs'].map((key) => {
+            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+              {['forum', 'hallmarks', 'mii', 'groups', 'lushpressies', 'blogs', 'gems', 'tribut'].map((key) => {
                 const isEnabled = !!voiceSettings.microservices[key];
                 return (
                   <button
@@ -1181,12 +1303,52 @@ const StercsControlCenter: React.FC<StercsControlCenterProps> = ({ defaultTab })
                   key={sample.id}
                   type="button"
                   onClick={() => voiceLineServiceInstance.playCommentaryVoiceLine(sample.category)}
-                  className="flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-900 hover:border-slate-900 hover:bg-slate-50 transition-colors shadow-sm"
+                  className="flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-900 hover:border-slate-900 hover:bg-slate-50 transition-colors shadow-sm cursor-pointer"
                 >
                   <PlayIcon className="h-3.5 w-3.5 text-emerald-600" />
                   {sample.label}
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Bottom PostgreSQL Save Action Bar */}
+          <div className="rounded-xl border border-slate-300 bg-slate-50 p-5 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h4 className="text-xs font-black uppercase text-slate-900">
+                Commit VoiceLine Configuration to Database
+              </h4>
+              <p className="mt-0.5 text-xs text-slate-700">
+                Saves utterance cadence ({(voiceSettings.utteranceRate ?? 0.46).toFixed(2)}x), audio media rate ({(voiceSettings.audioPlaybackRate ?? 0.88).toFixed(2)}x), volume ({Math.round((voiceSettings.volume ?? 0.35) * 100)}%), bass (+{(voiceSettings.bassBoostDb ?? 6.0).toFixed(1)} dB), and pitch ({(voiceSettings.pitch ?? 0.80).toFixed(2)}) to PostgreSQL.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleReloadFromDatabase}
+                className="px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800 hover:bg-slate-100 transition shadow-sm flex items-center gap-2 cursor-pointer"
+              >
+                <ArrowPathIcon className="h-4 w-4 text-slate-600" />
+                <span>Reload</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveVoiceLineSettings}
+                disabled={isSavingVoiceSettings}
+                className="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-emerald-700 text-white text-xs font-black transition shadow-md flex items-center gap-2 cursor-pointer disabled:opacity-50"
+              >
+                {isSavingVoiceSettings ? (
+                  <>
+                    <ArrowPathIcon className="h-4 w-4 animate-spin text-emerald-400" />
+                    <span>Saving to PostgreSQL...</span>
+                  </>
+                ) : (
+                  <>
+                    <CloudArrowUpIcon className="h-4 w-4 text-emerald-400" />
+                    <span>Save VoiceLine Preferences to PostgreSQL</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>

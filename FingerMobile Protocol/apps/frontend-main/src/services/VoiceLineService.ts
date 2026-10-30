@@ -218,8 +218,19 @@ class VoiceLineService {
   private memberId: string | null = null;
   private settings: VoiceLineSettings = { ...DEFAULT_SETTINGS };
 
+  // Shuffled rotation deck containing all voice lines to ensure non-repeating playback
+  private rotationDeck: VoiceLine[] = [];
+  private recentlyPlayedIds: string[] = [];
+  private lastPlayedLineId: string | null = null;
+  private customVoiceLines: VoiceLine[] = [];
+
   private constructor() {
     this.loadSettings();
+    this.replenishShuffledDeck();
+    if (typeof window !== 'undefined') {
+      this.syncSettingsWithBackend().catch(() => {});
+      this.fetchAllVoiceLinesFromBackend().catch(() => {});
+    }
   }
 
   public static getInstance(): VoiceLineService {
@@ -471,8 +482,205 @@ class VoiceLineService {
   public getAllVoiceLines(): ApiResponse<VoiceLine[]> {
     return {
       success: true,
-      data: allVoiceLines
+      data: this.getAllAvailableVoiceLines()
     };
+  }
+
+  /**
+   * Universal Shuffled Rotation Deck Engine
+   * Ensures non-repeating playback across all 104+ VoiceLines.
+   * Every post, publish, and milestone draws a distinct phrase.
+   */
+  public getAllAvailableVoiceLines(): VoiceLine[] {
+    const combined = [...allVoiceLines];
+    for (const clip of this.customVoiceLines) {
+      if (!combined.some((c) => c.id === clip.id)) {
+        combined.push(clip);
+      }
+    }
+    return combined;
+  }
+
+  public replenishShuffledDeck(): void {
+    const allLines = this.getAllAvailableVoiceLines();
+    if (allLines.length === 0) {
+      this.rotationDeck = [];
+      return;
+    }
+
+    // Fisher-Yates algorithm for uniform random shuffling
+    const shuffled = [...allLines];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    // Guard against repeating the last played line as the first item of the new deck
+    if (shuffled.length > 1 && this.lastPlayedLineId && shuffled[0].id === this.lastPlayedLineId) {
+      const swapIdx = Math.floor(Math.random() * (shuffled.length - 1)) + 1;
+      [shuffled[0], shuffled[swapIdx]] = [shuffled[swapIdx], shuffled[0]];
+    }
+
+    this.rotationDeck = shuffled;
+  }
+
+  public getNextRotatingVoiceLine(serviceHint?: string): VoiceLine {
+    if (this.rotationDeck.length === 0) {
+      this.replenishShuffledDeck();
+    }
+
+    if (this.rotationDeck.length === 0) {
+      return allVoiceLines[0];
+    }
+
+    const nextLine = this.rotationDeck.shift()!;
+    this.lastPlayedLineId = nextLine.id;
+
+    // Maintain recent history ring buffer (up to 30 items)
+    this.recentlyPlayedIds.push(nextLine.id);
+    if (this.recentlyPlayedIds.length > 30) {
+      this.recentlyPlayedIds.shift();
+    }
+
+    return nextLine;
+  }
+
+  public getRotationStatus(): { remainingInDeck: number; totalAvailable: number; recentlyPlayedCount: number; lastPlayedId: string | null } {
+    return {
+      remainingInDeck: this.rotationDeck.length,
+      totalAvailable: this.getAllAvailableVoiceLines().length,
+      recentlyPlayedCount: this.recentlyPlayedIds.length,
+      lastPlayedId: this.lastPlayedLineId
+    };
+  }
+
+  /**
+   * Hydrates VoiceLine audio preferences from PostgreSQL backend database
+   */
+  public async syncSettingsWithBackend(): Promise<VoiceLineSettings> {
+    try {
+      const response = await fetch('/api/voice-lines/settings', {
+        method: 'GET',
+        headers: this.getBaseHeaders()
+      });
+      if (response.ok) {
+        const json = await response.json();
+        const data = json.data;
+        if (data) {
+          const resolvedAudioRate =
+            typeof data.audioPlaybackRate === 'number'
+              ? data.audioPlaybackRate
+              : (typeof data.playbackRate === 'number' ? data.playbackRate : this.settings.audioPlaybackRate);
+          const resolvedUtteranceRate =
+            typeof data.utteranceRate === 'number' ? data.utteranceRate : this.settings.utteranceRate;
+
+          this.settings = {
+            volume: typeof data.volume === 'number' ? data.volume : this.settings.volume,
+            audioPlaybackRate: resolvedAudioRate,
+            utteranceRate: resolvedUtteranceRate,
+            playbackRate: resolvedAudioRate,
+            pitch: typeof data.pitch === 'number' ? data.pitch : this.settings.pitch,
+            bassBoostDb: typeof data.bassBoostDb === 'number' ? data.bassBoostDb : this.settings.bassBoostDb,
+            enabled: typeof data.enabled === 'boolean' ? data.enabled : this.settings.enabled,
+            microservices: {
+              ...this.settings.microservices,
+              ...(data.microservices || {})
+            }
+          };
+          if (typeof window !== 'undefined') {
+            try {
+              localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(this.settings));
+            } catch {
+              // Ignore localstorage errors
+            }
+          }
+        }
+      }
+    } catch {
+      // Backend not reached or offline; keep current settings
+    }
+    return this.settings;
+  }
+
+  /**
+   * Persists VoiceLine audio preferences directly to PostgreSQL database
+   */
+  public async persistSettingsToBackend(
+    newSettings?: Partial<VoiceLineSettings>
+  ): Promise<{ success: boolean; message: string; settings: VoiceLineSettings }> {
+    if (newSettings) {
+      this.saveSettings(newSettings);
+    }
+
+    const payload = {
+      volume: this.settings.volume,
+      audioPlaybackRate: this.settings.audioPlaybackRate,
+      utteranceRate: this.settings.utteranceRate,
+      bassBoostDb: this.settings.bassBoostDb,
+      pitch: this.settings.pitch,
+      enabled: this.settings.enabled,
+      microservices: this.settings.microservices
+    };
+
+    try {
+      const response = await fetch('/api/voice-lines/settings', {
+        method: 'POST',
+        headers: this.getBaseHeaders(),
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server returned HTTP ${response.status}`);
+      }
+
+      const json = await response.json();
+      if (json.data) {
+        this.saveSettings({
+          volume: json.data.volume,
+          audioPlaybackRate: json.data.audioPlaybackRate,
+          utteranceRate: json.data.utteranceRate,
+          bassBoostDb: json.data.bassBoostDb,
+          pitch: json.data.pitch,
+          enabled: json.data.enabled,
+          microservices: json.data.microservices
+        });
+      }
+
+      return {
+        success: true,
+        message: json.message || 'VoiceLine preferences successfully saved to PostgreSQL database.',
+        settings: this.settings
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to reach backend PostgreSQL database',
+        settings: this.settings
+      };
+    }
+  }
+
+  /**
+   * Fetches the complete catalog of active VoiceLines from PostgreSQL
+   */
+  public async fetchAllVoiceLinesFromBackend(): Promise<VoiceLine[]> {
+    try {
+      const response = await fetch('/api/voice-lines/all', {
+        method: 'GET',
+        headers: this.getBaseHeaders()
+      });
+      if (response.ok) {
+        const json = await response.json();
+        if (Array.isArray(json.data) && json.data.length > 0) {
+          this.customVoiceLines = json.data;
+          this.replenishShuffledDeck();
+          return this.getAllAvailableVoiceLines();
+        }
+      }
+    } catch {
+      // Offline fallback
+    }
+    return this.getAllAvailableVoiceLines();
   }
 
   public getRandomVoiceLineByCategory(category: VoiceLineCategory): VoiceLine | null {
@@ -621,9 +829,10 @@ class VoiceLineService {
 
   /**
    * Actionable Commentary Audio Trigger
-   * Triggered when members post comments across:
-   * ForumPage, Hallmarks, Mii, Groups, LushPressies, Blogs.
-   * Plays the designated voice line at 35% system speaker volume (or user-defined volume).
+   * Triggered when members post, publish or complete actions across:
+   * ForumPage, Hallmarks, Mii, Groups, LushPressies, Blogs, Gems, Tribut.
+   * Plays the designated voice line at 35% system speaker volume (or user-defined volume)
+   * using the Universal Non-Repeating Shuffled Rotation Engine.
    */
   public async playCommentaryVoiceLine(
     microservice: VoiceLineCategory,
@@ -638,7 +847,8 @@ class VoiceLineService {
     }
 
     const volume = this.getVoiceLineVolume();
-    const candidateLine = this.getRandomVoiceLineByCategory(microservice as VoiceLineCategory) || allVoiceLines[0];
+    // Universal Non-Repeating Shuffled Rotation Engine: draws fresh line without repeating
+    const candidateLine = this.getNextRotatingVoiceLine(microservice);
 
     await this.playVoiceLine(candidateLine.text, candidateLine.id, `commentary:${microservice}`, microservice, volume);
   }

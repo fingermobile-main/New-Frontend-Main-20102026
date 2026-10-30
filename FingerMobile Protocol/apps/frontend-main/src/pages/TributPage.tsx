@@ -33,6 +33,7 @@ import TributDisplayStyleRenderer from '../components/tribut/TributDisplayStyleR
 import MemberTributProjectsModal from '../components/tribut/MemberTributProjectsModal';
 import TributCreatorUploadModal from '../components/tribut/TributCreatorUploadModal';
 import TributDownloadModal from '../components/tribut/TributDownloadModal';
+import voiceLineServiceInstance from '../services/VoiceLineService';
 import TributDiscussionsTab from '../components/tribut/TributDiscussionsTab';
 import { PlatformWidgetsAndAdsRail } from '../components/widgets/PlatformWidgetsAndAdsRail';
 import ConnectWidget from '../components/widgets/ConnectWidget';
@@ -469,6 +470,7 @@ export const TributPage: React.FC = () => {
           : null
       );
     }
+    voiceLineServiceInstance.playCommentaryVoiceLine('tribut');
     showToast('Design critique note posted successfully!', 'success');
   };
 
@@ -476,6 +478,7 @@ export const TributPage: React.FC = () => {
   const handlePublishCreatedPin = (newPin: TributPinItem) => {
     setPinsList([newPin, ...pinsList]);
     setShowUploadPinModal(false);
+    voiceLineServiceInstance.playCommentaryVoiceLine('tribut');
     showToast('Design Pin published! Guardian AI vision indexing complete.', 'success');
   };
 

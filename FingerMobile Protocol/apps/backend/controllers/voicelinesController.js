@@ -345,7 +345,9 @@ class VoicelinesController {
               mii: true,
               groups: true,
               lushpressies: true,
-              blogs: true
+              blogs: true,
+              gems: true,
+              tribut: true
             }
           }
         });
@@ -363,8 +365,8 @@ class VoicelinesController {
           pitch: parseFloat(row.pitch || 0.80),
           enabled: Boolean(row.enabled !== false),
           microservices: typeof row.microservices === 'object' && row.microservices !== null
-            ? row.microservices
-            : { forum: true, hallmarks: true, mii: true, groups: true, lushpressies: true, blogs: true },
+            ? { gems: true, tribut: true, ...row.microservices }
+            : { forum: true, hallmarks: true, mii: true, groups: true, lushpressies: true, blogs: true, gems: true, tribut: true },
           updatedAt: row.updated_at,
           updatedBy: row.updated_by
         }
