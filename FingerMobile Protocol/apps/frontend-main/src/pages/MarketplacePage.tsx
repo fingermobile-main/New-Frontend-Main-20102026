@@ -467,12 +467,12 @@ const MarketplacePage: React.FC = () => {
       setShowDirectUploadModal(false);
       return;
     }
-    try {
-      const allImages = [
-        ...(directMediaPickerValue.coverUrl ? [directMediaPickerValue.coverUrl] : []),
-        ...directMediaPickerValue.galleryUrls
-      ].filter(Boolean);
+    const allImages = [
+      ...(directMediaPickerValue.coverUrl ? [directMediaPickerValue.coverUrl] : []),
+      ...directMediaPickerValue.galleryUrls
+    ].filter(Boolean);
 
+    try {
       await apiService.put(`/api/marketplace/products/${targetProductForMedia.id}`, {
         imageUrl: directMediaPickerValue.coverUrl || targetProductForMedia.imageUrl,
         images: allImages.length > 0 ? allImages : targetProductForMedia.images,

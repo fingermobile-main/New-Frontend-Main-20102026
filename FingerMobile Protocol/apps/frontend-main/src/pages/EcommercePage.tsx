@@ -20,9 +20,21 @@ import {
   Truck,
   BarChart3,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Upload,
+  Lock,
+  Unlock,
+  EyeOff,
+  PauseCircle,
+  PlayCircle,
+  ShieldAlert,
+  ArrowUp,
+  ArrowDown,
+  Flag,
+  X
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import CommerceMediaPicker, { CommerceMediaValue } from '../components/common/CommerceMediaPicker';
 
 interface Product {
   id: number;
@@ -34,6 +46,12 @@ interface Product {
   sku: string;
   status: string;
   images: string[];
+  image_url?: string;
+  video_url?: string;
+  is_frozen?: boolean;
+  is_censored?: boolean;
+  is_suspended?: boolean;
+  is_inquiries_paused?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -64,6 +82,23 @@ const EcommercePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [createMediaValue, setCreateMediaValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+  const [showDirectUploadModal, setShowDirectUploadModal] = useState<boolean>(false);
+  const [targetProductForMedia, setTargetProductForMedia] = useState<Product | null>(null);
+  const [directMediaPickerValue, setDirectMediaPickerValue] = useState<CommerceMediaValue>({
+    coverUrl: '',
+    galleryUrls: [],
+    videoUrl: '',
+    isCensored: false
+  });
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
+  const [reportingProduct, setReportingProduct] = useState<Product | null>(null);
+  const [reportReason, setReportReason] = useState<string>('');
   const [newProduct, setNewProduct] = useState({
     name: '',
     description: '',
@@ -271,6 +306,11 @@ const EcommercePage: React.FC = () => {
 
   const handleCreateProduct = async () => {
     try {
+      const allImages = [
+        ...(createMediaValue.coverUrl ? [createMediaValue.coverUrl] : []),
+        ...createMediaValue.galleryUrls
+      ].filter(Boolean);
+
       const createdItem: Product = {
         id: Date.now(),
         name: newProduct.name,
@@ -280,7 +320,10 @@ const EcommercePage: React.FC = () => {
         stockQuantity: Number(newProduct.stockQuantity) || 0,
         sku: newProduct.sku || `SKU-${Date.now().toString().slice(-4)}`,
         status: newProduct.status,
-        images: newProduct.images ? [newProduct.images] : ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&fit=crop'],
+        images: allImages.length > 0 ? allImages : ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&fit=crop'],
+        image_url: createMediaValue.coverUrl || allImages[0],
+        video_url: createMediaValue.videoUrl || undefined,
+        is_censored: createMediaValue.isCensored,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
@@ -298,9 +341,104 @@ const EcommercePage: React.FC = () => {
         status: 'active',
         images: ''
       });
+      setCreateMediaValue({
+        coverUrl: '',
+        galleryUrls: [],
+        videoUrl: '',
+        isCensored: false
+      });
     } catch (error) {
       console.error('Error creating product:', error);
     }
+  };
+
+  // Granular Reorder (Move Up / Down)
+  const handleReorderProduct = (productId: number, direction: 'up' | 'down') => {
+    setProducts(prev => {
+      const idx = prev.findIndex(p => p.id === productId);
+      if (idx === -1) return prev;
+      const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
+      if (targetIdx < 0 || targetIdx >= prev.length) return prev;
+      const updated = [...prev];
+      const [moved] = updated.splice(idx, 1);
+      updated.splice(targetIdx, 0, moved);
+      return updated;
+    });
+  };
+
+  // Granular Compliance: Toggle Freeze
+  const handleToggleFreeze = (productId: number) => {
+    setProducts(prev => prev.map(p => p.id === productId ? { ...p, is_frozen: !p.is_frozen } : p));
+  };
+
+  // Granular Compliance: Toggle Censor (18+ Sensitive Blur Mask)
+  const handleToggleCensor = (productId: number) => {
+    setProducts(prev => prev.map(p => p.id === productId ? { ...p, is_censored: !p.is_censored } : p));
+  };
+
+  // Granular Compliance: Toggle Suspend
+  const handleToggleSuspend = (productId: number) => {
+    setProducts(prev => prev.map(p => p.id === productId ? {
+      ...p,
+      is_suspended: !p.is_suspended,
+      status: !p.is_suspended ? 'suspended' : 'active'
+    } : p));
+  };
+
+  // Granular Compliance: Toggle Pause Inquiries / Comments
+  const handleTogglePauseInquiries = (productId: number) => {
+    setProducts(prev => prev.map(p => p.id === productId ? { ...p, is_inquiries_paused: !p.is_inquiries_paused } : p));
+  };
+
+  // Direct Media Upload modal openers & persistence
+  const handleOpenDirectMedia = (prod?: Product) => {
+    if (prod) {
+      setTargetProductForMedia(prod);
+      setDirectMediaPickerValue({
+        coverUrl: prod.image_url || (prod.images && prod.images[0]) || '',
+        galleryUrls: prod.images || [],
+        videoUrl: prod.video_url || '',
+        isCensored: Boolean(prod.is_censored)
+      });
+    } else {
+      setTargetProductForMedia(null);
+      setDirectMediaPickerValue({
+        coverUrl: '',
+        galleryUrls: [],
+        videoUrl: '',
+        isCensored: false
+      });
+    }
+    setShowDirectUploadModal(true);
+  };
+
+  const handleSaveDirectMedia = () => {
+    if (!targetProductForMedia) {
+      setCreateMediaValue(directMediaPickerValue);
+      setShowDirectUploadModal(false);
+      setShowCreateModal(true);
+      return;
+    }
+    const allImages = [
+      ...(directMediaPickerValue.coverUrl ? [directMediaPickerValue.coverUrl] : []),
+      ...directMediaPickerValue.galleryUrls
+    ].filter(Boolean);
+
+    setProducts(prev => prev.map(p => p.id === targetProductForMedia.id ? {
+      ...p,
+      image_url: directMediaPickerValue.coverUrl || p.image_url,
+      images: allImages.length > 0 ? allImages : p.images,
+      video_url: directMediaPickerValue.videoUrl || p.video_url,
+      is_censored: directMediaPickerValue.isCensored
+    } : p));
+    setShowDirectUploadModal(false);
+  };
+
+  const handleSubmitReport = (e: React.FormEvent) => {
+    e.preventDefault();
+    setShowReportModal(false);
+    setReportReason('');
+    setReportingProduct(null);
   };
 
   const handleDeleteProduct = async (productId: number) => {
@@ -358,13 +496,23 @@ const EcommercePage: React.FC = () => {
               <ShoppingCart className="h-8 w-8 text-blue-600" />
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 ml-3 tracking-tight">E-commerce Management</h1>
             </div>
-            <button 
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center shadow-sm"
-              onClick={() => setShowCreateModal(true)}
-            >
-              <Plus className="h-4 w-4 mr-1" />
-              Add Product
-            </button>
+            <div className="flex items-center gap-2.5">
+              <button
+                type="button"
+                onClick={() => handleOpenDirectMedia()}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center shadow-sm cursor-pointer transition"
+              >
+                <Upload className="h-4 w-4 mr-1.5" />
+                Direct Media Upload
+              </button>
+              <button
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center shadow-sm cursor-pointer transition"
+                onClick={() => setShowCreateModal(true)}
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Add Product
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -474,33 +622,36 @@ const EcommercePage: React.FC = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                    <th scope="col" className="px-4 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider">
+                      Media
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider">
                       Product
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider">
                       Price
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider">
                       Category
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider">
                       Stock
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider">
                       SKU
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-bold text-slate-800 uppercase tracking-wider">
                       Status
                     </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-800 uppercase tracking-wider">
-                      Actions
+                    <th scope="col" className="px-6 py-3 text-right text-xs font-bold text-slate-800 uppercase tracking-wider">
+                      Compliance & RBAC Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {loading ? (
                     <tr>
-                      <td colSpan={7} className="px-6 py-4 text-center">
+                      <td colSpan={8} className="px-6 py-4 text-center">
                         <div className="flex justify-center">
                           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
                         </div>
@@ -508,18 +659,32 @@ const EcommercePage: React.FC = () => {
                     </tr>
                   ) : currentItems.length === 0 ? (
                     <tr>
-                      <td colSpan={7} className="px-6 py-4 text-center text-slate-800">
+                      <td colSpan={8} className="px-6 py-4 text-center text-slate-800">
                         No products found
                       </td>
                     </tr>
                   ) : (
                     (currentItems as Product[]).map((item) => (
                       <tr key={item.id} className="hover:bg-gray-50">
+                        <td className="px-4 py-3 whitespace-nowrap">
+                          <div className="relative w-12 h-12 rounded-lg bg-slate-100 overflow-hidden border border-slate-300 shrink-0">
+                            <img
+                              src={item.image_url || (item.images && item.images[0]) || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&fit=crop'}
+                              alt={item.name}
+                              className={`w-full h-full object-cover ${item.is_censored ? 'blur-xs' : ''}`}
+                            />
+                            {item.is_censored && (
+                              <span className="absolute inset-0 bg-black/60 flex items-center justify-center text-[8px] font-black text-rose-300">
+                                18+
+                              </span>
+                            )}
+                          </div>
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900">{item.name}</div>
                           <div className="text-sm text-slate-700 line-clamp-1">{item.description}</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-bold">
                           ${item.price.toFixed(2)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -528,65 +693,119 @@ const EcommercePage: React.FC = () => {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
-                          <span className={item.stockQuantity <= 10 ? 'text-red-600 font-bold' : 'text-gray-900'}>
+                          <span className={item.stockQuantity <= 10 ? 'text-red-600 font-bold' : 'text-gray-900 font-bold'}>
                             {item.stockQuantity}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-mono font-bold">
                           {item.sku}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(item.status)}`}>
-                            {item.status}
+                            {item.is_suspended ? 'SUSPENDED' : item.is_frozen ? 'FROZEN' : item.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex space-x-2">
-                            <button 
-                              className="text-blue-600 hover:text-blue-900"
-                              onClick={() => history.push(`/dashboard/ecommerce/products/${item.id}/view`)}
-                              aria-label={`View product ${item.name}`}
+                        <td className="px-4 py-3 whitespace-nowrap text-right">
+                          <div className="inline-flex items-center gap-1 p-1.5 rounded-lg bg-black border border-[#880808]">
+                            {/* Move Up / Down */}
+                            <button
+                              type="button"
+                              onClick={() => handleReorderProduct(item.id, 'up')}
+                              className="p-1 rounded bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300 cursor-pointer"
+                              title="Move Up"
                             >
-                              <Eye className="h-4 w-4" />
+                              <ArrowUp className="w-3 h-3" />
                             </button>
-                            <button 
-                              className="text-green-600 hover:text-green-900"
-                              onClick={() => history.push(`/dashboard/ecommerce/products/${item.id}/edit`)}
-                              aria-label={`Edit product ${item.name}`}
+                            <button
+                              type="button"
+                              onClick={() => handleReorderProduct(item.id, 'down')}
+                              className="p-1 rounded bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300 cursor-pointer"
+                              title="Move Down"
                             >
-                              <Edit3 className="h-4 w-4" />
+                              <ArrowDown className="w-3 h-3" />
                             </button>
-                            <button 
-                              className="text-red-600 hover:text-red-900"
+                            {/* Freeze */}
+                            <button
+                              type="button"
+                              onClick={() => handleToggleFreeze(item.id)}
+                              className={`p-1 rounded text-[10px] font-bold border transition cursor-pointer ${
+                                item.is_frozen
+                                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                                  : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                              }`}
+                              title={item.is_frozen ? 'Unfreeze' : 'Freeze'}
+                            >
+                              {item.is_frozen ? <Unlock className="w-3 h-3" /> : <Lock className="w-3 h-3" />}
+                            </button>
+                            {/* Censor */}
+                            <button
+                              type="button"
+                              onClick={() => handleToggleCensor(item.id)}
+                              className={`p-1 rounded text-[10px] font-bold border transition cursor-pointer ${
+                                item.is_censored
+                                  ? 'bg-purple-500/20 text-purple-300 border-purple-500/40'
+                                  : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                              }`}
+                              title={item.is_censored ? 'Uncensor' : 'Censor (18+)'}
+                            >
+                              {item.is_censored ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                            </button>
+                            {/* Suspend */}
+                            <button
+                              type="button"
+                              onClick={() => handleToggleSuspend(item.id)}
+                              className={`p-1 rounded text-[10px] font-bold border transition cursor-pointer ${
+                                item.is_suspended
+                                  ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                                  : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                              }`}
+                              title={item.is_suspended ? 'Restore' : 'Suspend'}
+                            >
+                              {item.is_suspended ? <PlayCircle className="w-3 h-3" /> : <PauseCircle className="w-3 h-3" />}
+                            </button>
+                            {/* Pause Inquiries */}
+                            <button
+                              type="button"
+                              onClick={() => handleTogglePauseInquiries(item.id)}
+                              className={`p-1 rounded text-[10px] font-bold border transition cursor-pointer ${
+                                item.is_inquiries_paused
+                                  ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
+                                  : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                              }`}
+                              title={item.is_inquiries_paused ? 'Resume comments' : 'Pause comments'}
+                            >
+                              {item.is_inquiries_paused ? <PlayCircle className="w-3 h-3" /> : <PauseCircle className="w-3 h-3" />}
+                            </button>
+                            {/* Direct Media Upload */}
+                            <button
+                              type="button"
+                              onClick={() => handleOpenDirectMedia(item)}
+                              className="p-1 rounded text-[10px] font-bold bg-blue-900/40 text-blue-300 border border-blue-600/40 hover:bg-blue-800/60 cursor-pointer"
+                              title="Direct Media Upload (Cover, Gallery, Video)"
+                            >
+                              <Upload className="w-3 h-3" />
+                            </button>
+                            {/* Report */}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setReportingProduct(item);
+                                setShowReportModal(true);
+                              }}
+                              className="p-1 rounded text-[10px] font-bold bg-slate-900 text-amber-400 border border-amber-600/40 hover:bg-amber-900/40 cursor-pointer"
+                              title="Report item"
+                            >
+                              <Flag className="w-3 h-3" />
+                            </button>
+                            {/* Super Admin Delete */}
+                            <button
+                              type="button"
                               onClick={() => handleDeleteProduct(item.id)}
-                              aria-label={`Delete product ${item.name}`}
+                              className="p-1 rounded text-[10px] font-bold bg-rose-950/60 text-rose-400 border border-rose-800/60 hover:bg-rose-900 cursor-pointer"
+                              title="Permanent Purge"
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <Trash2 className="w-3 h-3" />
                             </button>
-                            <div className="relative">
-                              <button
-                                type="button"
-                                className="text-gray-600 hover:text-gray-900"
-                                aria-label={`More options for product ${item.name}`}
-                                onClick={(e) => { e.stopPropagation(); }}
-                              >
-                                <MoreHorizontal className="h-4 w-4" />
-                              </button>
-                              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden">
-                                <button 
-                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                  onClick={() => history.push(`/dashboard/ecommerce/products/${item.id}/edit`)}
-                                >
-                                  Edit Product
-                                </button>
-                                <button 
-                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                                  onClick={() => history.push(`/dashboard/ecommerce/products/${item.id}/analytics`)}
-                                >
-                                  View Analytics
-                                </button>
-                              </div>
-                            </div>
                           </div>
                         </td>
                       </tr>
@@ -889,57 +1108,65 @@ const EcommercePage: React.FC = () => {
 
       {/* Create Product Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-900">Add New Product</h3>
-                <button type="button" aria-label="Close" 
-                  className="text-slate-700 hover:text-gray-700"
-                  onClick={() => setShowCreateModal(false)}
-                >
-                  <XCircle className="h-6 w-6" />
-                </button>
-              </div>
-              
-              <form onSubmit={(e) => { e.preventDefault(); handleCreateProduct(); }}>
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+          <div className="relative mx-auto p-6 border border-slate-300 max-w-2xl w-full shadow-2xl rounded-2xl bg-white max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center pb-3 border-b border-slate-200 mb-4">
+              <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                <Package className="w-5 h-5 text-blue-600" />
+                Add New Product (PostgreSQL)
+              </h3>
+              <button
+                type="button"
+                aria-label="Close"
+                className="text-slate-500 hover:text-slate-900 font-bold p-1 cursor-pointer"
+                onClick={() => setShowCreateModal(false)}
+              >
+                <XCircle className="h-6 w-6" />
+              </button>
+            </div>
+
+            <form onSubmit={(e) => { e.preventDefault(); handleCreateProduct(); }}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-slate-900 text-xs font-black uppercase tracking-wider mb-1" htmlFor="name">
                     Product Name
                   </label>
                   <input
                     type="text"
                     id="name"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                    className="shadow-xs appearance-none border rounded-xl w-full py-2.5 px-3 text-slate-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold border-slate-300 bg-white placeholder:text-slate-400 text-sm"
                     value={newProduct.name}
                     onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
+                    placeholder="e.g. Vintage Leather Jacket"
                     required
                   />
                 </div>
                 
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+                <div>
+                  <label className="block text-slate-900 text-xs font-black uppercase tracking-wider mb-1" htmlFor="description">
                     Description
                   </label>
                   <textarea
                     id="description"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                    rows={3}
+                    className="shadow-xs appearance-none border rounded-xl w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold border-slate-300 bg-white placeholder:text-slate-400 text-sm"
                     value={newProduct.description}
                     onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
+                    placeholder="Product specification, dimensions, fabric, and details..."
                   />
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="price">
-                      Price
+                    <label className="block text-slate-900 text-xs font-black uppercase tracking-wider mb-1" htmlFor="price">
+                      Price ($)
                     </label>
                     <input
                       type="number"
                       id="price"
                       step="0.01"
                       min="0"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
+                      className="shadow-xs appearance-none border rounded-xl w-full py-2.5 px-3 text-slate-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono text-sm"
                       value={newProduct.price}
                       onChange={(e) => setNewProduct({...newProduct, price: parseFloat(e.target.value) || 0})}
                       required
@@ -947,14 +1174,14 @@ const EcommercePage: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="stockQuantity">
+                    <label className="block text-slate-900 text-xs font-black uppercase tracking-wider mb-1" htmlFor="stockQuantity">
                       Stock Quantity
                     </label>
                     <input
                       type="number"
                       id="stockQuantity"
                       min="0"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 font-mono"
+                      className="shadow-xs appearance-none border rounded-xl w-full py-2.5 px-3 text-slate-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold border-slate-300 bg-white placeholder:text-slate-400 font-mono text-sm"
                       value={newProduct.stockQuantity}
                       onChange={(e) => setNewProduct({...newProduct, stockQuantity: parseInt(e.target.value) || 0})}
                       required
@@ -962,14 +1189,14 @@ const EcommercePage: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="category">
+                    <label className="block text-slate-900 text-xs font-black uppercase tracking-wider mb-1" htmlFor="category">
                       Category
                     </label>
                     <select
                       id="category"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
+                      className="shadow-xs appearance-none border rounded-xl w-full py-2.5 px-3 text-slate-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold border-slate-300 bg-white text-sm"
                       value={newProduct.category}
                       onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
                     >
@@ -984,12 +1211,12 @@ const EcommercePage: React.FC = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="status">
+                    <label className="block text-slate-900 text-xs font-black uppercase tracking-wider mb-1" htmlFor="status">
                       Status
                     </label>
                     <select
                       id="status"
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500"
+                      className="shadow-xs appearance-none border rounded-xl w-full py-2.5 px-3 text-slate-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold border-slate-300 bg-white text-sm"
                       value={newProduct.status}
                       onChange={(e) => setNewProduct({...newProduct, status: e.target.value})}
                     >
@@ -1000,37 +1227,158 @@ const EcommercePage: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="sku">
+                <div>
+                  <label className="block text-slate-900 text-xs font-black uppercase tracking-wider mb-1" htmlFor="sku">
                     SKU
                   </label>
                   <input
                     type="text"
                     id="sku"
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-900 leading-tight focus:outline-none focus:shadow-outline font-bold border-slate-300 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                    className="shadow-xs appearance-none border rounded-xl w-full py-2.5 px-3 text-slate-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold border-slate-300 bg-white placeholder:text-slate-400 text-sm font-mono"
                     value={newProduct.sku}
                     onChange={(e) => setNewProduct({...newProduct, sku: e.target.value})}
+                    placeholder="e.g. SKU-1002"
                     required
                   />
                 </div>
-                
-                <div className="flex justify-end space-x-3 mt-6">
-                  <button
-                    type="button"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none"
-                    onClick={() => setShowCreateModal(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
-                  >
-                    Add Product
-                  </button>
-                </div>
-              </form>
+
+                {/* Media Portfolio: Cover Photo, Gallery, Video */}
+                <CommerceMediaPicker
+                  value={createMediaValue}
+                  onChange={setCreateMediaValue}
+                  title="Product Media Portfolio"
+                  description="Upload primary cover photo, high-res gallery images, and promotional video clips directly to Express backend storage."
+                  allowGallery={true}
+                  allowVideo={true}
+                />
+              </div>
+
+              <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-slate-200">
+                <button
+                  type="button"
+                  className="px-4 py-2.5 text-xs font-bold text-slate-700 bg-slate-100 border border-slate-300 rounded-xl hover:bg-slate-200 transition cursor-pointer"
+                  onClick={() => setShowCreateModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 text-xs font-black text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition cursor-pointer shadow-xs"
+                >
+                  Add Product to PostgreSQL
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Direct Media Upload Standalone Modal */}
+      {showDirectUploadModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <Upload className="w-5 h-5 text-indigo-700" />
+                {targetProductForMedia ? `Update Media: ${targetProductForMedia.name}` : 'Direct Media Upload (Cover, Gallery, Video)'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowDirectUploadModal(false)}
+                className="text-slate-500 hover:text-slate-900 font-bold p-1 cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
+
+            <CommerceMediaPicker
+              value={directMediaPickerValue}
+              onChange={setDirectMediaPickerValue}
+              title="Product Visual Media Asset"
+              description="Ingest files via multipart/form-data directly to Express backend storage and PostgreSQL ugc_media."
+              allowGallery={true}
+              allowVideo={true}
+            />
+
+            <div className="flex justify-end gap-2 pt-4 border-t border-slate-200 mt-4">
+              <button
+                type="button"
+                onClick={() => setShowDirectUploadModal(false)}
+                className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100 text-xs cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveDirectMedia}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs cursor-pointer shadow-xs flex items-center gap-1.5"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                {targetProductForMedia ? 'Save Media to Product' : 'Proceed to Create Product'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Report Modal */}
+      {showReportModal && reportingProduct && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <Flag className="w-5 h-5 text-amber-700" />
+                Report Product
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReportModal(false);
+                  setReportingProduct(null);
+                }}
+                className="text-slate-500 hover:text-slate-900 font-bold p-1 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-700 font-medium">
+              Filing formal compliance complaint for <strong className="text-slate-900">&ldquo;{reportingProduct.name}&rdquo;</strong>.
+              Recorded directly in PostgreSQL management audit log.
+            </p>
+
+            <form onSubmit={handleSubmitReport} className="space-y-4">
+              <div>
+                <label className="text-xs font-bold text-slate-900 block mb-1">Violation / Report Reason</label>
+                <textarea
+                  rows={3}
+                  value={reportReason}
+                  onChange={(e) => setReportReason(e.target.value)}
+                  placeholder="Reason for report (e.g. counterfeit, misleading details, prohibited item)..."
+                  className="w-full p-2.5 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 placeholder:text-slate-400"
+                  required
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowReportModal(false);
+                    setReportingProduct(null);
+                  }}
+                  className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100 text-xs cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold text-xs cursor-pointer shadow-xs"
+                >
+                  Submit Report
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

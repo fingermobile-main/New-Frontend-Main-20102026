@@ -1543,6 +1543,124 @@ export const FlamingoPageContent: React.FC = () => {
                         </button>
                       </div>
                     </div>
+
+                    {/* COMPLIANCE & RBAC ACTIONS BAR */}
+                    <div className="p-2.5 rounded-xl bg-black border border-[#880808] text-xs mt-3">
+                      <div className="flex items-center justify-between pb-1.5 mb-2 border-b border-[#880808]/40">
+                        <span className="text-[10px] font-black tracking-wider text-rose-500 uppercase flex items-center gap-1">
+                          <ShieldAlert className="w-3 h-3 text-rose-600" />
+                          COMPLIANCE & RBAC ACTIONS
+                        </span>
+                        <span className="text-[9px] font-mono font-bold text-pink-400">
+                          {product.is_frozen ? 'FROZEN' : product.is_censored ? 'CENSORED' : product.is_suspended ? 'SUSPENDED' : 'ACTIVE'}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between gap-1 flex-wrap">
+                        {/* Reorder Up / Down */}
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => handleReorderProduct(product.id, 'up')}
+                            className="p-1 rounded bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300"
+                            title="Move Up"
+                          >
+                            <ArrowUp className="w-3 h-3" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleReorderProduct(product.id, 'down')}
+                            className="p-1 rounded bg-slate-900 border border-slate-700 hover:bg-slate-800 text-slate-300"
+                            title="Move Down"
+                          >
+                            <ArrowDown className="w-3 h-3" />
+                          </button>
+                        </div>
+                        {/* Granular Micro-management Actions */}
+                        <div className="flex items-center gap-1 flex-wrap">
+                          <button
+                            type="button"
+                            onClick={() => handleToggleFreeze(product)}
+                            className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                              product.is_frozen
+                                ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                                : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                            }`}
+                            title={product.is_frozen ? 'Unfreeze Interactions' : 'Freeze Interactions'}
+                          >
+                            {product.is_frozen ? <Unlock className="w-3 h-3 inline mr-0.5" /> : <Lock className="w-3 h-3 inline mr-0.5" />}
+                            {product.is_frozen ? 'Unfreeze' : 'Freeze'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleCensor(product)}
+                            className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                              product.is_censored
+                                ? 'bg-purple-500/20 text-purple-300 border-purple-500/40'
+                                : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                            }`}
+                            title={product.is_censored ? 'Remove 18+ blur' : 'Apply 18+ blur mask'}
+                          >
+                            {product.is_censored ? <Eye className="w-3 h-3 inline mr-0.5" /> : <EyeOff className="w-3 h-3 inline mr-0.5" />}
+                            {product.is_censored ? 'Uncensor' : 'Censor'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSuspend(product)}
+                            className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                              product.is_suspended
+                                ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+                                : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                            }`}
+                            title={product.is_suspended ? 'Restore to Runway' : 'Suspend Piece'}
+                          >
+                            {product.is_suspended ? <PlayCircle className="w-3 h-3 inline mr-0.5" /> : <PauseCircle className="w-3 h-3 inline mr-0.5" />}
+                            {product.is_suspended ? 'Restore' : 'Suspend'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleTogglePauseInquiries(product)}
+                            className={`px-1.5 py-1 rounded text-[10px] font-bold border transition ${
+                              product.is_inquiries_paused
+                                ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
+                                : 'bg-slate-900 text-slate-300 border-slate-700 hover:text-white'
+                            }`}
+                            title={product.is_inquiries_paused ? 'Resume comments' : 'Pause comments'}
+                          >
+                            {product.is_inquiries_paused ? 'Resume' : 'Pause'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleOpenDirectMedia(product)}
+                            className="px-1.5 py-1 rounded text-[10px] font-bold bg-pink-900/40 text-pink-300 border border-pink-600/40 hover:bg-pink-800/60"
+                            title="Direct Media Upload (Cover, Lookbook, Video)"
+                          >
+                            <Upload className="w-3 h-3 inline mr-0.5" />
+                            Media
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setReportingProduct(product);
+                              setShowReportModal(true);
+                            }}
+                            className="px-1.5 py-1 rounded text-[10px] font-bold bg-slate-900 text-amber-400 border border-amber-600/40 hover:bg-amber-900/40"
+                            title="Report item to compliance"
+                          >
+                            <Flag className="w-3 h-3 inline mr-0.5" />
+                            Report
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteProduct(product.id, product.name)}
+                            className="px-1.5 py-1 rounded text-[10px] font-bold bg-rose-950/60 text-rose-400 border border-rose-800/60 hover:bg-rose-900"
+                            title="Permanent Purge (Super Admin)"
+                          >
+                            <Trash2 className="w-3 h-3 inline mr-0.5" />
+                            Purge
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -2323,6 +2441,107 @@ export const FlamingoPageContent: React.FC = () => {
           onClose={() => setShowVisualSearchModal(false)}
           initialStore="flamingo"
         />
+
+        {/* DIRECT MEDIA UPLOAD MODAL */}
+        {showDirectUploadModal && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-pink-500/40 rounded-3xl max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+                <div>
+                  <h3 className="font-bold text-white text-base flex items-center gap-2">
+                    <Upload className="w-5 h-5 text-pink-400" />
+                    Direct Media Ingestion: {targetProductForMedia ? targetProductForMedia.name : 'New Haute Creation'}
+                  </h3>
+                  <p className="text-xs text-slate-300">
+                    Upload lookbook cover art, multi-angle detail photos, and runway 4K video reels saving directly to PostgreSQL storage.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowDirectUploadModal(false)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <CommerceMediaPicker
+                value={directMediaPickerValue}
+                onChange={setDirectMediaPickerValue}
+                title="Flamingo Haute Fashion Media Picker"
+                description="Upload cover lookbook photo, detail embroidery close-ups, and runway showcase video reel. Supports direct file picker and express uploads."
+                allowGallery={true}
+                allowVideo={true}
+              />
+
+              <div className="pt-3 flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowDirectUploadModal(false)}
+                  className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSaveDirectMedia}
+                  className="flex-1 py-2.5 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition"
+                >
+                  {targetProductForMedia ? 'Save Media to PostgreSQL' : 'Publish Haute Creation'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* REPORT MODAL */}
+        {showReportModal && reportingProduct && (
+          <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div className="bg-slate-900 border border-rose-900/60 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+              <div className="flex justify-between items-center pb-2 border-b border-slate-800">
+                <h3 className="font-bold text-white text-base flex items-center gap-2">
+                  <Flag className="w-5 h-5 text-amber-500" />
+                  Report Listing: {reportingProduct.name}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setShowReportModal(false)}
+                  className="p-1 rounded text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <form onSubmit={handleSubmitReport} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-200 mb-1">Reason for Report</label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={reportReason}
+                    onChange={(e) => setReportReason(e.target.value)}
+                    placeholder="Describe violations (e.g. counterfeit design, unauthorized photography, compliance issue)..."
+                    className="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-rose-500"
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowReportModal(false)}
+                    className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-xs"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl text-xs transition"
+                  >
+                    Submit Report to Audit Ledger
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
       </div>
     </MainLayout>
