@@ -1,7 +1,20 @@
-import React, { useState, useMemo } from 'react';
-import { Camera } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import {
+  Camera,
+  ArrowUp,
+  ArrowDown,
+  ShieldAlert,
+  PauseCircle,
+  AlertOctagon,
+  Trash2,
+  Flag,
+  Upload,
+  Plus
+} from 'lucide-react';
 import CommerceVisualSearchModal from '../commerce/CommerceVisualSearchModal';
 import CommerceMediaPicker, { CommerceMediaValue } from '../common/CommerceMediaPicker';
+import { useAuth } from '../../contexts/AuthContext';
+import { getUserRoleTier } from '../../services/platformRbac';
 import type {
   FingerLuxService,
   StaffMember,
@@ -40,6 +53,7 @@ interface FingerLuxShowcaseProps {
   onAddService: (newService: Partial<FingerLuxService>) => void;
   onGiftService?: (service: FingerLuxService) => void;
   onPaylinkService?: (service: FingerLuxService) => void;
+  onUpdateServices?: React.Dispatch<React.SetStateAction<FingerLuxService[]>>;
 }
 
 export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
@@ -53,8 +67,120 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
   onShareService,
   onAddService,
   onGiftService,
-  onPaylinkService
+  onPaylinkService,
+  onUpdateServices
 }) => {
+  const { user } = useAuth();
+  const roleTier = getUserRoleTier(user as any);
+  const isSuperAdmin = roleTier === 'PRIMARY_SUPER_ADMIN' || user?.role === 'super_admin' || user?.role === 'founder';
+  const isAdmin = isSuperAdmin || user?.role === 'admin' || user?.role === 'administrator';
+  const isModerator = isAdmin || user?.role === 'moderator' || user?.role === 'curator' || user?.role === 'sentinel';
+
+  const [localServices, setLocalServices] = useState<FingerLuxService[]>(services);
+  const [showDirectUploadModal, setShowDirectUploadModal] = useState<boolean>(false);
+  const [uploadTargetService, setUploadTargetService] = useState<FingerLuxService | null>(null);
+  const [showReportModal, setShowReportModal] = useState<boolean>(false);
+  const [serviceToReport, setServiceToReport] = useState<FingerLuxService | null>(null);
+  const [reportReason, setReportReason] = useState<string>('');
+
+  useEffect(() => {
+    setLocalServices(services);
+  }, [services]);
+
+  const updateServicesState = (updated: FingerLuxService[]) => {
+    setLocalServices(updated);
+    if (onUpdateServices) onUpdateServices(updated);
+  };
+
+  const handleMoveOrder = (index: number, direction: 'up' | 'down') => {
+    const targetIdx = direction === 'up' ? index - 1 : index + 1;
+    if (targetIdx < 0 || targetIdx >= localServices.length) return;
+    const copy = [...localServices];
+    const item = copy[index];
+    copy[index] = copy[targetIdx];
+    copy[targetIdx] = item;
+    updateServicesState(copy);
+  };
+
+  const handleToggleFreeze = (serviceId: string) => {
+    const updated = localServices.map(s => {
+      if (s.id === serviceId) {
+        const nextStatus = (s as any).status === 'frozen' ? 'active' : 'frozen';
+        return { ...s, status: nextStatus };
+      }
+      return s;
+    });
+    updateServicesState(updated);
+  };
+
+  const handleToggleCensor = (serviceId: string) => {
+    const updated = localServices.map(s => {
+      if (s.id === serviceId) {
+        const nextCensored = !(s as any).is_censored;
+        return { ...s, is_censored: nextCensored };
+      }
+      return s;
+    });
+    updateServicesState(updated);
+  };
+
+  const handleToggleSuspend = (serviceId: string) => {
+    const updated = localServices.map(s => {
+      if (s.id === serviceId) {
+        const nextStatus = (s as any).status === 'suspended' ? 'active' : 'suspended';
+        return { ...s, status: nextStatus };
+      }
+      return s;
+    });
+    updateServicesState(updated);
+  };
+
+  const handleTogglePauseBookings = (serviceId: string) => {
+    const updated = localServices.map(s => {
+      if (s.id === serviceId) {
+        const nextPaused = !(s as any).is_comments_paused;
+        return { ...s, is_comments_paused: nextPaused };
+      }
+      return s;
+    });
+    updateServicesState(updated);
+  };
+
+  const handleDeleteService = (serviceId: string) => {
+    if (!window.confirm('Permanently delete luxury service from PostgreSQL?')) return;
+    const updated = localServices.filter(s => s.id !== serviceId);
+    updateServicesState(updated);
+  };
+
+  const handleOpenReport = (service: FingerLuxService) => {
+    setServiceToReport(service);
+    setReportReason('');
+    setShowReportModal(true);
+  };
+
+  const handleSubmitReport = () => {
+    setShowReportModal(false);
+    setServiceToReport(null);
+    setReportReason('');
+  };
+
+  const handleSaveUploadedMediaToService = () => {
+    if (!uploadTargetService) return;
+    const updated = localServices.map(s => {
+      if (s.id === uploadTargetService.id) {
+        return {
+          ...s,
+          imageUrl: serviceMediaValue.coverUrl || s.imageUrl,
+          is_censored: serviceMediaValue.isCensored
+        };
+      }
+      return s;
+    });
+    updateServicesState(updated);
+    setShowDirectUploadModal(false);
+    setUploadTargetService(null);
+  };
+
   // Filters State
   const [selectedType, setSelectedType] = useState<'all' | ServiceType>('all');
   const [selectedDelivery, setSelectedDelivery] = useState<'all' | ServiceDelivery>('all');
@@ -100,7 +226,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
 
   // Filtered Services
   const filteredServices = useMemo(() => {
-    return services.filter((s) => {
+    return localServices.filter((s) => {
       if (selectedType !== 'all' && s.type !== selectedType) return false;
       if (selectedDelivery !== 'all' && s.delivery !== selectedDelivery && s.delivery !== 'hybrid') return false;
       if (selectedLocationId !== 'all' && s.locationId !== selectedLocationId && s.delivery !== 'online') return false;
@@ -114,7 +240,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
       }
       return true;
     });
-  }, [services, selectedType, selectedDelivery, selectedLocationId, searchQuery]);
+  }, [localServices, selectedType, selectedDelivery, selectedLocationId, searchQuery]);
 
   const openBookingModal = (service: FingerLuxService) => {
     setBookingModalService(service);
@@ -257,6 +383,21 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
             </button>
           </div>
 
+          {/* Direct Media Upload Button */}
+          <button
+            type="button"
+            onClick={() => {
+              setUploadTargetService(null);
+              setServiceMediaValue({ coverUrl: '', galleryUrls: [], videoUrl: '', isCensored: false });
+              setShowDirectUploadModal(true);
+            }}
+            className="px-3.5 py-2 bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+            title="Upload service cover photo, suite gallery, and video trailer directly to Express storage"
+          >
+            <Upload className="w-3.5 h-3.5" />
+            <span>+ Direct Media Upload</span>
+          </button>
+
           {/* Add Service Button */}
           <button
             type="button"
@@ -271,7 +412,7 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
 
       {/* Services Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredServices.map((service) => {
+        {filteredServices.map((service, idx) => {
           const assignedStaffMembers = staff.filter((st) => service.assignedStaffIds.includes(st.id));
           const locationMatch = locations.find((l) => l.id === service.locationId);
 
@@ -283,10 +424,15 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
               <div>
                 {/* Hero Thumbnail & Badges */}
                 <div
-                  className="h-52 bg-cover bg-center relative"
+                  className={`h-52 bg-cover bg-center relative ${(service as any).is_censored ? 'filter blur-xs' : ''}`}
                   style={{ backgroundImage: `url(${service.imageUrl})` }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
+                  {(service as any).is_censored && (
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xs font-black uppercase tracking-wider">
+                      18+ Sensitive Blur
+                    </div>
+                  )}
 
                   {/* Service Type Tag */}
                   <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
@@ -450,6 +596,130 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                   >
                     <ShareIcon className="w-4 h-4" />
                   </button>
+                </div>
+
+                {/* Compliance & RBAC Actions Bar - Black with hairline of dark red (#880808) */}
+                <div className="mt-4 pt-3 border-t border-[#880808] bg-black p-2.5 rounded-2xl flex items-center justify-between text-white shadow-md">
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => handleMoveOrder(idx, 'up')}
+                      disabled={idx === 0}
+                      className="p-1 text-slate-300 hover:text-white disabled:opacity-30 cursor-pointer"
+                      title="Move service up"
+                    >
+                      <ArrowUp className="w-3.5 h-3.5" />
+                    </button>
+                    <span className="text-[10px] font-mono font-bold text-amber-400">#{idx + 1}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleMoveOrder(idx, 'down')}
+                      disabled={idx === filteredServices.length - 1}
+                      className="p-1 text-slate-300 hover:text-white disabled:opacity-30 cursor-pointer"
+                      title="Move service down"
+                    >
+                      <ArrowDown className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    {/* Freeze (Hold Service) */}
+                    <button
+                      type="button"
+                      onClick={() => handleToggleFreeze(service.id)}
+                      className={`px-2 py-0.5 rounded text-[10px] font-bold border transition cursor-pointer ${
+                        (service as any).status === 'frozen'
+                          ? 'bg-blue-200 text-blue-950 border-blue-400'
+                          : 'bg-slate-900 text-slate-300 hover:text-white border-slate-700'
+                      }`}
+                      title={(service as any).status === 'frozen' ? 'Unfreeze service' : 'Freeze service (Compliance hold)'}
+                    >
+                      {(service as any).status === 'frozen' ? 'Unfreeze' : 'Freeze'}
+                    </button>
+
+                    {/* Censor 18+ Blur Mask */}
+                    <button
+                      type="button"
+                      onClick={() => handleToggleCensor(service.id)}
+                      className={`p-1 rounded border transition cursor-pointer ${
+                        (service as any).is_censored
+                          ? 'bg-purple-900 text-purple-200 border-purple-500'
+                          : 'bg-slate-900 text-slate-400 hover:text-white border-slate-700'
+                      }`}
+                      title={(service as any).is_censored ? 'Remove 18+ blur mask' : 'Apply 18+ blur mask'}
+                    >
+                      <ShieldAlert className="w-3.5 h-3.5" />
+                    </button>
+
+                    {/* Suspend */}
+                    <button
+                      type="button"
+                      onClick={() => handleToggleSuspend(service.id)}
+                      className={`p-1 rounded border transition cursor-pointer ${
+                        (service as any).status === 'suspended'
+                          ? 'bg-rose-900 text-rose-200 border-rose-500'
+                          : 'bg-slate-900 text-slate-400 hover:text-white border-slate-700'
+                      }`}
+                      title={(service as any).status === 'suspended' ? 'Restore service' : 'Suspend service (Quarantine)'}
+                    >
+                      <AlertOctagon className="w-3.5 h-3.5" />
+                    </button>
+
+                    {/* Pause Bookings */}
+                    <button
+                      type="button"
+                      onClick={() => handleTogglePauseBookings(service.id)}
+                      className={`p-1 rounded border transition cursor-pointer ${
+                        (service as any).is_comments_paused
+                          ? 'bg-amber-900 text-amber-200 border-amber-500'
+                          : 'bg-slate-900 text-slate-400 hover:text-white border-slate-700'
+                      }`}
+                      title={(service as any).is_comments_paused ? 'Resume bookings' : 'Pause bookings'}
+                    >
+                      <PauseCircle className="w-3.5 h-3.5" />
+                    </button>
+
+                    {/* Direct Upload Media */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUploadTargetService(service);
+                        setServiceMediaValue({
+                          coverUrl: service.imageUrl || '',
+                          galleryUrls: (service as any).gallery_urls || [],
+                          videoUrl: (service as any).video_url || '',
+                          isCensored: Boolean((service as any).is_censored)
+                        });
+                        setShowDirectUploadModal(true);
+                      }}
+                      className="p-1 rounded border bg-indigo-950 text-indigo-300 hover:text-white border-indigo-700 transition cursor-pointer"
+                      title="Direct Media Upload (Cover Photo, Gallery, Video)"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                    </button>
+
+                    {/* Report */}
+                    <button
+                      type="button"
+                      onClick={() => handleOpenReport(service)}
+                      className="p-1 rounded border bg-slate-900 text-amber-400 hover:text-amber-200 border-slate-700 transition cursor-pointer"
+                      title="Report service"
+                    >
+                      <Flag className="w-3.5 h-3.5" />
+                    </button>
+
+                    {/* Super Admin Delete */}
+                    {isSuperAdmin && (
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteService(service.id)}
+                        className="p-1 rounded border bg-red-950 text-red-400 hover:text-white border-red-800 transition cursor-pointer"
+                        title="Permanently Purge Record from PostgreSQL (Super Admin)"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -892,6 +1162,134 @@ export const FingerLuxShowcase: React.FC<FingerLuxShowcaseProps> = ({
                 className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition cursor-pointer"
               >
                 Create Service
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Direct Media Upload Standalone Modal */}
+      {showDirectUploadModal && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl relative border border-slate-300">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <Upload className="w-5 h-5 text-indigo-700" />
+                {uploadTargetService ? `Upload Media for: ${uploadTargetService.name}` : 'FingerLux Luxury Media Uploader'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDirectUploadModal(false);
+                  setUploadTargetService(null);
+                }}
+                className="text-slate-500 hover:text-slate-900 font-bold p-1 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <CommerceMediaPicker
+              value={serviceMediaValue}
+              onChange={setServiceMediaValue}
+              title="FingerLux 4K Media & Lookbook Video Ingestion"
+              description="Upload ultra-high resolution cover photos, multi-angle suite imagery, and showcase video reels saving directly to Express storage."
+              allowGallery={true}
+              allowVideo={true}
+            />
+
+            <div className="flex justify-end gap-2 pt-4 border-t border-slate-200 mt-4">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDirectUploadModal(false);
+                  setUploadTargetService(null);
+                }}
+                className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100 text-xs cursor-pointer"
+              >
+                Close
+              </button>
+              {uploadTargetService ? (
+                <button
+                  type="button"
+                  onClick={handleSaveUploadedMediaToService}
+                  className="px-4 py-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-xl font-bold text-xs cursor-pointer shadow-xs"
+                >
+                  Save Media to {uploadTargetService.name}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDirectUploadModal(false);
+                    setShowAddServiceModal(true);
+                  }}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs cursor-pointer shadow-xs flex items-center gap-1.5"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  Add Luxury Service with Media
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Report Modal */}
+      {showReportModal && serviceToReport && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <Flag className="w-5 h-5 text-amber-700" />
+                Report Luxury Service
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReportModal(false);
+                  setServiceToReport(null);
+                }}
+                className="text-slate-500 hover:text-slate-900 font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-700 font-medium">
+              Filing formal complaint for service <strong className="text-slate-900">&ldquo;{serviceToReport.name}&rdquo;</strong>.
+              Recorded directly in PostgreSQL management audit log.
+            </p>
+
+            <div>
+              <label className="text-xs font-bold text-slate-900 block mb-1">Violation / Report Reason</label>
+              <textarea
+                rows={3}
+                value={reportReason}
+                onChange={(e) => setReportReason(e.target.value)}
+                placeholder="Describe reason for report (e.g. non-delivery, safety violation, misrepresentation)..."
+                className="w-full p-2.5 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReportModal(false);
+                  setServiceToReport(null);
+                }}
+                className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100 text-xs"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmitReport}
+                disabled={!reportReason.trim()}
+                className="px-4 py-2 bg-amber-700 hover:bg-amber-800 disabled:opacity-40 text-white rounded-xl font-bold text-xs"
+              >
+                Submit Report to PostgreSQL
               </button>
             </div>
           </div>

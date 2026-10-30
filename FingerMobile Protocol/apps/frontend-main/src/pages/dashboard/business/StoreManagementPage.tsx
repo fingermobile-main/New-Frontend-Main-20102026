@@ -395,61 +395,228 @@ const StoreManagementPage: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-xs border border-slate-300">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <h2 className="text-xl font-black text-slate-900">Manage Products</h2>
-            <button
-              onClick={() => handleOpenEditor()}
-              className="px-4 py-2 text-sm font-semibold bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
-            >
-              + Add Product
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowDirectUploadModal(true)}
+                className="px-3.5 py-2 text-xs font-bold bg-indigo-700 text-white rounded-xl hover:bg-indigo-800 transition shadow-xs flex items-center gap-1.5 cursor-pointer"
+                title="Direct Media Upload (Cover Photo, Gallery, Video Showcase)"
+              >
+                <Upload className="w-3.5 h-3.5" />
+                <span>+ Direct Media Upload</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleOpenEditor()}
+                className="px-4 py-2 text-xs font-bold bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition shadow-xs flex items-center gap-1.5 cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>+ Add Product</span>
+              </button>
+            </div>
           </div>
 
           {loading ? (
-            <div className="py-12 text-center text-slate-700">Loading products...</div>
+            <div className="py-12 text-center text-slate-700">Loading products from PostgreSQL...</div>
           ) : products.length === 0 ? (
             <div className="py-12 text-center text-slate-700">
-              No products found. Click "+ Add Product" to create your first store item.
+              No products found. Click "+ Add Product" or "+ Direct Media Upload" to create your first store item.
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left">
+              <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b text-slate-700">
-                    <th className="p-2 text-sm font-semibold">Product</th>
-                    <th className="p-2 text-sm font-semibold">Price (FIC)</th>
-                    <th className="p-2 text-sm font-semibold">Stock</th>
-                    <th className="p-2 text-sm font-semibold text-right">Actions</th>
+                  <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                    <th className="p-2.5 text-center">Reorder</th>
+                    <th className="p-2.5">Product & Media</th>
+                    <th className="p-2.5">Price (FIC)</th>
+                    <th className="p-2.5">Stock</th>
+                    <th className="p-2.5">Status</th>
+                    <th className="p-2.5 text-right">Autonomous Actions</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr key={product.id} className="border-b last:border-0 hover:bg-gray-50/50">
-                      <td className="p-2 flex items-center gap-3">
-                        <img
-                          src={product.imageUrl}
-                          alt={product.name}
-                          className="w-10 h-10 rounded-md object-cover border border-slate-200"
-                        />
-                        <span className="font-medium text-gray-900">{product.name}</span>
+                <tbody className="divide-y divide-slate-200 text-xs">
+                  {products.map((product, idx) => (
+                    <tr key={product.id} className="hover:bg-slate-50/70 transition-colors">
+                      {/* Reorder Buttons */}
+                      <td className="p-2.5 text-center">
+                        <div className="flex flex-col items-center justify-center gap-0.5">
+                          <button
+                            type="button"
+                            onClick={() => handleMoveOrder(idx, 'up')}
+                            disabled={idx === 0}
+                            className="p-0.5 text-slate-700 hover:text-blue-600 disabled:opacity-30 cursor-pointer"
+                            title="Move product up"
+                          >
+                            <ArrowUp className="w-3.5 h-3.5" />
+                          </button>
+                          <span className="font-mono font-bold text-[10px] text-slate-800">#{product.display_order ?? idx + 1}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleMoveOrder(idx, 'down')}
+                            disabled={idx === products.length - 1}
+                            className="p-0.5 text-slate-700 hover:text-blue-600 disabled:opacity-30 cursor-pointer"
+                            title="Move product down"
+                          >
+                            <ArrowDown className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </td>
-                      <td className="p-2 font-semibold text-gray-800">{product.price.toLocaleString()}</td>
-                      <td className="p-2 text-slate-700 font-semibold text-sm">{product.stock}</td>
-                      <td className="p-2 text-right">
-                        <button
-                          onClick={() => handleOpenEditor(product)}
-                          className="p-2 text-slate-700 hover:text-blue-600 transition"
-                          title="Edit Product"
-                        >
-                          <PencilIcon className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          className="p-2 text-slate-700 hover:text-red-600 transition"
-                          title="Delete Product"
-                        >
-                          <TrashIcon className="w-4 h-4" />
-                        </button>
+
+                      {/* Product Thumbnail & Details */}
+                      <td className="p-2.5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-xl overflow-hidden border border-slate-300 relative shrink-0 bg-slate-100 shadow-2xs">
+                            <img
+                              src={product.imageUrl}
+                              alt={product.name}
+                              className={`w-full h-full object-cover ${product.isCensored ? 'filter blur-xs' : ''}`}
+                              onError={(e) => {
+                                (e.target as HTMLElement).style.display = 'none';
+                              }}
+                            />
+                            {product.isCensored && (
+                              <span className="absolute inset-0 bg-black/60 text-white text-[8px] font-black uppercase flex items-center justify-center">
+                                18+
+                              </span>
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <span className="font-bold text-slate-900 block truncate">{product.name}</span>
+                            <span className="text-[10px] font-mono text-slate-600 uppercase">{product.category || 'General'}</span>
+                            {product.is_comments_paused && (
+                              <span className="block text-[9px] font-bold text-amber-800">Inquiries Paused</span>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Price */}
+                      <td className="p-2.5 font-bold text-slate-900 font-mono">
+                        {product.price.toLocaleString()} FIC
+                      </td>
+
+                      {/* Stock */}
+                      <td className="p-2.5 text-slate-800 font-bold font-mono">
+                        {product.stock} units
+                      </td>
+
+                      {/* Status */}
+                      <td className="p-2.5">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                          product.status === 'frozen'
+                            ? 'bg-blue-100 text-blue-950 border-blue-400'
+                            : product.status === 'censored'
+                            ? 'bg-purple-100 text-purple-950 border-purple-400'
+                            : product.status === 'suspended'
+                            ? 'bg-rose-100 text-rose-950 border-rose-400'
+                            : 'bg-emerald-100 text-emerald-950 border-emerald-400'
+                        }`}>
+                          {(product.status || 'active').toUpperCase()}
+                        </span>
+                      </td>
+
+                      {/* Granular RBAC Actions */}
+                      <td className="p-2.5 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          {/* Freeze */}
+                          <button
+                            type="button"
+                            onClick={() => handleToggleFreeze(product)}
+                            className={`p-1.5 rounded-lg border text-xs font-bold transition cursor-pointer ${
+                              product.status === 'frozen'
+                                ? 'bg-blue-200 text-blue-950 border-blue-500'
+                                : 'bg-slate-100 text-slate-700 hover:bg-blue-50 border-slate-300'
+                            }`}
+                            title={product.status === 'frozen' ? 'Unfreeze product' : 'Freeze product (Compliance hold)'}
+                          >
+                            <span className="text-[10px]">{product.status === 'frozen' ? 'Unfreeze' : 'Freeze'}</span>
+                          </button>
+
+                          {/* Censor (18+ blur mask) */}
+                          <button
+                            type="button"
+                            onClick={() => handleToggleCensor(product)}
+                            className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                              product.isCensored
+                                ? 'bg-purple-100 text-purple-950 border-purple-400'
+                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300'
+                            }`}
+                            title={product.isCensored ? 'Remove 18+ blur mask' : 'Apply 18+ sensitive blur mask'}
+                          >
+                            <ShieldAlert className="w-3.5 h-3.5 text-purple-700" />
+                          </button>
+
+                          {/* Suspend */}
+                          <button
+                            type="button"
+                            onClick={() => handleToggleSuspend(product)}
+                            className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                              product.status === 'suspended'
+                                ? 'bg-rose-100 text-rose-950 border-rose-400'
+                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300'
+                            }`}
+                            title={product.status === 'suspended' ? 'Restore product' : 'Suspend product (Delist)'}
+                          >
+                            <AlertOctagon className="w-3.5 h-3.5 text-rose-700" />
+                          </button>
+
+                          {/* Pause Comments/Inquiries */}
+                          <button
+                            type="button"
+                            onClick={() => handleTogglePauseComments(product)}
+                            className={`p-1.5 rounded-lg border transition cursor-pointer ${
+                              product.is_comments_paused
+                                ? 'bg-amber-100 text-amber-950 border-amber-400'
+                                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300'
+                            }`}
+                            title={product.is_comments_paused ? 'Resume inquiries' : 'Pause inquiries'}
+                          >
+                            <PauseCircle className="w-3.5 h-3.5 text-amber-700" />
+                          </button>
+
+                          {/* Quick Media Upload */}
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEditor(product)}
+                            className="p-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg border border-indigo-300 transition cursor-pointer"
+                            title="Direct Media Upload (Cover, Gallery, Video)"
+                          >
+                            <Upload className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Report */}
+                          <button
+                            type="button"
+                            onClick={() => handleOpenReport(product)}
+                            className="p-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded-lg border border-amber-300 transition cursor-pointer"
+                            title="Report product to moderation"
+                          >
+                            <Flag className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Edit */}
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEditor(product)}
+                            className="p-1.5 text-slate-700 hover:text-blue-600 border border-slate-300 rounded-lg transition cursor-pointer"
+                            title="Edit Product"
+                          >
+                            <PencilIcon className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Delete (Super Admin / Merchant) */}
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(product.id)}
+                            className="p-1.5 text-slate-700 hover:text-red-600 border border-slate-300 rounded-lg transition cursor-pointer"
+                            title="Permanently Delete Product from PostgreSQL"
+                          >
+                            <TrashIcon className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -575,32 +742,144 @@ const StoreManagementPage: React.FC = () => {
                   <option value="collectibles">Collectibles</option>
                 </select>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Image URL (Optional)</label>
-                <input
-                  type="url"
-                  value={formData.imageUrl}
-                  onChange={(e) => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
-                  placeholder="https://..."
-                />
-              </div>
+              {/* Multi-Media Picker: Image Gallery, Cover Photo, Video Reel */}
+              <CommerceMediaPicker
+                value={productMediaValue}
+                onChange={setProductMediaValue}
+                title="Storefront Product Media"
+                description="Upload cover photo, multi-angle images, and showcase video reels saved directly to Express backend storage."
+                allowGallery={true}
+                allowVideo={true}
+              />
+
               <div className="mt-6 flex gap-3 pt-2">
                 <button
                   type="submit"
-                  className="flex-1 bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition text-sm"
+                  className="flex-1 bg-blue-600 text-white py-2.5 rounded-xl font-bold hover:bg-blue-700 transition text-sm cursor-pointer shadow-xs"
                 >
-                  {editingProduct ? 'Save Changes' : 'Create Product'}
+                  {editingProduct ? 'Save Changes' : 'Create Product in PostgreSQL'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsEditorOpen(false)}
-                  className="flex-1 bg-slate-100 text-slate-800 border border-slate-300 py-2 rounded-lg font-bold hover:bg-slate-200 transition text-sm"
+                  className="flex-1 bg-slate-100 text-slate-800 border border-slate-300 py-2.5 rounded-xl font-bold hover:bg-slate-200 transition text-sm cursor-pointer"
                 >
                   Cancel
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Direct Media Upload Standalone Modal */}
+      {showDirectUploadModal && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative border border-slate-300">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-4">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <Upload className="w-5 h-5 text-indigo-700" />
+                Direct Media Upload (Cover, Gallery, Video)
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowDirectUploadModal(false)}
+                className="text-slate-500 hover:text-slate-900 font-bold p-1 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <CommerceMediaPicker
+              value={productMediaValue}
+              onChange={setProductMediaValue}
+              title="Upload Storefront Media"
+              description="Ingest files via multipart/form-data directly to Express backend storage and PostgreSQL ugc_media."
+              allowGallery={true}
+              allowVideo={true}
+            />
+
+            <div className="flex justify-end gap-2 pt-4 border-t border-slate-200 mt-4">
+              <button
+                type="button"
+                onClick={() => setShowDirectUploadModal(false)}
+                className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100 text-xs cursor-pointer"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDirectUploadModal(false);
+                  handleOpenEditor();
+                }}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-xs cursor-pointer shadow-xs flex items-center gap-1.5"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Create Product with Media
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Report Modal */}
+      {showReportModal && itemToReport && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-300 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+              <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+                <Flag className="w-5 h-5 text-amber-700" />
+                Report Product
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReportModal(false);
+                  setItemToReport(null);
+                }}
+                className="text-slate-500 hover:text-slate-900 font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-700 font-medium">
+              Filing formal complaint for <strong className="text-slate-900">&ldquo;{itemToReport.name}&rdquo;</strong>.
+              Recorded directly in PostgreSQL management audit log.
+            </p>
+
+            <div>
+              <label className="text-xs font-bold text-slate-900 block mb-1">Violation / Report Reason</label>
+              <textarea
+                rows={3}
+                value={reportReason}
+                onChange={(e) => setReportReason(e.target.value)}
+                placeholder="Reason for report (e.g. counterfeit, misleading details, prohibited item)..."
+                className="w-full p-2.5 text-xs font-bold text-slate-900 bg-white border border-slate-300 rounded-xl outline-none"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowReportModal(false);
+                  setItemToReport(null);
+                }}
+                className="px-4 py-2 border border-slate-300 rounded-xl font-bold text-slate-700 hover:bg-slate-100 text-xs"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmitReport}
+                disabled={!reportReason.trim()}
+                className="px-4 py-2 bg-amber-700 hover:bg-amber-800 disabled:opacity-40 text-white rounded-xl font-bold text-xs"
+              >
+                Submit Report to PostgreSQL
+              </button>
+            </div>
           </div>
         </div>
       )}
