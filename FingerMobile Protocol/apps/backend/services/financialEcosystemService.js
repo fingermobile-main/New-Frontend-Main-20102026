@@ -154,6 +154,8 @@ class FinancialEcosystemService {
       sheet5_capex_opex_dancia4tv: {
         title: 'CAPEX & OPEX (2) - Dancia-4Tv 1st Year BoQ',
         totalBillOfQuantityNgn: 1412050000.00,
+        totalLoanAllocationNgn: 1412050000.00,
+        usdExchangeRate: 1550,
         keyLineItems: [
           { item: '2-Year Land Leased Assets / Office Space Rent', amountNgn: 4000000.00 },
           { item: 'VOD DVB PayTV Equipment', amountNgn: 22000000.00 },
@@ -171,6 +173,25 @@ class FinancialEcosystemService {
           { item: 'Fixed Statutory Bank Reserve Deposit', amountNgn: 50000000.00 },
           { item: 'Ops & Dispatch Vehicles', amountNgn: 7000000.00 },
           { item: 'Shipping, Delivery & Cross-Border Duties', amountNgn: 2000000.00 }
+        ],
+        items: [
+          { id: 'dancia_1', name: '1. Two (2) Year Land Leased Assets / Office Space Rent', category: 'Real Estate', amountNgn: 16000000.00, notes: '2 years @ ₦8,000,000/yr' },
+          { id: 'dancia_2', name: '2. Telebreeze for PayTV VOD DVB Equipment', category: 'Broadcast Tech', amountNgn: 349200000.00, notes: '2 units @ ₦174,600,000' },
+          { id: 'dancia_3', name: '3. Legal Counsel, Contracts & Regulatory Incorporation', category: 'Legal', amountNgn: 500000.00, notes: 'Statutory filing & deed seals' },
+          { id: 'dancia_4', name: '4. Building Improvements and Office Renovation', category: 'Facilities', amountNgn: 8800000.00, notes: 'Server room prep & acoustics' },
+          { id: 'dancia_5', name: '5. One-Year Broadband Dedicated Data Trunk Link', category: 'Comms', amountNgn: 4600000.00, notes: 'High-speed fiber connectivity' },
+          { id: 'dancia_6', name: '6. Two-Year Overhead, Operations & Logistics Costs', category: 'Overhead', amountNgn: 62150000.00, notes: 'Operational contingency' },
+          { id: 'dancia_7', name: '7. Tech Equipment Operation & Systems Development', category: 'R&D', amountNgn: 3500000.00, notes: 'Platform integration' },
+          { id: 'dancia_8', name: '8. 3-Year International Content Acquisition (+EPL Rights)', category: 'Content Licensing', amountNgn: 550000000.00, notes: 'Premier league & global media' },
+          { id: 'dancia_9', name: '9. 10-Year NBC & NCC Licenses, Permits and Clearances', category: 'Regulatory', amountNgn: 30000000.00, notes: '10-Year national broadcast license' },
+          { id: 'dancia_10', name: '10. One-Year Domestic Content Development & Media Network', category: 'Production', amountNgn: 600000000.00, notes: 'Local film, music, short-dramas' },
+          { id: 'dancia_11', name: '11. One-Year Strategic Marketing, Billboard & Ad Campaigns', category: 'Marketing', amountNgn: 60000000.00, notes: 'National promotional blitz' },
+          { id: 'dancia_12', name: '12. Brand Identity, Promotion & Media Launch', category: 'Branding', amountNgn: 5000000.00, notes: 'PR events and agency services' },
+          { id: 'dancia_13', name: '13. One-Year Inventory, Office Supplies & Stationeries', category: 'Supplies', amountNgn: 500000.00, notes: 'Consumables' },
+          { id: 'dancia_14', name: '14. Fixed Working Capital Liquidity Buffer', category: 'Working Capital', amountNgn: 2000000.00, notes: 'Reserve liquidity' },
+          { id: 'dancia_15', name: '15. Statutory Fixed Bank Escrow Deposit', category: 'Banking Deposit', amountNgn: 50000000.00, notes: 'Compulsory regulatory deposit' },
+          { id: 'dancia_16', name: '16. Operations, Field Broadcast & Dispatch Vehicles', category: 'Logistics', amountNgn: 7000000.00, notes: 'Field fleet' },
+          { id: 'dancia_17', name: '17. Shipping, Cargo Delivery and Customs Import Duties', category: 'Customs & Logistics', amountNgn: 2000000.00, notes: 'Port clearance & logistics' }
         ]
       },
       sheet6_salaries: {
