@@ -323,6 +323,170 @@ class VoicelinesController {
   }
 
   /**
+   * GET /api/voice-lines/settings
+   * Retrieve platform-wide VoiceLine settings directly from PostgreSQL
+   */
+  async getSettings(req, res) {
+    try {
+      const result = await pool.query('SELECT * FROM voiceline_system_settings WHERE id = $1 LIMIT 1', ['default']);
+      if (result.rows.length === 0) {
+        return res.json({
+          success: true,
+          data: {
+            volume: 0.35,
+            audioPlaybackRate: 0.88,
+            utteranceRate: 0.46,
+            bassBoostDb: 6.0,
+            pitch: 0.80,
+            enabled: true,
+            microservices: {
+              forum: true,
+              hallmarks: true,
+              mii: true,
+              groups: true,
+              lushpressies: true,
+              blogs: true
+            }
+          }
+        });
+      }
+
+      const row = result.rows[0];
+      res.json({
+        success: true,
+        data: {
+          id: row.id,
+          volume: parseFloat(row.volume || 0.35),
+          audioPlaybackRate: parseFloat(row.audio_playback_rate || 0.88),
+          utteranceRate: parseFloat(row.utterance_rate || 0.46),
+          bassBoostDb: parseFloat(row.bass_boost_db || 6.0),
+          pitch: parseFloat(row.pitch || 0.80),
+          enabled: Boolean(row.enabled !== false),
+          microservices: typeof row.microservices === 'object' && row.microservices !== null
+            ? row.microservices
+            : { forum: true, hallmarks: true, mii: true, groups: true, lushpressies: true, blogs: true },
+          updatedAt: row.updated_at,
+          updatedBy: row.updated_by
+        }
+      });
+    } catch (error) {
+      logger.error('Error in VoicelinesController.getSettings:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve VoiceLine settings from PostgreSQL',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * POST/PUT /api/voice-lines/settings
+   * Persist platform-wide VoiceLine settings directly to PostgreSQL
+   */
+  async saveSettings(req, res) {
+    try {
+      const {
+        volume = 0.35,
+        audioPlaybackRate = 0.88,
+        utteranceRate = 0.46,
+        bassBoostDb = 6.0,
+        pitch = 0.80,
+        enabled = true,
+        microservices = {}
+      } = req.body;
+
+      const userIdentifier = req.user?.username || req.user?.email || 'admin';
+
+      const upsertResult = await pool.query(
+        `INSERT INTO voiceline_system_settings 
+          (id, utterance_rate, audio_playback_rate, volume, bass_boost_db, pitch, enabled, microservices, updated_at, updated_by)
+         VALUES ('default', $1, $2, $3, $4, $5, $6, $7, NOW(), $8)
+         ON CONFLICT (id) DO UPDATE SET
+          utterance_rate = EXCLUDED.utterance_rate,
+          audio_playback_rate = EXCLUDED.audio_playback_rate,
+          volume = EXCLUDED.volume,
+          bass_boost_db = EXCLUDED.bass_boost_db,
+          pitch = EXCLUDED.pitch,
+          enabled = EXCLUDED.enabled,
+          microservices = EXCLUDED.microservices,
+          updated_at = NOW(),
+          updated_by = EXCLUDED.updated_by
+         RETURNING *`,
+        [
+          parseFloat(utteranceRate),
+          parseFloat(audioPlaybackRate),
+          parseFloat(volume),
+          parseFloat(bassBoostDb),
+          parseFloat(pitch),
+          Boolean(enabled),
+          JSON.stringify(microservices),
+          userIdentifier
+        ]
+      );
+
+      const row = upsertResult.rows[0];
+      res.json({
+        success: true,
+        message: 'VoiceLine preferences successfully saved to PostgreSQL database.',
+        data: {
+          id: row.id,
+          volume: parseFloat(row.volume),
+          audioPlaybackRate: parseFloat(row.audio_playback_rate),
+          utteranceRate: parseFloat(row.utterance_rate),
+          bassBoostDb: parseFloat(row.bass_boost_db),
+          pitch: parseFloat(row.pitch),
+          enabled: Boolean(row.enabled),
+          microservices: row.microservices,
+          updatedAt: row.updated_at,
+          updatedBy: row.updated_by
+        }
+      });
+    } catch (error) {
+      logger.error('Error in VoicelinesController.saveSettings:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to save VoiceLine preferences to PostgreSQL database',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
+   * GET /api/voice-lines/all
+   * Return full collection of all active VoiceLines for non-repeating rotating usage
+   */
+  async getAllClips(req, res) {
+    try {
+      const result = await pool.query(
+        `SELECT id, title, audio_url, category, tags, keywords, duration_seconds 
+         FROM voicelines_clips 
+         WHERE is_published = true 
+         ORDER BY created_at DESC LIMIT 500`
+      );
+
+      res.json({
+        success: true,
+        total: result.rows.length,
+        data: result.rows.map(clip => ({
+          id: clip.id,
+          text: clip.title,
+          category: clip.category,
+          audioUrl: clip.audio_url,
+          keywords: Array.isArray(clip.keywords) ? clip.keywords : [],
+          tags: Array.isArray(clip.tags) ? clip.tags : []
+        }))
+      });
+    } catch (error) {
+      logger.error('Error in VoicelinesController.getAllClips:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve voice lines from PostgreSQL',
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+  }
+
+  /**
    * GET /api/voice/pipecat/config
    * Pipecat Voice SDK configuration
    */
