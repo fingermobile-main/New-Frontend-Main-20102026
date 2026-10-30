@@ -304,7 +304,13 @@ export class FinancialEcosystemDatabase {
   // --------------------------------------------------------------------------
   public getBankRails(): DbTableBankRails[] {
     const raw = localStorage.getItem(DB_KEYS.BANK_RAILS);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
 
   public saveBankRails(rails: DbTableBankRails[], actor: string, actorRole: 'CFO' | 'SUPER_ADMIN') {
@@ -346,7 +352,15 @@ export class FinancialEcosystemDatabase {
   // --------------------------------------------------------------------------
   public recordAudit(record: Omit<DbTableAuditRecord, 'id' | 'timestamp'>): DbTableAuditRecord {
     const existingRaw = localStorage.getItem(DB_KEYS.AUDIT_LOG);
-    const existing: DbTableAuditRecord[] = existingRaw ? JSON.parse(existingRaw) : [];
+    let existing: DbTableAuditRecord[] = [];
+    if (existingRaw) {
+      try {
+        const parsed = JSON.parse(existingRaw);
+        if (Array.isArray(parsed)) existing = parsed;
+      } catch {
+        existing = [];
+      }
+    }
     const fullRecord: DbTableAuditRecord = {
       ...record,
       id: `audit_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
@@ -359,7 +373,13 @@ export class FinancialEcosystemDatabase {
 
   public getAuditTrail(): DbTableAuditRecord[] {
     const raw = localStorage.getItem(DB_KEYS.AUDIT_LOG);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -367,7 +387,15 @@ export class FinancialEcosystemDatabase {
   // --------------------------------------------------------------------------
   public logHeartbeat(telemetry: Omit<DbTableHeartbeatTelemetry, 'id' | 'timestamp'>) {
     const raw = localStorage.getItem(DB_KEYS.HEARTBEAT_LOG);
-    const existing: DbTableHeartbeatTelemetry[] = raw ? JSON.parse(raw) : [];
+    let existing: DbTableHeartbeatTelemetry[] = [];
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) existing = parsed;
+      } catch {
+        existing = [];
+      }
+    }
     const entry: DbTableHeartbeatTelemetry = {
       ...telemetry,
       id: `hb_${Date.now()}`,
@@ -379,7 +407,13 @@ export class FinancialEcosystemDatabase {
 
   public getRecentHeartbeats(): DbTableHeartbeatTelemetry[] {
     const raw = localStorage.getItem(DB_KEYS.HEARTBEAT_LOG);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
 
   // --------------------------------------------------------------------------
@@ -387,7 +421,15 @@ export class FinancialEcosystemDatabase {
   // --------------------------------------------------------------------------
   public commitSweep(sweep: Omit<DbTableDoubleEntrySweep, 'id' | 'timestamp'>): DbTableDoubleEntrySweep {
     const raw = localStorage.getItem(DB_KEYS.SWEEPS_LEDGER);
-    const existing: DbTableDoubleEntrySweep[] = raw ? JSON.parse(raw) : [];
+    let existing: DbTableDoubleEntrySweep[] = [];
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) existing = parsed;
+      } catch {
+        existing = [];
+      }
+    }
     const entry: DbTableDoubleEntrySweep = {
       ...sweep,
       id: `sweep_${Date.now()}`,
@@ -400,7 +442,13 @@ export class FinancialEcosystemDatabase {
 
   public getSweeps(): DbTableDoubleEntrySweep[] {
     const raw = localStorage.getItem(DB_KEYS.SWEEPS_LEDGER);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
 
   // --------------------------------------------------------------------------

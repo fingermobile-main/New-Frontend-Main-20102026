@@ -652,6 +652,21 @@ class FinancialEcosystemService {
       );
       if (res.rows && res.rows.length > 0) {
         const row = res.rows[0];
+        const sheetData = row.sheet_data || {};
+        if ((key === 'capex_opex_dancia' || aliasKey === 'capex_opex_dancia') && !sheetData.items) {
+          const fallback = this.excelSheets['sheet5_capex_opex_dancia4tv'];
+          if (Array.isArray(sheetData.keyLineItems)) {
+            sheetData.items = sheetData.keyLineItems.map((k, idx) => ({
+              id: `dancia_${idx + 1}`,
+              name: k.item || k.name || `Line Item ${idx + 1}`,
+              category: k.category || 'General',
+              amountNgn: Number(k.amountNgn) || 0,
+              notes: k.notes || ''
+            }));
+          } else if (fallback && Array.isArray(fallback.items)) {
+            sheetData.items = fallback.items;
+          }
+        }
         return {
           sheetKey: row.sheet_key,
           title: row.title,
@@ -662,13 +677,23 @@ class FinancialEcosystemService {
           approvedBy: row.approved_by,
           approvedAt: row.approved_at,
           notes: row.notes,
-          ...row.sheet_data
+          ...sheetData
         };
       }
     } catch (err) {
       if (logger && logger.warn) logger.warn(`Error reading sheet ${key} from DB, falling back to memory:`, err.message);
     }
-    return this.excelSheets[key] || this.excelSheets[aliasKey] || null;
+    const mem = this.excelSheets[key] || this.excelSheets[aliasKey] || null;
+    if (mem && (key === 'capex_opex_dancia' || aliasKey === 'capex_opex_dancia') && !mem.items && mem.keyLineItems) {
+      mem.items = mem.keyLineItems.map((k, idx) => ({
+        id: `dancia_${idx + 1}`,
+        name: k.item || k.name || `Line Item ${idx + 1}`,
+        category: k.category || 'General',
+        amountNgn: Number(k.amountNgn) || 0,
+        notes: k.notes || ''
+      }));
+    }
+    return mem;
   }
 
   async saveSheet(key, sheetData, metadata = {}) {

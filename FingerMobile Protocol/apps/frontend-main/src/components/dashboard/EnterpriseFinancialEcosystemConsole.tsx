@@ -86,7 +86,12 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   const [incomeStatement, setIncomeStatement] = useState<IncomeStatementSheetData>(() => {
     try {
       const saved = localStorage.getItem('fmp_dynamic_sheet_income_statement');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && Array.isArray(parsed.revenues) && Array.isArray(parsed.cogs) && Array.isArray(parsed.opex)) {
+          return { ...DEFAULT_INCOME_STATEMENT, ...parsed };
+        }
+      }
     } catch {
       /* fallback to default */
     }
@@ -96,7 +101,19 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   const [balanceSheet, setBalanceSheet] = useState<BalanceSheetData>(() => {
     try {
       const saved = localStorage.getItem('fmp_dynamic_sheet_balance_sheet');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (
+          parsed &&
+          Array.isArray(parsed.currentAssets) &&
+          Array.isArray(parsed.fixedAssets) &&
+          Array.isArray(parsed.currentLiabilities) &&
+          Array.isArray(parsed.longTermLiabilities) &&
+          Array.isArray(parsed.equityItems)
+        ) {
+          return { ...DEFAULT_BALANCE_SHEET, ...parsed };
+        }
+      }
     } catch {
       /* fallback to default */
     }
@@ -106,7 +123,12 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   const [costTccBoq, setCostTccBoq] = useState<CostTccBoqData>(() => {
     try {
       const saved = localStorage.getItem('fmp_dynamic_sheet_cost_tcc_boq');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && Array.isArray(parsed.items)) {
+          return { ...DEFAULT_COST_TCC_BOQ, ...parsed };
+        }
+      }
     } catch {
       /* fallback to default */
     }
@@ -116,7 +138,12 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   const [startupFunds, setStartupFunds] = useState<StartupFundsData>(() => {
     try {
       const saved = localStorage.getItem('fmp_dynamic_sheet_startup_funds');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && Array.isArray(parsed.fixedAssets) && Array.isArray(parsed.operatingCapital)) {
+          return { ...DEFAULT_STARTUP_FUNDS, ...parsed };
+        }
+      }
     } catch {
       /* fallback to default */
     }
@@ -126,7 +153,22 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   const [capexOpexDancia, setCapexOpexDancia] = useState<CapexOpexDancia4TvData>(() => {
     try {
       const saved = localStorage.getItem('fmp_dynamic_sheet_capex_opex_dancia');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && Array.isArray(parsed.items)) {
+          return { ...DEFAULT_CAPEX_OPEX_DANCIA4TV, ...parsed };
+        }
+        if (parsed && Array.isArray(parsed.keyLineItems)) {
+          const items = parsed.keyLineItems.map((k: any, idx: number) => ({
+            id: `dancia_${idx + 1}`,
+            name: k.item || k.name || `Line Item ${idx + 1}`,
+            category: k.category || 'General',
+            amountNgn: Number(k.amountNgn) || 0,
+            notes: k.notes || ''
+          }));
+          return { ...DEFAULT_CAPEX_OPEX_DANCIA4TV, ...parsed, items };
+        }
+      }
     } catch {
       /* fallback to default */
     }
@@ -155,7 +197,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
         setIncomeStatement((prev) => {
           if (prev.approval?.status === 'APPROVED_BY_SUPER_ADMIN') return prev;
 
-          const updatedRevenues = prev.revenues.map((r) => {
+          const baseRevenues = Array.isArray(prev.revenues) ? prev.revenues : DEFAULT_INCOME_STATEMENT.revenues;
+          const updatedRevenues = baseRevenues.map((r) => {
             if (r.id === 'rev_subscriptions' && live.subscriptionsAnnualNgn) {
               return { ...r, amountNgn: live.subscriptionsAnnualNgn, notes: `Live heartbeat sync (${live.activeSubscriberCount} active models)` };
             }
@@ -194,7 +237,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
       const annualNgn = e.detail?.annualTotalNgn;
       if (annualNgn) {
         setIncomeStatement((prev) => {
-          const updatedRevenues = prev.revenues.map((r) =>
+          const baseRevenues = Array.isArray(prev.revenues) ? prev.revenues : DEFAULT_INCOME_STATEMENT.revenues;
+          const updatedRevenues = baseRevenues.map((r) =>
             r.id === 'rev_subscriptions'
               ? { ...r, amountNgn: annualNgn, notes: `Manual sync from active subscriptions (${e.detail?.count || 10} tiers)` }
               : r
@@ -230,12 +274,133 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
           financialDb.fetchAuditLogsFromPostgres()
         ]);
         if (!isMounted) return;
-        if (isDb && (isDb.revenues || isDb.items)) setIncomeStatement(isDb);
-        if (bsDb && (bsDb.currentAssets || bsDb.items)) setBalanceSheet(bsDb);
-        if (costDb && (costDb.items || costDb.fixedAssets)) setCostTccBoq(costDb);
-        if (startDb && (startDb.fixedAssets || startDb.items)) setStartupFunds(startDb);
-        if (capexDb && (capexDb.keyLineItems || capexDb.items)) setCapexOpexDancia(capexDb);
-        if (logsDb && logsDb.length > 0) setAuditList(logsDb);
+
+        // Income Statement Normalization
+        if (isDb) {
+          const revenues = Array.isArray(isDb.revenues)
+            ? isDb.revenues
+            : Array.isArray(isDb.items)
+              ? isDb.items
+              : DEFAULT_INCOME_STATEMENT.revenues;
+          const cogs = Array.isArray(isDb.cogs) ? isDb.cogs : DEFAULT_INCOME_STATEMENT.cogs;
+          const opex = Array.isArray(isDb.opex) ? isDb.opex : DEFAULT_INCOME_STATEMENT.opex;
+          setIncomeStatement({
+            ...DEFAULT_INCOME_STATEMENT,
+            ...isDb,
+            revenues,
+            cogs,
+            opex
+          });
+        }
+
+        // Balance Sheet Normalization
+        if (bsDb) {
+          const currentAssets = Array.isArray(bsDb.currentAssets)
+            ? bsDb.currentAssets
+            : Array.isArray(bsDb.items)
+              ? bsDb.items
+              : DEFAULT_BALANCE_SHEET.currentAssets;
+          const fixedAssets = Array.isArray(bsDb.fixedAssets) ? bsDb.fixedAssets : DEFAULT_BALANCE_SHEET.fixedAssets;
+          const currentLiabilities = Array.isArray(bsDb.currentLiabilities) ? bsDb.currentLiabilities : DEFAULT_BALANCE_SHEET.currentLiabilities;
+          const longTermLiabilities = Array.isArray(bsDb.longTermLiabilities) ? bsDb.longTermLiabilities : DEFAULT_BALANCE_SHEET.longTermLiabilities;
+          const equityItems = Array.isArray(bsDb.equityItems) ? bsDb.equityItems : DEFAULT_BALANCE_SHEET.equityItems;
+          setBalanceSheet({
+            ...DEFAULT_BALANCE_SHEET,
+            ...bsDb,
+            currentAssets,
+            fixedAssets,
+            currentLiabilities,
+            longTermLiabilities,
+            equityItems
+          });
+        }
+
+        // Cost TCC BoQ Normalization
+        if (costDb) {
+          const rawItems = Array.isArray(costDb.items)
+            ? costDb.items
+            : Array.isArray(costDb.fixedAssets)
+              ? costDb.fixedAssets
+              : DEFAULT_COST_TCC_BOQ.items;
+          const items: FinancialLineItem[] = rawItems.map((it: any, idx: number) => ({
+            id: it.id || `tcc_${idx + 1}`,
+            name: it.name || it.item || `Equipment Item ${idx + 1}`,
+            category: it.category || 'Compute & Infra',
+            quantity: Number(it.quantity ?? it.qty ?? 1),
+            unitPriceNgn: Number(it.unitPriceNgn ?? it.rateNgn ?? 0),
+            amountNgn: Number(it.amountNgn ?? (Number(it.quantity ?? it.qty ?? 1) * Number(it.unitPriceNgn ?? it.rateNgn ?? 0))),
+            amountUsd: Number(it.amountUsd ?? (Number(it.amountNgn || 0) / (Number(costDb.usdExchangeRate) || 1550))),
+            depreciationYears: Number(it.depreciationYears ?? 5),
+            notes: it.notes || ''
+          }));
+          setCostTccBoq({
+            ...DEFAULT_COST_TCC_BOQ,
+            ...costDb,
+            items
+          });
+        }
+
+        // Startup Funds Normalization
+        if (startDb) {
+          const usdRate = Number(startDb.usdExchangeRate) || 1550;
+          const rawFixed = Array.isArray(startDb.fixedAssets)
+            ? startDb.fixedAssets
+            : DEFAULT_STARTUP_FUNDS.fixedAssets;
+          const fixedAssets: FinancialLineItem[] = rawFixed.map((fa: any, idx: number) => ({
+            id: fa.id || `su_fa_${idx + 1}`,
+            name: fa.name || fa.category || `Fixed Asset ${idx + 1}`,
+            category: fa.category || 'Fixed Asset',
+            amountUsd: Number(fa.amountUsd ?? (Number(fa.amountNgn || 0) / usdRate)),
+            amountNgn: Number(fa.amountNgn ?? (Number(fa.amountUsd || 0) * usdRate)),
+            depreciationYears: Number(fa.depreciationYears ?? 5),
+            notes: fa.notes || ''
+          }));
+
+          const rawOp = Array.isArray(startDb.operatingCapital)
+            ? startDb.operatingCapital
+            : DEFAULT_STARTUP_FUNDS.operatingCapital;
+          const operatingCapital: FinancialLineItem[] = rawOp.map((op: any, idx: number) => ({
+            id: op.id || `su_op_${idx + 1}`,
+            name: op.name || op.item || `Operating Line ${idx + 1}`,
+            category: op.category || 'Operating Capital',
+            amountUsd: Number(op.amountUsd ?? (Number(op.amountNgn || 0) / usdRate)),
+            amountNgn: Number(op.amountNgn ?? (Number(op.amountUsd || 0) * usdRate)),
+            notes: op.notes || ''
+          }));
+
+          setStartupFunds({
+            ...DEFAULT_STARTUP_FUNDS,
+            ...startDb,
+            usdExchangeRate: usdRate,
+            fixedAssets,
+            operatingCapital
+          });
+        }
+
+        // Capex Opex Dancia4Tv Normalization
+        if (capexDb) {
+          let items: FinancialLineItem[] = [];
+          if (Array.isArray(capexDb.items)) {
+            items = capexDb.items;
+          } else if (Array.isArray(capexDb.keyLineItems)) {
+            items = capexDb.keyLineItems.map((k: any, idx: number) => ({
+              id: `dancia_${idx + 1}`,
+              name: k.item || k.name || `Line Item ${idx + 1}`,
+              category: k.category || 'General',
+              amountNgn: Number(k.amountNgn) || 0,
+              notes: k.notes || ''
+            }));
+          } else {
+            items = DEFAULT_CAPEX_OPEX_DANCIA4TV.items;
+          }
+          setCapexOpexDancia({
+            ...DEFAULT_CAPEX_OPEX_DANCIA4TV,
+            ...capexDb,
+            items
+          });
+        }
+
+        if (logsDb && Array.isArray(logsDb) && logsDb.length > 0) setAuditList(logsDb);
       } catch (err) {
         console.warn('Initial financial DB sync note:', err);
       }
@@ -303,19 +468,23 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   // Live Calculated Financial Metrics for Dynamic Sheets
   // --------------------------------------------------------------------------
   const incomeMetrics = useMemo(() => {
-    const totalRev = incomeStatement.revenues.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const totalCogs = incomeStatement.cogs.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const revList = Array.isArray(incomeStatement?.revenues) ? incomeStatement.revenues : DEFAULT_INCOME_STATEMENT.revenues;
+    const cogsList = Array.isArray(incomeStatement?.cogs) ? incomeStatement.cogs : DEFAULT_INCOME_STATEMENT.cogs;
+    const opexList = Array.isArray(incomeStatement?.opex) ? incomeStatement.opex : DEFAULT_INCOME_STATEMENT.opex;
+
+    const totalRev = revList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const totalCogs = cogsList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
     const grossProfit = totalRev - totalCogs;
-    const totalOpex = incomeStatement.opex.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const totalOpex = opexList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
     const operatingIncome = grossProfit - totalOpex;
 
-    const principal = incomeStatement.loanPrincipalNgn ?? 426700000;
-    const ratePercent = incomeStatement.loanInterestRatePercent ?? 33.0;
+    const principal = incomeStatement?.loanPrincipalNgn ?? 426700000;
+    const ratePercent = incomeStatement?.loanInterestRatePercent ?? 33.0;
     const debtService = (principal * ratePercent) / 100;
 
     const netBeforeTax = operatingIncome - debtService;
 
-    const taxRate = incomeStatement.taxRatePercent ?? 10.0;
+    const taxRate = incomeStatement?.taxRatePercent ?? 10.0;
     const tax = netBeforeTax > 0 ? (netBeforeTax * taxRate) / 100 : 0;
     const netIncome = netBeforeTax - tax;
 
@@ -341,16 +510,22 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   }, [incomeStatement]);
 
   const balanceMetrics = useMemo(() => {
-    const caTotal = balanceSheet.currentAssets.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const faTotalGross = balanceSheet.fixedAssets.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const netFa = faTotalGross - (Number(balanceSheet.accumulatedDepreciationNgn) || 0);
+    const caList = Array.isArray(balanceSheet?.currentAssets) ? balanceSheet.currentAssets : DEFAULT_BALANCE_SHEET.currentAssets;
+    const faList = Array.isArray(balanceSheet?.fixedAssets) ? balanceSheet.fixedAssets : DEFAULT_BALANCE_SHEET.fixedAssets;
+    const clList = Array.isArray(balanceSheet?.currentLiabilities) ? balanceSheet.currentLiabilities : DEFAULT_BALANCE_SHEET.currentLiabilities;
+    const ltList = Array.isArray(balanceSheet?.longTermLiabilities) ? balanceSheet.longTermLiabilities : DEFAULT_BALANCE_SHEET.longTermLiabilities;
+    const eqList = Array.isArray(balanceSheet?.equityItems) ? balanceSheet.equityItems : DEFAULT_BALANCE_SHEET.equityItems;
+
+    const caTotal = caList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const faTotalGross = faList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const netFa = faTotalGross - (Number(balanceSheet?.accumulatedDepreciationNgn) || 0);
     const totalAssets = caTotal + netFa;
 
-    const clTotal = balanceSheet.currentLiabilities.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const ltTotal = balanceSheet.longTermLiabilities.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const clTotal = clList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const ltTotal = ltList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
     const totalLiab = clTotal + ltTotal;
 
-    const eqItemsTotal = balanceSheet.equityItems.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const eqItemsTotal = eqList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
     const retainedFromIncome = incomeMetrics.netIncome;
     const totalEquity = eqItemsTotal + retainedFromIncome;
 
@@ -374,20 +549,24 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   }, [balanceSheet, incomeMetrics.netIncome]);
 
   const costTccMetrics = useMemo(() => {
-    const totalNgn = costTccBoq.items.reduce(
+    const itList = Array.isArray(costTccBoq?.items) ? costTccBoq.items : DEFAULT_COST_TCC_BOQ.items;
+    const totalNgn = itList.reduce(
       (acc, it) => acc + (Number(it.quantity) || 1) * (Number(it.unitPriceNgn) || 0),
       0
     );
-    const rate = Number(costTccBoq.usdExchangeRate) || 1550;
+    const rate = Number(costTccBoq?.usdExchangeRate) || 1550;
     const totalUsd = totalNgn / rate;
     return { totalNgn, totalUsd, rate };
   }, [costTccBoq]);
 
   const startupFundsMetrics = useMemo(() => {
-    const rate = Number(startupFunds.usdExchangeRate) || 1550;
-    const totalFixedNgn = startupFunds.fixedAssets.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const rate = Number(startupFunds?.usdExchangeRate) || 1550;
+    const faList = Array.isArray(startupFunds?.fixedAssets) ? startupFunds.fixedAssets : DEFAULT_STARTUP_FUNDS.fixedAssets;
+    const opList = Array.isArray(startupFunds?.operatingCapital) ? startupFunds.operatingCapital : DEFAULT_STARTUP_FUNDS.operatingCapital;
+
+    const totalFixedNgn = faList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
     const totalFixedUsd = totalFixedNgn / rate;
-    const totalOpNgn = startupFunds.operatingCapital.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const totalOpNgn = opList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
     const totalOpUsd = totalOpNgn / rate;
     const grandTotalNgn = totalFixedNgn + totalOpNgn;
     const grandTotalUsd = grandTotalNgn / rate;
@@ -395,8 +574,19 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   }, [startupFunds]);
 
   const capexOpexDanciaMetrics = useMemo(() => {
-    const totalAllocatedNgn = capexOpexDancia.items.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
-    const loanTarget = Number(capexOpexDancia.totalLoanAllocationNgn) || 1412050000;
+    const itList = Array.isArray(capexOpexDancia?.items)
+      ? capexOpexDancia.items
+      : Array.isArray((capexOpexDancia as any)?.keyLineItems)
+        ? (capexOpexDancia as any).keyLineItems.map((k: any, idx: number) => ({
+            id: `dancia_${idx + 1}`,
+            name: k.item || k.name || `Line Item ${idx + 1}`,
+            category: k.category || 'General',
+            amountNgn: Number(k.amountNgn) || 0,
+            notes: k.notes || ''
+          }))
+        : DEFAULT_CAPEX_OPEX_DANCIA4TV.items;
+    const totalAllocatedNgn = itList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const loanTarget = Number(capexOpexDancia?.totalLoanAllocationNgn) || 1412050000;
     const remainingBudget = loanTarget - totalAllocatedNgn;
     return { totalAllocatedNgn, loanTarget, remainingBudget };
   }, [capexOpexDancia]);
@@ -404,17 +594,19 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
   const currentApproval = useMemo(() => {
     switch (selectedSheetKey) {
     case 'income_statement':
-      return incomeStatement.approval || DEFAULT_INCOME_STATEMENT.approval;
+      return incomeStatement?.approval || DEFAULT_INCOME_STATEMENT.approval;
     case 'balance_sheet':
-      return balanceSheet.approval || DEFAULT_BALANCE_SHEET.approval;
+      return balanceSheet?.approval || DEFAULT_BALANCE_SHEET.approval;
     case 'cost_tcc_boq':
-      return costTccBoq.approval || DEFAULT_COST_TCC_BOQ.approval;
+      return costTccBoq?.approval || DEFAULT_COST_TCC_BOQ.approval;
     case 'startup_funds':
-      return startupFunds.approval || DEFAULT_STARTUP_FUNDS.approval;
+      return startupFunds?.approval || DEFAULT_STARTUP_FUNDS.approval;
     case 'capex_opex_dancia':
-      return capexOpexDancia.approval || DEFAULT_CAPEX_OPEX_DANCIA4TV.approval;
+      return capexOpexDancia?.approval || DEFAULT_CAPEX_OPEX_DANCIA4TV.approval;
+    default:
+      return DEFAULT_INCOME_STATEMENT.approval;
     }
-  }, [selectedSheetKey, incomeStatement, balanceSheet, costTccBoq, startupFunds, capexOpexDancia]);
+  }, [selectedSheetKey, incomeStatement?.approval, balanceSheet?.approval, costTccBoq?.approval, startupFunds?.approval, capexOpexDancia?.approval]);
 
   // 1. Save CFO Draft
   const handleSaveWorkingDraft = async () => {
@@ -1593,7 +1785,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200 bg-white">
-                      {incomeStatement.revenues.map((item, idx) => (
+                      {(Array.isArray(incomeStatement?.revenues) ? incomeStatement.revenues : []).map((item, idx) => (
                         <tr key={item.id} className="hover:bg-slate-50">
                           <td className="py-2 px-3 font-bold text-slate-900">
                             {isEditingSheet && !isLockedByAdmin ? (
@@ -1602,10 +1794,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={item.name}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setIncomeStatement((prev) => ({
-                                    ...prev,
-                                    revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, name: val } : r))
-                                  }));
+                                  setIncomeStatement((prev) => {
+                                    const base = Array.isArray(prev.revenues) ? prev.revenues : DEFAULT_INCOME_STATEMENT.revenues;
+                                    return {
+                                      ...prev,
+                                      revenues: base.map((r, i) => (i === idx ? { ...r, name: val } : r))
+                                    };
+                                  });
                                 }}
                                 className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -1620,10 +1815,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={item.category}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setIncomeStatement((prev) => ({
-                                    ...prev,
-                                    revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, category: val } : r))
-                                  }));
+                                  setIncomeStatement((prev) => {
+                                    const base = Array.isArray(prev.revenues) ? prev.revenues : DEFAULT_INCOME_STATEMENT.revenues;
+                                    return {
+                                      ...prev,
+                                      revenues: base.map((r, i) => (i === idx ? { ...r, category: val } : r))
+                                    };
+                                  });
                                 }}
                                 className="w-32 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -1638,10 +1836,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={item.notes || ''}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setIncomeStatement((prev) => ({
-                                    ...prev,
-                                    revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, notes: val } : r))
-                                  }));
+                                  setIncomeStatement((prev) => {
+                                    const base = Array.isArray(prev.revenues) ? prev.revenues : DEFAULT_INCOME_STATEMENT.revenues;
+                                    return {
+                                      ...prev,
+                                      revenues: base.map((r, i) => (i === idx ? { ...r, notes: val } : r))
+                                    };
+                                  });
                                 }}
                                 className="w-full px-2 py-1 text-slate-900 font-medium border border-slate-300 rounded bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -1656,10 +1857,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               value={item.amountNgn}
                               onChange={(e) => {
                                 const val = Number(e.target.value);
-                                setIncomeStatement((prev) => ({
-                                  ...prev,
-                                  revenues: prev.revenues.map((r, i) => (i === idx ? { ...r, amountNgn: val } : r))
-                                }));
+                                setIncomeStatement((prev) => {
+                                  const base = Array.isArray(prev.revenues) ? prev.revenues : DEFAULT_INCOME_STATEMENT.revenues;
+                                  return {
+                                    ...prev,
+                                    revenues: base.map((r, i) => (i === idx ? { ...r, amountNgn: val } : r))
+                                  };
+                                });
                               }}
                               className="w-36 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             />
@@ -1668,10 +1872,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             <button
                               disabled={!isEditingSheet || isLockedByAdmin}
                               onClick={() => {
-                                setIncomeStatement((prev) => ({
-                                  ...prev,
-                                  revenues: prev.revenues.filter((_, i) => i !== idx)
-                                }));
+                                setIncomeStatement((prev) => {
+                                  const base = Array.isArray(prev.revenues) ? prev.revenues : DEFAULT_INCOME_STATEMENT.revenues;
+                                  return {
+                                    ...prev,
+                                    revenues: base.filter((_, i) => i !== idx)
+                                  };
+                                });
                               }}
                               className="text-rose-700 hover:text-rose-900 p-1"
                               title="Delete Item"
@@ -1696,7 +1903,10 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       notes: 'Custom revenue line item',
                       isCustom: true
                     };
-                    setIncomeStatement((prev) => ({ ...prev, revenues: [...prev.revenues, newItem] }));
+                    setIncomeStatement((prev) => {
+                      const base = Array.isArray(prev.revenues) ? prev.revenues : DEFAULT_INCOME_STATEMENT.revenues;
+                      return { ...prev, revenues: [...base, newItem] };
+                    });
                   }}
                   className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 text-xs font-bold flex items-center gap-1.5"
                 >
@@ -1729,7 +1939,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200 bg-white">
-                      {incomeStatement.cogs.map((item, idx) => (
+                      {(Array.isArray(incomeStatement?.cogs) ? incomeStatement.cogs : []).map((item, idx) => (
                         <tr key={item.id} className="hover:bg-slate-50">
                           <td className="py-2 px-3 font-bold text-slate-900">
                             {isEditingSheet && !isLockedByAdmin ? (
@@ -1738,10 +1948,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={item.name}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setIncomeStatement((prev) => ({
-                                    ...prev,
-                                    cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, name: val } : c))
-                                  }));
+                                  setIncomeStatement((prev) => {
+                                    const base = Array.isArray(prev.cogs) ? prev.cogs : DEFAULT_INCOME_STATEMENT.cogs;
+                                    return {
+                                      ...prev,
+                                      cogs: base.map((c, i) => (i === idx ? { ...c, name: val } : c))
+                                    };
+                                  });
                                 }}
                                 className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -1756,10 +1969,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={item.category}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setIncomeStatement((prev) => ({
-                                    ...prev,
-                                    cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, category: val } : c))
-                                  }));
+                                  setIncomeStatement((prev) => {
+                                    const base = Array.isArray(prev.cogs) ? prev.cogs : DEFAULT_INCOME_STATEMENT.cogs;
+                                    return {
+                                      ...prev,
+                                      cogs: base.map((c, i) => (i === idx ? { ...c, category: val } : c))
+                                    };
+                                  });
                                 }}
                                 className="w-32 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -1774,10 +1990,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={item.notes || ''}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setIncomeStatement((prev) => ({
-                                    ...prev,
-                                    cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, notes: val } : c))
-                                  }));
+                                  setIncomeStatement((prev) => {
+                                    const base = Array.isArray(prev.cogs) ? prev.cogs : DEFAULT_INCOME_STATEMENT.cogs;
+                                    return {
+                                      ...prev,
+                                      cogs: base.map((c, i) => (i === idx ? { ...c, notes: val } : c))
+                                    };
+                                  });
                                 }}
                                 className="w-full px-2 py-1 text-slate-900 font-medium border border-slate-300 rounded bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -1792,10 +2011,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               value={item.amountNgn}
                               onChange={(e) => {
                                 const val = Number(e.target.value);
-                                setIncomeStatement((prev) => ({
-                                  ...prev,
-                                  cogs: prev.cogs.map((c, i) => (i === idx ? { ...c, amountNgn: val } : c))
-                                }));
+                                setIncomeStatement((prev) => {
+                                  const base = Array.isArray(prev.cogs) ? prev.cogs : DEFAULT_INCOME_STATEMENT.cogs;
+                                  return {
+                                    ...prev,
+                                    cogs: base.map((c, i) => (i === idx ? { ...c, amountNgn: val } : c))
+                                  };
+                                });
                               }}
                               className="w-36 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             />
@@ -1804,10 +2026,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             <button
                               disabled={!isEditingSheet || isLockedByAdmin}
                               onClick={() => {
-                                setIncomeStatement((prev) => ({
-                                  ...prev,
-                                  cogs: prev.cogs.filter((_, i) => i !== idx)
-                                }));
+                                setIncomeStatement((prev) => {
+                                  const base = Array.isArray(prev.cogs) ? prev.cogs : DEFAULT_INCOME_STATEMENT.cogs;
+                                  return {
+                                    ...prev,
+                                    cogs: base.filter((_, i) => i !== idx)
+                                  };
+                                });
                               }}
                               className="text-rose-700 hover:text-rose-900 p-1"
                               title="Delete Item"
@@ -1834,7 +2059,10 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                         notes: 'Direct operational cost component',
                         isCustom: true
                       };
-                      setIncomeStatement((prev) => ({ ...prev, cogs: [...prev.cogs, newItem] }));
+                      setIncomeStatement((prev) => {
+                        const base = Array.isArray(prev.cogs) ? prev.cogs : DEFAULT_INCOME_STATEMENT.cogs;
+                        return { ...prev, cogs: [...base, newItem] };
+                      });
                     }}
                     className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 text-xs font-bold flex items-center gap-1.5"
                   >
@@ -1872,7 +2100,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200 bg-white">
-                      {incomeStatement.opex.map((item, idx) => (
+                      {(Array.isArray(incomeStatement?.opex) ? incomeStatement.opex : []).map((item, idx) => (
                         <tr key={item.id} className="hover:bg-slate-50">
                           <td className="py-2 px-3 font-bold text-slate-900">
                             {isEditingSheet && !isLockedByAdmin ? (
@@ -1881,10 +2109,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={item.name}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setIncomeStatement((prev) => ({
-                                    ...prev,
-                                    opex: prev.opex.map((o, i) => (i === idx ? { ...o, name: val } : o))
-                                  }));
+                                  setIncomeStatement((prev) => {
+                                    const base = Array.isArray(prev.opex) ? prev.opex : DEFAULT_INCOME_STATEMENT.opex;
+                                    return {
+                                      ...prev,
+                                      opex: base.map((o, i) => (i === idx ? { ...o, name: val } : o))
+                                    };
+                                  });
                                 }}
                                 className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -1899,10 +2130,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={item.category}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setIncomeStatement((prev) => ({
-                                    ...prev,
-                                    opex: prev.opex.map((o, i) => (i === idx ? { ...o, category: val } : o))
-                                  }));
+                                  setIncomeStatement((prev) => {
+                                    const base = Array.isArray(prev.opex) ? prev.opex : DEFAULT_INCOME_STATEMENT.opex;
+                                    return {
+                                      ...prev,
+                                      opex: base.map((o, i) => (i === idx ? { ...o, category: val } : o))
+                                    };
+                                  });
                                 }}
                                 className="w-32 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -1917,10 +2151,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={item.notes || ''}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setIncomeStatement((prev) => ({
-                                    ...prev,
-                                    opex: prev.opex.map((o, i) => (i === idx ? { ...o, notes: val } : o))
-                                  }));
+                                  setIncomeStatement((prev) => {
+                                    const base = Array.isArray(prev.opex) ? prev.opex : DEFAULT_INCOME_STATEMENT.opex;
+                                    return {
+                                      ...prev,
+                                      opex: base.map((o, i) => (i === idx ? { ...o, notes: val } : o))
+                                    };
+                                  });
                                 }}
                                 className="w-full px-2 py-1 text-slate-900 font-medium border border-slate-300 rounded bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -1935,10 +2172,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               value={item.amountNgn}
                               onChange={(e) => {
                                 const val = Number(e.target.value);
-                                setIncomeStatement((prev) => ({
-                                  ...prev,
-                                  opex: prev.opex.map((o, i) => (i === idx ? { ...o, amountNgn: val } : o))
-                                }));
+                                setIncomeStatement((prev) => {
+                                  const base = Array.isArray(prev.opex) ? prev.opex : DEFAULT_INCOME_STATEMENT.opex;
+                                  return {
+                                    ...prev,
+                                    opex: base.map((o, i) => (i === idx ? { ...o, amountNgn: val } : o))
+                                  };
+                                });
                               }}
                               className="w-36 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             />
@@ -1947,10 +2187,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             <button
                               disabled={!isEditingSheet || isLockedByAdmin}
                               onClick={() => {
-                                setIncomeStatement((prev) => ({
-                                  ...prev,
-                                  opex: prev.opex.filter((_, i) => i !== idx)
-                                }));
+                                setIncomeStatement((prev) => {
+                                  const base = Array.isArray(prev.opex) ? prev.opex : DEFAULT_INCOME_STATEMENT.opex;
+                                  return {
+                                    ...prev,
+                                    opex: base.filter((_, i) => i !== idx)
+                                  };
+                                });
                               }}
                               className="text-rose-700 hover:text-rose-900 p-1"
                               title="Delete Item"
@@ -1976,7 +2219,10 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       notes: 'Operational overhead budget allocation',
                       isCustom: true
                     };
-                    setIncomeStatement((prev) => ({ ...prev, opex: [...prev.opex, newItem] }));
+                    setIncomeStatement((prev) => {
+                      const base = Array.isArray(prev.opex) ? prev.opex : DEFAULT_INCOME_STATEMENT.opex;
+                      return { ...prev, opex: [...base, newItem] };
+                    });
                   }}
                   className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 text-xs font-bold flex items-center gap-1.5"
                 >
@@ -2149,7 +2395,10 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             category: 'Current Assets',
                             amountNgn: 15000000
                           };
-                          setBalanceSheet((prev) => ({ ...prev, currentAssets: [...prev.currentAssets, newItem] }));
+                          setBalanceSheet((prev) => {
+                            const base = Array.isArray(prev.currentAssets) ? prev.currentAssets : DEFAULT_BALANCE_SHEET.currentAssets;
+                            return { ...prev, currentAssets: [...base, newItem] };
+                          });
                         }}
                         className="text-[10px] text-emerald-900 font-black hover:underline flex items-center gap-1"
                       >
@@ -2157,7 +2406,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       </button>
                     </div>
 
-                    {balanceSheet.currentAssets.map((ca, idx) => (
+                    {(Array.isArray(balanceSheet?.currentAssets) ? balanceSheet.currentAssets : []).map((ca, idx) => (
                       <div key={ca.id} className="flex justify-between items-center py-1.5 border-b border-slate-200 gap-2">
                         {isEditingSheet && !isLockedByAdmin ? (
                           <input
@@ -2165,10 +2414,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={ca.name}
                             onChange={(e) => {
                               const val = e.target.value;
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                currentAssets: prev.currentAssets.map((item, i) => (i === idx ? { ...item, name: val } : item))
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.currentAssets) ? prev.currentAssets : DEFAULT_BALANCE_SHEET.currentAssets;
+                                return {
+                                  ...prev,
+                                  currentAssets: base.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                                };
+                              });
                             }}
                             className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
@@ -2182,20 +2434,26 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={ca.amountNgn}
                             onChange={(e) => {
                               const val = Number(e.target.value);
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                currentAssets: prev.currentAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.currentAssets) ? prev.currentAssets : DEFAULT_BALANCE_SHEET.currentAssets;
+                                return {
+                                  ...prev,
+                                  currentAssets: base.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                                };
+                              });
                             }}
                             className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             disabled={!isEditingSheet || isLockedByAdmin}
                             onClick={() => {
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                currentAssets: prev.currentAssets.filter((_, i) => i !== idx)
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.currentAssets) ? prev.currentAssets : DEFAULT_BALANCE_SHEET.currentAssets;
+                                return {
+                                  ...prev,
+                                  currentAssets: base.filter((_, i) => i !== idx)
+                                };
+                              });
                             }}
                             className="text-rose-700 hover:text-rose-900 p-1"
                             title="Delete Current Asset Item"
@@ -2226,7 +2484,10 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             amountNgn: 20000000,
                             depreciationYears: 5
                           };
-                          setBalanceSheet((prev) => ({ ...prev, fixedAssets: [...prev.fixedAssets, newItem] }));
+                          setBalanceSheet((prev) => {
+                            const base = Array.isArray(prev.fixedAssets) ? prev.fixedAssets : DEFAULT_BALANCE_SHEET.fixedAssets;
+                            return { ...prev, fixedAssets: [...base, newItem] };
+                          });
                         }}
                         className="text-[10px] text-emerald-900 font-black hover:underline flex items-center gap-1"
                       >
@@ -2234,7 +2495,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       </button>
                     </div>
 
-                    {balanceSheet.fixedAssets.map((fa, idx) => (
+                    {(Array.isArray(balanceSheet?.fixedAssets) ? balanceSheet.fixedAssets : []).map((fa, idx) => (
                       <div key={fa.id} className="flex justify-between items-center py-1.5 border-b border-slate-200 gap-2">
                         {isEditingSheet && !isLockedByAdmin ? (
                           <input
@@ -2242,10 +2503,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={fa.name}
                             onChange={(e) => {
                               const val = e.target.value;
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, name: val } : item))
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.fixedAssets) ? prev.fixedAssets : DEFAULT_BALANCE_SHEET.fixedAssets;
+                                return {
+                                  ...prev,
+                                  fixedAssets: base.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                                };
+                              });
                             }}
                             className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
@@ -2259,20 +2523,26 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={fa.amountNgn}
                             onChange={(e) => {
                               const val = Number(e.target.value);
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.fixedAssets) ? prev.fixedAssets : DEFAULT_BALANCE_SHEET.fixedAssets;
+                                return {
+                                  ...prev,
+                                  fixedAssets: base.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                                };
+                              });
                             }}
                             className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             disabled={!isEditingSheet || isLockedByAdmin}
                             onClick={() => {
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                fixedAssets: prev.fixedAssets.filter((_, i) => i !== idx)
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.fixedAssets) ? prev.fixedAssets : DEFAULT_BALANCE_SHEET.fixedAssets;
+                                return {
+                                  ...prev,
+                                  fixedAssets: base.filter((_, i) => i !== idx)
+                                };
+                              });
                             }}
                             className="text-rose-700 hover:text-rose-900 p-1"
                             title="Delete Fixed Asset Item"
@@ -2326,7 +2596,10 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             category: 'Payables',
                             amountNgn: 10000000
                           };
-                          setBalanceSheet((prev) => ({ ...prev, currentLiabilities: [...prev.currentLiabilities, newItem] }));
+                          setBalanceSheet((prev) => {
+                            const base = Array.isArray(prev.currentLiabilities) ? prev.currentLiabilities : DEFAULT_BALANCE_SHEET.currentLiabilities;
+                            return { ...prev, currentLiabilities: [...base, newItem] };
+                          });
                         }}
                         className="text-[10px] text-indigo-900 font-black hover:underline flex items-center gap-1"
                       >
@@ -2334,7 +2607,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       </button>
                     </div>
 
-                    {balanceSheet.currentLiabilities.map((cl, idx) => (
+                    {(Array.isArray(balanceSheet?.currentLiabilities) ? balanceSheet.currentLiabilities : []).map((cl, idx) => (
                       <div key={cl.id} className="flex justify-between items-center py-1.5 border-b border-slate-200 gap-2">
                         {isEditingSheet && !isLockedByAdmin ? (
                           <input
@@ -2342,10 +2615,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={cl.name}
                             onChange={(e) => {
                               const val = e.target.value;
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                currentLiabilities: prev.currentLiabilities.map((item, i) => (i === idx ? { ...item, name: val } : item))
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.currentLiabilities) ? prev.currentLiabilities : DEFAULT_BALANCE_SHEET.currentLiabilities;
+                                return {
+                                  ...prev,
+                                  currentLiabilities: base.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                                };
+                              });
                             }}
                             className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
@@ -2359,20 +2635,26 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={cl.amountNgn}
                             onChange={(e) => {
                               const val = Number(e.target.value);
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                currentLiabilities: prev.currentLiabilities.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.currentLiabilities) ? prev.currentLiabilities : DEFAULT_BALANCE_SHEET.currentLiabilities;
+                                return {
+                                  ...prev,
+                                  currentLiabilities: base.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                                };
+                              });
                             }}
                             className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             disabled={!isEditingSheet || isLockedByAdmin}
                             onClick={() => {
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                currentLiabilities: prev.currentLiabilities.filter((_, i) => i !== idx)
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.currentLiabilities) ? prev.currentLiabilities : DEFAULT_BALANCE_SHEET.currentLiabilities;
+                                return {
+                                  ...prev,
+                                  currentLiabilities: base.filter((_, i) => i !== idx)
+                                };
+                              });
                             }}
                             className="text-rose-700 hover:text-rose-900 p-1"
                             title="Delete Item"
@@ -2384,7 +2666,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       </div>
                     ))}
 
-                    {balanceSheet.longTermLiabilities.map((lt, idx) => (
+                    {(Array.isArray(balanceSheet?.longTermLiabilities) ? balanceSheet.longTermLiabilities : []).map((lt, idx) => (
                       <div key={lt.id} className="flex justify-between items-center py-1.5 border-b border-slate-200 gap-2">
                         {isEditingSheet && !isLockedByAdmin ? (
                           <input
@@ -2392,10 +2674,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={lt.name}
                             onChange={(e) => {
                               const val = e.target.value;
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                longTermLiabilities: prev.longTermLiabilities.map((item, i) => (i === idx ? { ...item, name: val } : item))
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.longTermLiabilities) ? prev.longTermLiabilities : DEFAULT_BALANCE_SHEET.longTermLiabilities;
+                                return {
+                                  ...prev,
+                                  longTermLiabilities: base.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                                };
+                              });
                             }}
                             className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
@@ -2409,20 +2694,26 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={lt.amountNgn}
                             onChange={(e) => {
                               const val = Number(e.target.value);
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                longTermLiabilities: prev.longTermLiabilities.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.longTermLiabilities) ? prev.longTermLiabilities : DEFAULT_BALANCE_SHEET.longTermLiabilities;
+                                return {
+                                  ...prev,
+                                  longTermLiabilities: base.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                                };
+                              });
                             }}
                             className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             disabled={!isEditingSheet || isLockedByAdmin}
                             onClick={() => {
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                longTermLiabilities: prev.longTermLiabilities.filter((_, i) => i !== idx)
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.longTermLiabilities) ? prev.longTermLiabilities : DEFAULT_BALANCE_SHEET.longTermLiabilities;
+                                return {
+                                  ...prev,
+                                  longTermLiabilities: base.filter((_, i) => i !== idx)
+                                };
+                              });
                             }}
                             className="text-rose-700 hover:text-rose-900 p-1"
                             title="Delete Item"
@@ -2452,7 +2743,10 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             category: 'Share Capital',
                             amountNgn: 50000000
                           };
-                          setBalanceSheet((prev) => ({ ...prev, equityItems: [...prev.equityItems, newItem] }));
+                          setBalanceSheet((prev) => {
+                            const base = Array.isArray(prev.equityItems) ? prev.equityItems : DEFAULT_BALANCE_SHEET.equityItems;
+                            return { ...prev, equityItems: [...base, newItem] };
+                          });
                         }}
                         className="text-[10px] text-indigo-900 font-black hover:underline flex items-center gap-1"
                       >
@@ -2460,7 +2754,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       </button>
                     </div>
 
-                    {balanceSheet.equityItems.map((eq, idx) => (
+                    {(Array.isArray(balanceSheet?.equityItems) ? balanceSheet.equityItems : []).map((eq, idx) => (
                       <div key={eq.id} className="flex justify-between items-center py-1.5 border-b border-slate-200 gap-2">
                         {isEditingSheet && !isLockedByAdmin ? (
                           <input
@@ -2468,10 +2762,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={eq.name}
                             onChange={(e) => {
                               const val = e.target.value;
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                equityItems: prev.equityItems.map((item, i) => (i === idx ? { ...item, name: val } : item))
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.equityItems) ? prev.equityItems : DEFAULT_BALANCE_SHEET.equityItems;
+                                return {
+                                  ...prev,
+                                  equityItems: base.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                                };
+                              });
                             }}
                             className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
@@ -2485,20 +2782,26 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={eq.amountNgn}
                             onChange={(e) => {
                               const val = Number(e.target.value);
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                equityItems: prev.equityItems.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.equityItems) ? prev.equityItems : DEFAULT_BALANCE_SHEET.equityItems;
+                                return {
+                                  ...prev,
+                                  equityItems: base.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                                };
+                              });
                             }}
                             className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
                           <button
                             disabled={!isEditingSheet || isLockedByAdmin}
                             onClick={() => {
-                              setBalanceSheet((prev) => ({
-                                ...prev,
-                                equityItems: prev.equityItems.filter((_, i) => i !== idx)
-                              }));
+                              setBalanceSheet((prev) => {
+                                const base = Array.isArray(prev.equityItems) ? prev.equityItems : DEFAULT_BALANCE_SHEET.equityItems;
+                                return {
+                                  ...prev,
+                                  equityItems: base.filter((_, i) => i !== idx)
+                                };
+                              });
                             }}
                             className="text-rose-700 hover:text-rose-900 p-1"
                             title="Delete Item"
@@ -2570,7 +2873,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 bg-white">
-                    {costTccBoq.items.map((it, idx) => {
+                    {(Array.isArray(costTccBoq?.items) ? costTccBoq.items : []).map((it, idx) => {
                       const lineNgn = (it.quantity || 1) * (it.unitPriceNgn || 0);
                       const lineUsd = lineNgn / costTccMetrics.rate;
                       return (
@@ -2582,10 +2885,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={it.name}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setCostTccBoq((prev) => ({
-                                    ...prev,
-                                    items: prev.items.map((item, i) => (i === idx ? { ...item, name: val } : item))
-                                  }));
+                                  setCostTccBoq((prev) => {
+                                    const base = Array.isArray(prev.items) ? prev.items : DEFAULT_COST_TCC_BOQ.items;
+                                    return {
+                                      ...prev,
+                                      items: base.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                                    };
+                                  });
                                 }}
                                 className="w-full px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -2600,10 +2906,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                                 value={it.category}
                                 onChange={(e) => {
                                   const val = e.target.value;
-                                  setCostTccBoq((prev) => ({
-                                    ...prev,
-                                    items: prev.items.map((item, i) => (i === idx ? { ...item, category: val } : item))
-                                  }));
+                                  setCostTccBoq((prev) => {
+                                    const base = Array.isArray(prev.items) ? prev.items : DEFAULT_COST_TCC_BOQ.items;
+                                    return {
+                                      ...prev,
+                                      items: base.map((item, i) => (i === idx ? { ...item, category: val } : item))
+                                    };
+                                  });
                                 }}
                                 className="w-28 px-2 py-1 text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                               />
@@ -2618,10 +2927,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               value={it.quantity}
                               onChange={(e) => {
                                 const q = Number(e.target.value);
-                                setCostTccBoq((prev) => ({
-                                  ...prev,
-                                  items: prev.items.map((item, i) => (i === idx ? { ...item, quantity: q } : item))
-                                }));
+                                setCostTccBoq((prev) => {
+                                  const base = Array.isArray(prev.items) ? prev.items : DEFAULT_COST_TCC_BOQ.items;
+                                  return {
+                                    ...prev,
+                                    items: base.map((item, i) => (i === idx ? { ...item, quantity: q } : item))
+                                  };
+                                });
                               }}
                               className="w-14 px-1.5 py-1 text-center font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             />
@@ -2633,10 +2945,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                               value={it.unitPriceNgn}
                               onChange={(e) => {
                                 const r = Number(e.target.value);
-                                setCostTccBoq((prev) => ({
-                                  ...prev,
-                                  items: prev.items.map((item, i) => (i === idx ? { ...item, unitPriceNgn: r } : item))
-                                }));
+                                setCostTccBoq((prev) => {
+                                  const base = Array.isArray(prev.items) ? prev.items : DEFAULT_COST_TCC_BOQ.items;
+                                  return {
+                                    ...prev,
+                                    items: base.map((item, i) => (i === idx ? { ...item, unitPriceNgn: r } : item))
+                                  };
+                                });
                               }}
                               className="w-28 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                             />
@@ -2651,10 +2966,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             <button
                               disabled={!isEditingSheet || isLockedByAdmin}
                               onClick={() => {
-                                setCostTccBoq((prev) => ({
-                                  ...prev,
-                                  items: prev.items.filter((_, i) => i !== idx)
-                                }));
+                                setCostTccBoq((prev) => {
+                                  const base = Array.isArray(prev.items) ? prev.items : DEFAULT_COST_TCC_BOQ.items;
+                                  return {
+                                    ...prev,
+                                    items: base.filter((_, i) => i !== idx)
+                                  };
+                                });
                               }}
                               className="text-rose-700 hover:text-rose-900 p-1"
                               title="Delete Item"
@@ -2682,7 +3000,10 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     amountNgn: 5000000,
                     depreciationYears: 5
                   };
-                  setCostTccBoq((prev) => ({ ...prev, items: [...prev.items, newItem] }));
+                  setCostTccBoq((prev) => {
+                    const base = Array.isArray(prev.items) ? prev.items : DEFAULT_COST_TCC_BOQ.items;
+                    return { ...prev, items: [...base, newItem] };
+                  });
                 }}
                 className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 text-xs font-bold flex items-center gap-1.5"
               >
@@ -2725,7 +3046,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     </span>
                   </div>
 
-                  {startupFunds.fixedAssets.map((fa, idx) => (
+                  {(Array.isArray(startupFunds?.fixedAssets) ? startupFunds.fixedAssets : []).map((fa, idx) => (
                     <div key={fa.id} className="flex justify-between items-center py-1.5 border-b border-slate-200 gap-2">
                       {isEditingSheet && !isLockedByAdmin ? (
                         <input
@@ -2733,10 +3054,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           value={fa.name}
                           onChange={(e) => {
                             const val = e.target.value;
-                            setStartupFunds((prev) => ({
-                              ...prev,
-                              fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, name: val } : item))
-                            }));
+                            setStartupFunds((prev) => {
+                              const base = Array.isArray(prev.fixedAssets) ? prev.fixedAssets : DEFAULT_STARTUP_FUNDS.fixedAssets;
+                              return {
+                                ...prev,
+                                fixedAssets: base.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                              };
+                            });
                           }}
                           className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
@@ -2750,20 +3074,26 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           value={fa.amountNgn}
                           onChange={(e) => {
                             const val = Number(e.target.value);
-                            setStartupFunds((prev) => ({
-                              ...prev,
-                              fixedAssets: prev.fixedAssets.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                            }));
+                            setStartupFunds((prev) => {
+                              const base = Array.isArray(prev.fixedAssets) ? prev.fixedAssets : DEFAULT_STARTUP_FUNDS.fixedAssets;
+                              return {
+                                ...prev,
+                                fixedAssets: base.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                              };
+                            });
                           }}
                           className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <button
                           disabled={!isEditingSheet || isLockedByAdmin}
                           onClick={() => {
-                            setStartupFunds((prev) => ({
-                              ...prev,
-                              fixedAssets: prev.fixedAssets.filter((_, i) => i !== idx)
-                            }));
+                            setStartupFunds((prev) => {
+                              const base = Array.isArray(prev.fixedAssets) ? prev.fixedAssets : DEFAULT_STARTUP_FUNDS.fixedAssets;
+                              return {
+                                ...prev,
+                                fixedAssets: base.filter((_, i) => i !== idx)
+                              };
+                            });
                           }}
                           className="text-rose-700 hover:text-rose-900 p-1"
                           title="Delete Item"
@@ -2785,7 +3115,10 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                         amountNgn: 10000000,
                         depreciationYears: 5
                       };
-                      setStartupFunds((prev) => ({ ...prev, fixedAssets: [...prev.fixedAssets, newItem] }));
+                      setStartupFunds((prev) => {
+                        const base = Array.isArray(prev.fixedAssets) ? prev.fixedAssets : DEFAULT_STARTUP_FUNDS.fixedAssets;
+                        return { ...prev, fixedAssets: [...base, newItem] };
+                      });
                     }}
                     className="text-[11px] font-black text-indigo-900 hover:underline flex items-center gap-1 pt-1"
                   >
@@ -2802,7 +3135,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                     </span>
                   </div>
 
-                  {startupFunds.operatingCapital.map((op, idx) => (
+                  {(Array.isArray(startupFunds?.operatingCapital) ? startupFunds.operatingCapital : []).map((op, idx) => (
                     <div key={op.id} className="flex justify-between items-center py-1.5 border-b border-slate-200 gap-2">
                       {isEditingSheet && !isLockedByAdmin ? (
                         <input
@@ -2810,10 +3143,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           value={op.name}
                           onChange={(e) => {
                             const val = e.target.value;
-                            setStartupFunds((prev) => ({
-                              ...prev,
-                              operatingCapital: prev.operatingCapital.map((item, i) => (i === idx ? { ...item, name: val } : item))
-                            }));
+                            setStartupFunds((prev) => {
+                              const base = Array.isArray(prev.operatingCapital) ? prev.operatingCapital : DEFAULT_STARTUP_FUNDS.operatingCapital;
+                              return {
+                                ...prev,
+                                operatingCapital: base.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                              };
+                            });
                           }}
                           className="w-full text-slate-900 font-bold text-xs border border-slate-300 rounded px-2 py-0.5 bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
@@ -2827,20 +3163,26 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                           value={op.amountNgn}
                           onChange={(e) => {
                             const val = Number(e.target.value);
-                            setStartupFunds((prev) => ({
-                              ...prev,
-                              operatingCapital: prev.operatingCapital.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                            }));
+                            setStartupFunds((prev) => {
+                              const base = Array.isArray(prev.operatingCapital) ? prev.operatingCapital : DEFAULT_STARTUP_FUNDS.operatingCapital;
+                              return {
+                                ...prev,
+                                operatingCapital: base.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                              };
+                            });
                           }}
                           className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                         />
                         <button
                           disabled={!isEditingSheet || isLockedByAdmin}
                           onClick={() => {
-                            setStartupFunds((prev) => ({
-                              ...prev,
-                              operatingCapital: prev.operatingCapital.filter((_, i) => i !== idx)
-                            }));
+                            setStartupFunds((prev) => {
+                              const base = Array.isArray(prev.operatingCapital) ? prev.operatingCapital : DEFAULT_STARTUP_FUNDS.operatingCapital;
+                              return {
+                                ...prev,
+                                operatingCapital: base.filter((_, i) => i !== idx)
+                              };
+                            });
                           }}
                           className="text-rose-700 hover:text-rose-900 p-1"
                           title="Delete Item"
@@ -2861,7 +3203,10 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                         category: 'Operating Reserves',
                         amountNgn: 5000000
                       };
-                      setStartupFunds((prev) => ({ ...prev, operatingCapital: [...prev.operatingCapital, newItem] }));
+                      setStartupFunds((prev) => {
+                        const base = Array.isArray(prev.operatingCapital) ? prev.operatingCapital : DEFAULT_STARTUP_FUNDS.operatingCapital;
+                        return { ...prev, operatingCapital: [...base, newItem] };
+                      });
                     }}
                     className="text-[11px] font-black text-indigo-900 hover:underline flex items-center gap-1 pt-1"
                   >
@@ -2896,7 +3241,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                {capexOpexDancia.items.map((line, idx) => (
+                {(Array.isArray(capexOpexDancia?.items) ? capexOpexDancia.items : []).map((line, idx) => (
                   <div
                     key={line.id}
                     className="p-3 rounded-lg border border-slate-300 bg-white flex justify-between items-center shadow-xs gap-2"
@@ -2909,10 +3254,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={line.name}
                             onChange={(e) => {
                               const val = e.target.value;
-                              setCapexOpexDancia((prev) => ({
-                                ...prev,
-                                items: prev.items.map((item, i) => (i === idx ? { ...item, name: val } : item))
-                              }));
+                              setCapexOpexDancia((prev) => {
+                                const base = Array.isArray(prev.items) ? prev.items : DEFAULT_CAPEX_OPEX_DANCIA4TV.items;
+                                return {
+                                  ...prev,
+                                  items: base.map((item, i) => (i === idx ? { ...item, name: val } : item))
+                                };
+                              });
                             }}
                             className="w-full font-bold text-slate-900 text-xs border border-slate-300 rounded px-1.5 py-0.5 bg-white mb-1 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
@@ -2921,10 +3269,13 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                             value={line.notes || ''}
                             onChange={(e) => {
                               const val = e.target.value;
-                              setCapexOpexDancia((prev) => ({
-                                ...prev,
-                                items: prev.items.map((item, i) => (i === idx ? { ...item, notes: val } : item))
-                              }));
+                              setCapexOpexDancia((prev) => {
+                                const base = Array.isArray(prev.items) ? prev.items : DEFAULT_CAPEX_OPEX_DANCIA4TV.items;
+                                return {
+                                  ...prev,
+                                  items: base.map((item, i) => (i === idx ? { ...item, notes: val } : item))
+                                };
+                              });
                             }}
                             className="w-full text-[11px] text-slate-900 font-semibold border border-slate-300 rounded px-1.5 py-0.5 bg-white font-bold focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                           />
@@ -2943,20 +3294,26 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                         value={line.amountNgn}
                         onChange={(e) => {
                           const val = Number(e.target.value);
-                          setCapexOpexDancia((prev) => ({
-                            ...prev,
-                            items: prev.items.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
-                          }));
+                          setCapexOpexDancia((prev) => {
+                            const base = Array.isArray(prev.items) ? prev.items : DEFAULT_CAPEX_OPEX_DANCIA4TV.items;
+                            return {
+                              ...prev,
+                              items: base.map((item, i) => (i === idx ? { ...item, amountNgn: val } : item))
+                            };
+                          });
                         }}
                         className="w-32 px-2 py-1 text-right font-mono font-bold text-slate-900 border border-slate-300 rounded bg-white flex-shrink-0 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
                       />
                       <button
                         disabled={!isEditingSheet || isLockedByAdmin}
                         onClick={() => {
-                          setCapexOpexDancia((prev) => ({
-                            ...prev,
-                            items: prev.items.filter((_, i) => i !== idx)
-                          }));
+                          setCapexOpexDancia((prev) => {
+                            const base = Array.isArray(prev.items) ? prev.items : DEFAULT_CAPEX_OPEX_DANCIA4TV.items;
+                            return {
+                              ...prev,
+                              items: base.filter((_, i) => i !== idx)
+                            };
+                          });
                         }}
                         className="text-rose-700 hover:text-rose-900 p-1"
                         title="Delete Item"
@@ -2972,14 +3329,18 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
               <button
                 disabled={!isEditingSheet || isLockedByAdmin}
                 onClick={() => {
+                  const currentItems = Array.isArray(capexOpexDancia?.items) ? capexOpexDancia.items : DEFAULT_CAPEX_OPEX_DANCIA4TV.items;
                   const newItem: FinancialLineItem = {
                     id: `dancia_custom_${Date.now()}`,
-                    name: `${capexOpexDancia.items.length + 1}. New Project Phase Allocation`,
+                    name: `${currentItems.length + 1}. New Project Phase Allocation`,
                     category: 'Media Production',
                     amountNgn: 10000000,
                     notes: 'Custom allocation line item'
                   };
-                  setCapexOpexDancia((prev) => ({ ...prev, items: [...prev.items, newItem] }));
+                  setCapexOpexDancia((prev) => {
+                    const base = Array.isArray(prev.items) ? prev.items : DEFAULT_CAPEX_OPEX_DANCIA4TV.items;
+                    return { ...prev, items: [...base, newItem] };
+                  });
                 }}
                 className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-900 border border-slate-300 text-xs font-bold flex items-center gap-1.5"
               >
@@ -3165,7 +3526,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200 bg-white">
-                      {auditList.map((rec) => (
+                      {(Array.isArray(auditList) ? auditList : []).map((rec) => (
                         <tr key={rec.id} className="hover:bg-slate-50">
                           <td className="py-2 px-3">
                             <span className={`px-2 py-0.5 rounded text-[10px] font-black ${
