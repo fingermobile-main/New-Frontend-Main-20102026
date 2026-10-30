@@ -110,5 +110,32 @@ export const financialTreasuryConsoleService = {
   async getSpawns(): Promise<FinancialSpawnedConsole[]> {
     const response = await api.get('/financial-treasury-console/spawns');
     return response.data.data || [];
+  },
+
+  /**
+   * Dynamic Platform Pricing, Values & FIC Rates Governance
+   */
+  async getPricingRules(): Promise<{ rules: import('../types/financialTreasuryConsole').PlatformPricingRule[]; auditLogs: import('../types/financialTreasuryConsole').PlatformPricingAuditLog[] }> {
+    const response = await api.get('/financial-treasury-console/pricing-rules');
+    return response.data.data;
+  },
+
+  async updatePricingRule(
+    id: string,
+    payload: Partial<import('../types/financialTreasuryConsole').PlatformPricingRule> & { reason?: string; updated_by?: string }
+  ): Promise<import('../types/financialTreasuryConsole').PlatformPricingRule> {
+    const response = await api.put(`/financial-treasury-console/pricing-rules/${id}`, payload);
+    return response.data.data;
+  },
+
+  async createPricingRule(
+    payload: Partial<import('../types/financialTreasuryConsole').PlatformPricingRule>
+  ): Promise<import('../types/financialTreasuryConsole').PlatformPricingRule> {
+    const response = await api.post('/financial-treasury-console/pricing-rules', payload);
+    return response.data.data;
+  },
+
+  async deletePricingRule(id: string): Promise<void> {
+    await api.delete(`/financial-treasury-console/pricing-rules/${id}`);
   }
 };

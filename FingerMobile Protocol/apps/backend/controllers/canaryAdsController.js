@@ -1426,6 +1426,95 @@ class CanaryAdsController {
       return res.status(500).json({ success: false, error: err.message });
     }
   }
+
+  /**
+   * 9. Dynamic Pricing Rules
+   * GET /api/canary/pricing-rules
+   */
+  async getPricingRules(req, res) {
+    try {
+      const result = await pool.query(
+        `SELECT * FROM platform_pricing_rules 
+         WHERE category IN ('canary_objective', 'canary_placement', 'fic_parity')
+         ORDER BY category, item_key ASC`
+      );
+
+      const objectives = result.rows.filter(r => r.category === 'canary_objective');
+      const placements = result.rows.filter(r => r.category === 'canary_placement');
+      const ficParity = result.rows.find(r => r.item_key === 'fic_usd_parity') || { base_price_usd: 1.00, base_price_fic: 10.00 };
+
+      const rulesByKey = {};
+      result.rows.forEach(r => {
+        rulesByKey[r.item_key] = {
+          id: r.id,
+          category: r.category,
+          name: r.name,
+          base_price_usd: parseFloat(r.base_price_usd),
+          base_price_fic: parseFloat(r.base_price_fic),
+          multiplier: parseFloat(r.multiplier),
+          billing_interval: r.billing_interval,
+          is_active: r.is_active
+        };
+      });
+
+      return res.status(200).json({
+        success: true,
+        data: {
+          objectives,
+          placements,
+          ficParity,
+          rulesByKey
+        }
+      });
+    } catch (err) {
+      logger.error('Error fetching canary pricing rules:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  }
+
+  /**
+   * PUT /api/canary/pricing-rules/:id
+   */
+  async updatePricingRule(req, res) {
+    try {
+      const { id } = req.params;
+      const { base_price_usd, base_price_fic, multiplier, is_active, updated_by, reason } = req.body;
+
+      const existing = await pool.query('SELECT * FROM platform_pricing_rules WHERE id = $1 OR item_key = $1', [id]);
+      if (existing.rows.length === 0) {
+        return res.status(404).json({ success: false, error: 'Pricing rule not found' });
+      }
+
+      const row = existing.rows[0];
+      const newUsd = base_price_usd !== undefined ? parseFloat(base_price_usd) : parseFloat(row.base_price_usd);
+      const newFic = base_price_fic !== undefined ? parseFloat(base_price_fic) : parseFloat(row.base_price_fic);
+      const newMult = multiplier !== undefined ? parseFloat(multiplier) : parseFloat(row.multiplier);
+      const newActive = is_active !== undefined ? Boolean(is_active) : row.is_active;
+      const actor = updated_by || 'CFO / SuperAdmin';
+
+      const updated = await pool.query(
+        `UPDATE platform_pricing_rules 
+         SET base_price_usd = $1, base_price_fic = $2, multiplier = $3, is_active = $4, updated_by = $5, updated_at = CURRENT_TIMESTAMP
+         WHERE id = $6 RETURNING *`,
+        [newUsd, newFic, newMult, newActive, actor, row.id]
+      );
+
+      await pool.query(
+        `INSERT INTO platform_pricing_audit_log (rule_id, item_key, old_price_usd, new_price_usd, old_price_fic, new_price_fic, changed_by, reason)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [row.id, row.item_key, row.base_price_usd, newUsd, row.base_price_fic, newFic, actor, reason || 'Canary dynamic adjustment']
+      );
+
+      return res.status(200).json({
+        success: true,
+        message: `Pricing rule ${row.item_key} dynamically updated in PostgreSQL`,
+        data: updated.rows[0]
+      });
+    } catch (err) {
+      logger.error('Error updating canary pricing rule:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  }
 }
 
 module.exports = new CanaryAdsController();

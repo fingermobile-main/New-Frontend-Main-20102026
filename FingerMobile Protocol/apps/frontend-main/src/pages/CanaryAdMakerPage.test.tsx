@@ -21,6 +21,22 @@ jest.mock('../contexts/AppContext', () => ({
   }),
 }));
 
+jest.mock('../services/api', () => ({
+  ApiService: {
+    get: jest.fn().mockResolvedValue({
+      success: true,
+      data: {
+        rulesByKey: {
+          video: { base_price_usd: 15, base_price_fic: 150 },
+          feed_video: { base_price_usd: 12, base_price_fic: 120 }
+        },
+        ficParity: { base_price_fic: 10 }
+      }
+    }),
+    post: jest.fn().mockResolvedValue({ success: true })
+  }
+}));
+
 describe('CanaryAdMakerPage Mobile Suite', () => {
   it('renders ad studio header and step 1 disclaimer agreement', () => {
     render(

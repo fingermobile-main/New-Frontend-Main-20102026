@@ -95,3 +95,47 @@ export interface ReorderEntry {
   id: string;
   display_order: number;
 }
+
+export type PlatformPricingCategory =
+  | 'canary_objective'
+  | 'canary_placement'
+  | 'fic_parity'
+  | 'treasury_fee'
+  | 'subscription_tier';
+
+export interface PlatformPricingRule {
+  id: string;
+  category: PlatformPricingCategory;
+  item_key: string;
+  name: string;
+  description?: string;
+  base_price_usd: number | string;
+  base_price_fic: number | string;
+  multiplier: number | string;
+  billing_interval: 'daily' | 'monthly' | 'per_transaction' | 'one_time';
+  min_threshold?: number | string;
+  max_threshold?: number | string;
+  is_active: boolean;
+  metadata?: Record<string, any>;
+  updated_by?: string;
+  updated_at?: string;
+  created_at?: string;
+}
+
+export interface PlatformPricingAuditLog {
+  id: number;
+  rule_id: string;
+  item_key: string;
+  old_price_usd?: number | string;
+  new_price_usd?: number | string;
+  old_price_fic?: number | string;
+  new_price_fic?: number | string;
+  changed_by: string;
+  reason?: string;
+  created_at: string;
+}
+
+export interface PlatformPricingResponse {
+  rules: PlatformPricingRule[];
+  auditLogs: PlatformPricingAuditLog[];
+}

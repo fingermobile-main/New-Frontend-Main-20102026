@@ -452,3 +452,200 @@ exports.getSpawns = async (req, res) => {
     return res.status(500).json({ success: false, message: 'Failed to retrieve spawned consoles', error: err.message });
   }
 };
+
+/**
+ * Dynamic Platform Pricing, Values & FIC Rates Governance
+ * GET /api/financial-treasury-console/pricing-rules
+ */
+exports.getPricingRules = async (req, res) => {
+  try {
+    const rulesResult = await pool.query(`
+      SELECT * FROM platform_pricing_rules
+      ORDER BY category ASC, item_key ASC
+    `);
+
+    const auditResult = await pool.query(`
+      SELECT * FROM platform_pricing_audit_log
+      ORDER BY created_at DESC
+      LIMIT 50
+    `);
+
+    return res.status(200).json({
+      success: true,
+      count: rulesResult.rows.length,
+      data: {
+        rules: rulesResult.rows,
+        auditLogs: auditResult.rows
+      }
+    });
+  } catch (err) {
+    console.error('[FinancialTreasuryConsole] getPricingRules error:', err);
+    return res.status(500).json({ success: false, message: 'Failed to retrieve platform pricing rules', error: err.message });
+  }
+};
+
+/**
+ * PUT /api/financial-treasury-console/pricing-rules/:id
+ */
+exports.updatePricingRule = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      name,
+      description,
+      base_price_usd,
+      base_price_fic,
+      multiplier,
+      billing_interval,
+      min_threshold,
+      max_threshold,
+      is_active,
+      updated_by,
+      reason
+    } = req.body;
+
+    const existing = await pool.query('SELECT * FROM platform_pricing_rules WHERE id = $1 OR item_key = $1', [id]);
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Pricing rule not found' });
+    }
+
+    const row = existing.rows[0];
+    const newUsd = base_price_usd !== undefined ? parseFloat(base_price_usd) : parseFloat(row.base_price_usd);
+    const newFic = base_price_fic !== undefined ? parseFloat(base_price_fic) : parseFloat(row.base_price_fic);
+    const newMult = multiplier !== undefined ? parseFloat(multiplier) : parseFloat(row.multiplier);
+    const newActive = is_active !== undefined ? Boolean(is_active) : row.is_active;
+    const actor = updated_by || 'CFO / SuperAdmin';
+
+    const result = await pool.query(`
+      UPDATE platform_pricing_rules
+      SET
+        name = COALESCE($1, name),
+        description = COALESCE($2, description),
+        base_price_usd = $3,
+        base_price_fic = $4,
+        multiplier = $5,
+        billing_interval = COALESCE($6, billing_interval),
+        min_threshold = COALESCE($7, min_threshold),
+        max_threshold = COALESCE($8, max_threshold),
+        is_active = $9,
+        updated_by = $10,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = $11
+      RETURNING *
+    `, [
+      name || null,
+      description || null,
+      newUsd,
+      newFic,
+      newMult,
+      billing_interval || null,
+      min_threshold !== undefined ? parseFloat(min_threshold) : null,
+      max_threshold !== undefined ? parseFloat(max_threshold) : null,
+      newActive,
+      actor,
+      row.id
+    ]);
+
+    await pool.query(`
+      INSERT INTO platform_pricing_audit_log (rule_id, item_key, old_price_usd, new_price_usd, old_price_fic, new_price_fic, changed_by, reason)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `, [
+      row.id,
+      row.item_key,
+      row.base_price_usd,
+      newUsd,
+      row.base_price_fic,
+      newFic,
+      actor,
+      reason || 'Dynamic CFO/SuperAdmin rate adjustment'
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      message: `Pricing rule ${row.item_key} dynamically updated in PostgreSQL`,
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('[FinancialTreasuryConsole] updatePricingRule error:', err);
+    return res.status(500).json({ success: false, message: 'Failed to update pricing rule', error: err.message });
+  }
+};
+
+/**
+ * POST /api/financial-treasury-console/pricing-rules
+ */
+exports.createPricingRule = async (req, res) => {
+  try {
+    const {
+      id,
+      category,
+      item_key,
+      name,
+      description,
+      base_price_usd,
+      base_price_fic,
+      multiplier,
+      billing_interval,
+      min_threshold,
+      max_threshold,
+      updated_by
+    } = req.body;
+
+    if (!category || !item_key || !name) {
+      return res.status(400).json({ success: false, message: 'category, item_key, and name are required' });
+    }
+
+    const ruleId = id || `rate_${Date.now()}`;
+    const result = await pool.query(`
+      INSERT INTO platform_pricing_rules (
+        id, category, item_key, name, description,
+        base_price_usd, base_price_fic, multiplier,
+        billing_interval, min_threshold, max_threshold, updated_by
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      RETURNING *
+    `, [
+      ruleId,
+      category,
+      item_key,
+      name,
+      description || '',
+      parseFloat(base_price_usd || 10),
+      parseFloat(base_price_fic || 100),
+      parseFloat(multiplier || 1),
+      billing_interval || 'daily',
+      parseFloat(min_threshold || 1),
+      parseFloat(max_threshold || 50000),
+      updated_by || 'CFO / SuperAdmin'
+    ]);
+
+    return res.status(201).json({
+      success: true,
+      message: 'New pricing rule created in PostgreSQL',
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('[FinancialTreasuryConsole] createPricingRule error:', err);
+    return res.status(500).json({ success: false, message: 'Failed to create pricing rule', error: err.message });
+  }
+};
+
+/**
+ * DELETE /api/financial-treasury-console/pricing-rules/:id
+ */
+exports.deletePricingRule = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query('DELETE FROM platform_pricing_rules WHERE id = $1 OR item_key = $1 RETURNING *', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Pricing rule not found' });
+    }
+    return res.status(200).json({
+      success: true,
+      message: `Pricing rule ${id} purged from PostgreSQL`,
+      data: result.rows[0]
+    });
+  } catch (err) {
+    console.error('[FinancialTreasuryConsole] deletePricingRule error:', err);
+    return res.status(500).json({ success: false, message: 'Failed to delete pricing rule', error: err.message });
+  }
+};
