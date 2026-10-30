@@ -514,10 +514,21 @@ router.post('/geo-restrictions', async (req, res) => {
     const {
       region_type = 'district',
       region_name,
+      continent = null,
+      country = null,
+      state_province = null,
+      district_lga = null,
       freeze_all_services = false,
       frozen_services = [],
+      duration_value = null,
+      duration_unit = 'indefinite',
+      expires_at = null,
       blocked_ips = [],
       blocked_macs = [],
+      blocked_isps = [],
+      block_vpn_proxies = true,
+      satellite_roaming_safe_harbor = true,
+      enforcement_level = 'application_waf',
       severity = 'warning',
       reason = ''
     } = req.body;
@@ -526,20 +537,56 @@ router.post('/geo-restrictions', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Region name is required' });
     }
 
+    // Compute expires_at if duration_value and duration_unit are specified and not indefinite
+    let calculatedExpiresAt = expires_at;
+    if (!calculatedExpiresAt && duration_value && duration_unit !== 'indefinite') {
+      const now = new Date();
+      const val = parseInt(duration_value, 10);
+      if (duration_unit === 'minutes') {
+        now.setMinutes(now.getMinutes() + val);
+      } else if (duration_unit === 'hours') {
+        now.setHours(now.getHours() + val);
+      } else if (duration_unit === 'days') {
+        now.setDate(now.getDate() + val);
+      } else if (duration_unit === 'weeks') {
+        now.setDate(now.getDate() + val * 7);
+      }
+      calculatedExpiresAt = now.toISOString();
+    }
+
     const { rows } = await db.query(
       `INSERT INTO stercs_geo_restrictions (
-        region_type, region_name, freeze_all_services, frozen_services, blocked_ips, blocked_macs, severity, reason, is_active, created_at, updated_at
-      ) VALUES ($1, $2, $3, $4::jsonb, $5::jsonb, $6::jsonb, $7, $8, TRUE, NOW(), NOW())
+        region_type, region_name, continent, country, state_province, district_lga,
+        freeze_all_services, frozen_services, duration_value, duration_unit, expires_at,
+        blocked_ips, blocked_macs, blocked_isps, block_vpn_proxies, satellite_roaming_safe_harbor,
+        enforcement_level, severity, reason, is_active, created_at, updated_at
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6,
+        $7, $8::jsonb, $9, $10, $11,
+        $12::jsonb, $13::jsonb, $14::jsonb, $15, $16,
+        $17, $18, $19, TRUE, NOW(), NOW()
+      )
       RETURNING *`,
       [
         region_type,
         region_name,
-        freeze_all_services,
-        JSON.stringify(frozen_services),
-        JSON.stringify(blocked_ips),
-        JSON.stringify(blocked_macs),
-        severity,
-        reason
+        continent,
+        country,
+        state_province,
+        district_lga,
+        Boolean(freeze_all_services),
+        JSON.stringify(frozen_services || []),
+        duration_value ? parseInt(duration_value, 10) : null,
+        duration_unit || 'indefinite',
+        calculatedExpiresAt,
+        JSON.stringify(blocked_ips || []),
+        JSON.stringify(blocked_macs || []),
+        JSON.stringify(blocked_isps || []),
+        Boolean(block_vpn_proxies !== false),
+        Boolean(satellite_roaming_safe_harbor !== false),
+        enforcement_level || 'application_waf',
+        severity || 'warning',
+        reason || ''
       ]
     );
 
