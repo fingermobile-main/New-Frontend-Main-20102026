@@ -80,9 +80,9 @@ const SETTINGS_STORAGE_KEY = 'fingermobile_voiceline_settings';
 
 const DEFAULT_SETTINGS: VoiceLineSettings = {
   volume: 0.35, // 35% device/system speaker volume
-  audioPlaybackRate: 0.92, // Deliberate, relaxed natural playback speed (0.92x)
-  utteranceRate: 0.52, // Calibrated spoken speech synthesis utterance rate (0.52x) for authentic human cadence
-  playbackRate: 0.92,
+  audioPlaybackRate: 0.88, // Deliberate, relaxed natural playback speed (0.88x)
+  utteranceRate: 0.46, // Calibrated spoken speech synthesis utterance rate (0.46x) for authentic human cadence
+  playbackRate: 0.88,
   enabled: true,
   microservices: {
     forum: true,
@@ -267,10 +267,10 @@ class VoiceLineService {
 
   /**
    * Web Speech Synthesis (TTS) Utterance Cadence:
-   * Calibrated separately from uploaded media, calibrated to 0.52 for deliberate, natural spoken cadence.
+   * Calibrated separately from uploaded media, calibrated to 0.46 for deliberate, natural spoken cadence with warm African resonance.
    */
   public getUtteranceRate(): number {
-    return this.settings.utteranceRate ?? 0.52;
+    return this.settings.utteranceRate ?? 0.46;
   }
 
   public setUtteranceRate(rate: number): void {
