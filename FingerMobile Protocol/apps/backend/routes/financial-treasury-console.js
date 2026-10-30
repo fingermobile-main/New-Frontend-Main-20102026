@@ -27,4 +27,10 @@ router.get('/spawned-consoles', (req, res) => controller.getSpawns(req, res));
 router.post('/spawns', (req, res) => controller.createSpawn(req, res));
 router.post('/spawn-console', (req, res) => controller.createSpawn(req, res));
 
+// Dynamic Platform Pricing, Values & FIC Rates Governance
+router.get('/pricing-rules', (req, res) => controller.getPricingRules(req, res));
+router.post('/pricing-rules', (req, res) => controller.createPricingRule(req, res));
+router.put('/pricing-rules/:id', (req, res) => controller.updatePricingRule(req, res));
+router.delete('/pricing-rules/:id', (req, res) => controller.deletePricingRule(req, res));
+
 module.exports = router;

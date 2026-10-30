@@ -89,4 +89,8 @@ router.get('/announcements', canaryAdsController.getAnnouncements);
 router.post('/announcements', canaryAdsController.createAnnouncement);
 router.post('/announcements/:id/like', canaryAdsController.likeAnnouncement);
 
+// 9. Dynamic Pricing & Rates Rules
+router.get('/pricing-rules', canaryAdsController.getPricingRules);
+router.put('/pricing-rules/:id', canaryAdsController.updatePricingRule);
+
 module.exports = router;
