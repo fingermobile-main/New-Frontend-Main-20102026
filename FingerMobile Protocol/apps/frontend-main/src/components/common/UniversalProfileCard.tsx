@@ -230,7 +230,11 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
     // 3. Synchronize directly with /profile Charter API (Source of Truth)
     try {
       const targetUserId = (customUser as any)?.id || authUser?.id || (authUser as any)?.userId || '00000000-0000-0000-0000-000000000001';
-      await fetch(`http://localhost:5001/api/v1/profiles/${targetUserId}`, {
+      const host = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : 'localhost';
+      const targetUrl = typeof window !== 'undefined' && window.location.port === '3000'
+        ? `http://${host}:5001/api/v1/profiles/${targetUserId}`
+        : `/api/v1/profiles/${targetUserId}`;
+      await fetch(targetUrl, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

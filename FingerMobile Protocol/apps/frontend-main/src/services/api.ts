@@ -4,7 +4,7 @@ import axios, { AxiosInstance as InternalAxiosInstance } from 'axios';
 type AxiosInstance = InternalAxiosInstance;
 
 // Base API configuration
-const getApiBaseUrl = () => {
+export const getApiBaseUrl = () => {
   const envUrl = process.env.REACT_APP_API_URL;
   if (envUrl) {
     return envUrl;
@@ -16,7 +16,7 @@ const getApiBaseUrl = () => {
   return `http://${host}:5001/api`;
 };
 
-const API_BASE_URL = getApiBaseUrl();
+export const API_BASE_URL = getApiBaseUrl();
 
 // Create axios instance with defaults
 const api: AxiosInstance = axios.create({

@@ -152,6 +152,49 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
   const audioChunksRef = useRef<Blob[]>([]);
   const voiceTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Fetch live Mii status stories from PostgreSQL
+  useEffect(() => {
+    let isMounted = true;
+    const fetchLiveStories = async () => {
+      try {
+        const token =
+          localStorage.getItem('accessToken') ||
+          localStorage.getItem('fingermobile_token') ||
+          localStorage.getItem('token') ||
+          sessionStorage.getItem('token');
+        const headers: Record<string, string> = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch('/api/mii/status/feed', { headers });
+        const json = await res.json();
+        if (isMounted && json.success && Array.isArray(json.data) && json.data.length > 0) {
+          const liveMii: MiiItem[] = json.data.map((status: any, idx: number) => {
+            const firstCard = status.cards && status.cards[0] ? status.cards[0] : null;
+            const hours = status.hours_remaining ? Math.max(1, Math.round(parseFloat(status.hours_remaining))) : 48;
+            return {
+              id: status.status_id || `live-mii-${idx}`,
+              author: status.author_name || 'Creator',
+              handle: `@${(status.author_name || 'creator').toLowerCase().replace(/\s+/g, '_')}`,
+              avatar: status.author_avatar || '/assets/branding/default-avatar.svg',
+              mediaUrl: firstCard?.thumbnail_url || firstCard?.media_url || status.author_avatar || '/assets/branding/default-avatar.svg',
+              expiresIn: `${hours}h left`,
+              caption: firstCard?.caption || 'Live sovereign ephemeral story ✨',
+              isViewed: false,
+              type: firstCard?.media_type === 'video' ? 'video' : firstCard?.media_type === 'audio' ? 'audio' : 'photo',
+            };
+          });
+          setMiiStories(liveMii);
+        }
+      } catch {
+        // Keep fallback
+      }
+    };
+    fetchLiveStories();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   // 10-Second P2P Random UGC Shuffling Engine:
   // Randomly cycles through members' uploaded media, giving fresh UGC immediate precedence
   useEffect(() => {
@@ -363,6 +406,30 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
       try {
         localStorage.setItem('fmp_mii_stories', JSON.stringify(updated));
       } catch {}
+
+      // Persist to PostgreSQL via Express API
+      try {
+        const token =
+          localStorage.getItem('accessToken') ||
+          localStorage.getItem('fingermobile_token') ||
+          localStorage.getItem('token');
+        const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+        fetch('/api/mii/status', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            cards: newStories.map((s, i) => ({
+              media_type: s.type,
+              media_url: s.mediaUrl,
+              caption: s.caption,
+              card_index: i + 1,
+              timer_type: '48hrs'
+            }))
+          })
+        }).catch(() => {});
+      } catch {}
+
       setIsMiiCreatorOpen(false);
       setMiiCaption('');
       setMiiMediaList([]);

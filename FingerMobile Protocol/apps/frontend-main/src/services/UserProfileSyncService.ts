@@ -502,7 +502,12 @@ class UserProfileSyncService {
             ...(token ? { Authorization: `Bearer ${token}` } : {})
           };
 
-          fetch(`http://localhost:5001/api/v1/profiles/${targetId}`, {
+          const host = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : 'localhost';
+          const baseApi = typeof window !== 'undefined' && window.location.port === '3000'
+            ? `http://${host}:5001/api`
+            : '/api';
+
+          fetch(`${baseApi}/v1/profiles/${targetId}`, {
             method: 'PUT',
             headers: authHeaders,
             body: JSON.stringify({
@@ -516,7 +521,7 @@ class UserProfileSyncService {
             })
           }).catch(() => {});
 
-          fetch('http://localhost:5001/api/users/profile', {
+          fetch(`${baseApi}/users/profile`, {
             method: 'PUT',
             headers: authHeaders,
             body: JSON.stringify({
