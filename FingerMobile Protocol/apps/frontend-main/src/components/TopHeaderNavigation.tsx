@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 
 import { useAppContext } from '../contexts/AppContext';  // Fixed import path
@@ -6,8 +6,17 @@ import { useAuth } from '../contexts/AuthContext';
 
 const TopHeaderNavigation: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
   const { notificationsCount } = useAppContext();
   const { member, logout } = useAuth();
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   // Updated navigation based on the design document
   const platformNav = [
