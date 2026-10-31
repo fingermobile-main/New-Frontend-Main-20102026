@@ -339,6 +339,11 @@ app.use('/api/v1/users', userConsentRoutes);
 app.use('/v1/users', userConsentRoutes);
 app.use('/api/users', userConsentRoutes);
 
+// P2P Matching, Mesh Calibration & Sovereign Member Profiles
+const p2pMatchingRoutes = require('./routes/p2p-matching');
+app.use('/api/p2p-matching', p2pMatchingRoutes);
+app.use('/api/v1/p2p-matching', p2pMatchingRoutes);
+
 // OAuth2 Routes (no /api prefix for compatibility with Passport redirects)
 app.use('/auth', sensitiveLimiter, oauth2Routes);
 
