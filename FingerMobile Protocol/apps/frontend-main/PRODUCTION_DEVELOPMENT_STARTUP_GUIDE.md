@@ -196,6 +196,7 @@ The platform supports switching between Clean Testing Mode (authentic database o
 Mode	Backend (apps/backend/.env)	Frontend (apps/frontend-main/.env)	Behavior
 Clean Testing Mode (Recommended)	ENABLE_DEMO_CREDENTIALS=false	REACT_APP_ENABLE_DEMO_CREDENTIALS=false	Pills hidden; password bypasses disabled; real bcrypt & PostgreSQL validation enforced.
 Demo Prototyping Mode	ENABLE_DEMO_CREDENTIALS=true	REACT_APP_ENABLE_DEMO_CREDENTIALS=true	1-click pills appear; quick demo accounts active; demo OTP codes (123456, 000000) allowed.
+
 2. Code Safeguards & Credential Backups
 All original demo accounts and configuration bypasses are preserved:
 
@@ -218,6 +219,7 @@ demoUsers.js
 
 auth.js
 ).
+
 3. Dynamic LAN & Multi-Device Access
 External devices on the local area network connect directly without hardcoding IPs:
 
