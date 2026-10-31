@@ -81,13 +81,44 @@ router.post('/register', async (req, res) => {
     const { name, email, phone, password, firstName: reqFirstName, lastName: reqLastName, username: reqUsername, role: reqRole } = req.body;
 
     // Determine name parts
-    const effectiveFirstName = reqFirstName || (name ? name.trim().split(/\s+/)[0] : '') || 'User';
-    const effectiveLastName = reqLastName || (name ? name.trim().split(/\s+/).slice(1).join(' ') : '') || effectiveFirstName;
-    const _effectiveName = name || `${effectiveFirstName} ${effectiveLastName}`.trim();
+    const effectiveFirstName = reqFirstName ? reqFirstName.trim() : (name ? name.trim().split(/\s+/)[0] : '');
+    const effectiveLastName = reqLastName ? reqLastName.trim() : (name ? name.trim().split(/\s+/).slice(1).join(' ') : '');
+    const _effectiveName = name ? name.trim() : `${effectiveFirstName} ${effectiveLastName}`.trim();
     const effectiveRole = reqRole || 'Member';
 
+    // Validate all mandatory applicant requirements
+    if (!effectiveFirstName) {
+      return res.status(400).json({
+        success: false, message: 'First name is required'
+      });
+    }
+
+    if (!effectiveLastName) {
+      return res.status(400).json({
+        success: false, message: 'Last name is required'
+      });
+    }
+
+    if (!email || !email.trim()) {
+      return res.status(400).json({
+        success: false, message: 'Email address is required'
+      });
+    }
+
+    if (!phone || !phone.trim()) {
+      return res.status(400).json({
+        success: false, message: 'Phone number is required'
+      });
+    }
+
+    if (!password) {
+      return res.status(400).json({
+        success: false, message: 'Password is required'
+      });
+    }
+
     // Determine contact fields
-    const effectivePhone = (phone && phone.trim()) || '';
+    const effectivePhone = phone.trim();
     const cleanPhoneDigits = effectivePhone.replace(/[^0-9]/g, '');
 
     // Phone validation & intelligence screening (PhoneInfoga Engine)

@@ -198,7 +198,7 @@ const SuccessPage: React.FC = () => {
           onClick={handleManualProceed}
           className="w-full py-3 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg transition-all duration-200 flex items-center justify-center space-x-2 focus:outline-none focus:ring-4 focus:ring-indigo-300"
         >
-          <span>Proceed to Dashboard Now</span>
+          <span>Proceed to Sign In Now</span>
           <span>&rarr;</span>
         </button>
 

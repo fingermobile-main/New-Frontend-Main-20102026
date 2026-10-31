@@ -26,7 +26,7 @@ const LoginPage = () => {
 
     const clean = identifier.trim();
     if (!clean) {
-      newErrors.identifier = 'Email, phone number, or username is required';
+      newErrors.identifier = 'Email or phone number is required';
       valid = false;
     }
 
@@ -290,7 +290,7 @@ const LoginPage = () => {
 
             <div>
               <label htmlFor="identifier" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Email, Phone Number, or Username
+                Email Address or Phone Number
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -309,10 +309,10 @@ const LoginPage = () => {
                   autoComplete="username"
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  className={`block w-full pl-10 pr-3 py-3 border  text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400${
+                  className={`block w-full pl-10 pr-3 py-3 border text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 ${
                     errors.identifier ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                   } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
-                  placeholder="admin, user@fingermobileprotocol.com, or +234..."
+                  placeholder="name@example.com or +1 (555) 123-4567"
                 />
               </div>
               {errors.identifier && (

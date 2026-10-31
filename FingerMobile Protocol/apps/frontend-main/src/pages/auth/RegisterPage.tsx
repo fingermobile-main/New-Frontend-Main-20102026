@@ -60,19 +60,22 @@ const RegisterPage = () => {
       valid = false;
     }
 
-    const trimmedPhone = phone.trim();
-    const rawDigits = trimmedPhone.replace(/[^0-9]/g, '');
-
-    if (!trimmedPhone && !email.trim()) {
-      newErrors.phone = 'Phone number or email is required';
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
       valid = false;
-    } else if (trimmedPhone && rawDigits.length < 8) {
-      newErrors.phone = 'Please enter a valid phone number (at least 8 digits)';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      newErrors.email = 'Please enter a valid email address';
       valid = false;
     }
 
-    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      newErrors.email = 'Please enter a valid email address';
+    const trimmedPhone = phone.trim();
+    const rawDigits = trimmedPhone.replace(/[^0-9]/g, '');
+
+    if (!trimmedPhone) {
+      newErrors.phone = 'Phone number is required';
+      valid = false;
+    } else if (rawDigits.length < 8) {
+      newErrors.phone = 'Please enter a valid phone number (at least 8 digits)';
       valid = false;
     }
 
@@ -302,7 +305,7 @@ const RegisterPage = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
-                Email Address (Optional)
+                Email Address
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -315,10 +318,19 @@ const RegisterPage = () => {
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white text-slate-900 font-bold border-slate-300 bg-white placeholder:text-slate-400"
+                  className={`block w-full pl-10 pr-3 py-3 border text-slate-900 font-bold border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400 ${
+                    errors.email
+                      ? 'border-red-500'
+                      : 'border-gray-300 dark:border-gray-600'
+                  } rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white`}
                   placeholder="name@example.com"
                 />
               </div>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600 dark:text-red-500">
+                  {errors.email}
+                </p>
+              )}
             </div>
 
             <div>
