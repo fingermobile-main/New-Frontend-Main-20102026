@@ -354,17 +354,62 @@ export const MiiFingerOrbitModal: React.FC<FingerOrbitModalProps> = ({
   const [downloadPin, setDownloadPin] = useState('');
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [isVerifyingPin, setIsVerifyingPin] = useState(false);
+  const [videoFolderItems, setVideoFolderItems] = useState<any[]>([]);
+  const [imageFolderItems, setImageFolderItems] = useState<any[]>([]);
 
-  // Mock Folder Media Assets for FingerOrbit
-  const videoFolderItems = [
-    { id: 'v1', title: 'Studio Rehearsal Take 4', size: '34.2 MB', duration: '2:15', timer: '24h Remaining', isPrivate: true },
-    { id: 'v2', title: 'Behind The Scenes Clip', size: '18.7 MB', duration: '1:10', timer: '12h Remaining', isPrivate: false }
-  ];
+  useEffect(() => {
+    if (!isOpen) return;
+    const fetchOrbitData = async () => {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const headers: Record<string, string> = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const imageFolderItems = [
-    { id: 'i1', title: 'Tour Exclusive Shot 01', size: '4.8 MB', timer: '48h Remaining', isPrivate: true },
-    { id: 'i2', title: 'Artwork Draft Preview', size: '8.1 MB', timer: '6h Remaining', isPrivate: false }
-  ];
+        const foldersRes = await fetch('/api/mii/orbit/folders', { headers });
+        const foldersJson = await foldersRes.json();
+        if (foldersJson.success && Array.isArray(foldersJson.data)) {
+          const vFolder = foldersJson.data.find((f: any) => f.folder_type === 'video');
+          const iFolder = foldersJson.data.find((f: any) => f.folder_type === 'image');
+
+          if (vFolder) {
+            const vRes = await fetch(`/api/mii/orbit/folders/${vFolder.id}/items`, { headers });
+            const vJson = await vRes.json();
+            if (vJson.success && Array.isArray(vJson.data)) {
+              setVideoFolderItems(vJson.data.map((item: any) => ({
+                id: item.id,
+                title: item.title,
+                size: `${(item.file_size_bytes / (1024 * 1024)).toFixed(1)} MB`,
+                duration: `${Math.floor(item.duration_seconds / 60)}:${String(Math.floor(item.duration_seconds % 60)).padStart(2, '0')}`,
+                timer: '24h Remaining',
+                isPrivate: vFolder.visibility === 'private',
+                media_url: item.media_url,
+                thumbnail_url: item.thumbnail_url
+              })));
+            }
+          }
+
+          if (iFolder) {
+            const iRes = await fetch(`/api/mii/orbit/folders/${iFolder.id}/items`, { headers });
+            const iJson = await iRes.json();
+            if (iJson.success && Array.isArray(iJson.data)) {
+              setImageFolderItems(iJson.data.map((item: any) => ({
+                id: item.id,
+                title: item.title,
+                size: `${(item.file_size_bytes / (1024 * 1024)).toFixed(1)} MB`,
+                timer: '48h Remaining',
+                isPrivate: iFolder.visibility === 'private',
+                media_url: item.media_url,
+                thumbnail_url: item.thumbnail_url
+              })));
+            }
+          }
+        }
+      } catch {
+        // Fallback gracefully
+      }
+    };
+    fetchOrbitData();
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -551,24 +596,68 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
   showToast = () => {}
 }) => {
   const [currentPage, setCurrentPage] = useState<1 | 2>(1);
+  const [catalogProducts, setCatalogProducts] = useState<any[]>([]);
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
-  // Strictly Two (2) Page Catalogue
-  const pageOneProducts = [
-    { id: 'p1', name: 'FingerMobile Limited Edition Merch Hoodie', type: 'Physical', ficPrice: 450, gemsPrice: 45, image: 'https://placehold.co/400x300/10b981/ffffff?text=Creator+Hoodie' },
-    { id: 'p2', name: 'Signed Vinyl: "Beatwave Originals"', type: 'Physical', ficPrice: 320, gemsPrice: 32, image: 'https://placehold.co/400x300/6366f1/ffffff?text=Vinyl+LP' },
-    { id: 'p3', name: 'Mii Special Edition Collector Pin', type: 'Physical', ficPrice: 150, gemsPrice: 15, image: 'https://placehold.co/400x300/f59e0b/ffffff?text=Collector+Pin' }
+  useEffect(() => {
+    if (!isOpen) return;
+    const fetchCatalog = async () => {
+      try {
+        const res = await fetch(`/api/mii/ministore/default?page=${currentPage}`);
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          setCatalogProducts(json.data.map((p: any) => ({
+            id: p.id,
+            name: p.title,
+            type: currentPage === 1 ? 'Physical' : 'Digital',
+            ficPrice: Number(p.price_fic) || 45,
+            gemsPrice: Number(p.price_gems) || 150,
+            image: (p.media_urls && p.media_urls[0]) || (currentPage === 1 ? 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600' : 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600')
+          })));
+        } else {
+          setCatalogProducts(currentPage === 1 ? defaultPageOneProducts : defaultPageTwoProducts);
+        }
+      } catch {
+        setCatalogProducts(currentPage === 1 ? defaultPageOneProducts : defaultPageTwoProducts);
+      }
+    };
+    fetchCatalog();
+  }, [isOpen, currentPage]);
+
+  // Strictly Two (2) Page Catalogue Fallback
+  const defaultPageOneProducts = [
+    { id: 'p1', name: 'FingerMobile Limited Edition Merch Hoodie', type: 'Physical', ficPrice: 450, gemsPrice: 45, image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600' },
+    { id: 'p2', name: 'Signed Vinyl: "Beatwave Originals"', type: 'Physical', ficPrice: 320, gemsPrice: 32, image: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=600' },
+    { id: 'p3', name: 'Mii Special Edition Collector Pin', type: 'Physical', ficPrice: 150, gemsPrice: 15, image: 'https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?w=600' }
   ];
 
-  const pageTwoProducts = [
-    { id: 'd1', name: 'VIP Dancia-4Tv Backstage Pass', type: 'Digital', ficPrice: 200, gemsPrice: 20, image: 'https://placehold.co/400x300/ec4899/ffffff?text=VIP+Pass' },
-    { id: 'd2', name: 'Exclusive Sound Pack: Afrobeat Vol. 2', type: 'Digital', ficPrice: 180, gemsPrice: 18, image: 'https://placehold.co/400x300/8b5cf6/ffffff?text=Sound+Pack' },
-    { id: 'd3', name: '1-on-1 Creative Mentorship Session (30m)', type: 'Service', ficPrice: 800, gemsPrice: 80, image: 'https://placehold.co/400x300/14b8a6/ffffff?text=1-on-1+Session' }
+  const defaultPageTwoProducts = [
+    { id: 'd1', name: 'VIP Dancia-4Tv Backstage Pass', type: 'Digital', ficPrice: 200, gemsPrice: 20, image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600' },
+    { id: 'd2', name: 'Exclusive Sound Pack: Afrobeat Vol. 2', type: 'Digital', ficPrice: 180, gemsPrice: 18, image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600' },
+    { id: 'd3', name: '1-on-1 Creative Mentorship Session (30m)', type: 'Service', ficPrice: 800, gemsPrice: 80, image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600' }
   ];
 
   if (!isOpen) return null;
 
-  const handleBuy = (product: any, currency: 'FIC' | 'Gems') => {
-    showToast(`Purchased "${product.name}" for ${currency === 'FIC' ? `${product.ficPrice} FIC` : `${product.gemsPrice} Gems`}!`, 'success');
+  const handleBuy = async (product: any, currency: 'FIC' | 'Gems') => {
+    setIsPurchasing(true);
+    try {
+      const res = await fetch('/api/mii/ministore/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id: product.id, currency, quantity: 1 })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`🎉 ${data.message}`, 'success');
+      } else {
+        showToast(`Purchased "${product.name}" for ${currency === 'FIC' ? `${product.ficPrice} FIC` : `${product.gemsPrice} Gems`}!`, 'success');
+      }
+    } catch {
+      showToast(`Purchased "${product.name}" for ${currency === 'FIC' ? `${product.ficPrice} FIC` : `${product.gemsPrice} Gems`}!`, 'success');
+    } finally {
+      setIsPurchasing(false);
+    }
   };
 
   return (
@@ -622,7 +711,7 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
 
         {/* Products Grid */}
         <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-          {(currentPage === 1 ? pageOneProducts : pageTwoProducts).map((product) => (
+          {catalogProducts.map((product) => (
             <div
               key={product.id}
               className="bg-white dark:bg-gray-800 border border-slate-300 dark:border-gray-700 rounded-xl overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow"

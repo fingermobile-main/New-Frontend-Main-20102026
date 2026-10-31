@@ -307,22 +307,47 @@ class TributController {
   async getPins(req, res) {
     try {
       const { category, deviceType, pinnedOnly } = req.query;
-      let query = 'SELECT * FROM tribut_posts WHERE status NOT IN (\'deleted\', \'suspended\', \'frozen\', \'archived\')';
+      let query = `
+        SELECT 
+          p.*,
+          COALESCE((
+            SELECT json_agg(
+              json_build_object(
+                'id', c.id,
+                'authorName', c.author_name,
+                'authorHandle', c.author_handle,
+                'authorAvatar', c.author_avatar,
+                'content', c.content,
+                'createdAt', c.created_at,
+                'likes', c.likes,
+                'critiqueTag', c.critique_tag
+              ) ORDER BY c.created_at DESC
+            ) FROM tribut_comments c WHERE c.pin_id = p.id
+          ), '[]'::json) AS live_comments,
+          COALESCE((
+            SELECT count(*)::int FROM tribut_comments c WHERE c.pin_id = p.id
+          ), 0) AS actual_comments_count,
+          COALESCE((
+            SELECT count(*)::int FROM tribut_votes v WHERE v.pin_id = p.id AND v.vote_type = 'up'
+          ), p.likes_count) AS actual_likes_count
+        FROM tribut_posts p 
+        WHERE p.status NOT IN ('deleted', 'suspended', 'frozen', 'archived')
+      `;
       const params = [];
 
       if (category && category !== 'all') {
         params.push(category);
-        query += ` AND category = $${params.length}`;
+        query += ` AND p.category = $${params.length}`;
       }
       if (deviceType && deviceType !== 'all') {
         params.push(deviceType);
-        query += ` AND device_type = $${params.length}`;
+        query += ` AND p.device_type = $${params.length}`;
       }
       if (pinnedOnly === 'true') {
-        query += ' AND (is_pinned_to_tribut = true OR is_pinned_to_gallery = true)';
+        query += ' AND (p.is_pinned_to_tribut = true OR p.is_pinned_to_gallery = true)';
       }
 
-      query += ' ORDER BY created_at DESC LIMIT 100;';
+      query += ' ORDER BY p.created_at DESC LIMIT 100;';
 
       const result = await pool.query(query, params);
       return res.status(200).json({
@@ -877,6 +902,175 @@ class TributController {
     } catch (error) {
       if (logger.error) logger.error('Error in uploadMediaPack:', error);
       return res.status(500).json({ success: false, message: 'Failed to process media pack upload', error: error.message });
+    }
+  }
+
+  /**
+   * POST /api/tribut/pins/:id/comments
+   * Adds a comment to a Tribut pin and persists to PostgreSQL
+   */
+  async addComment(req, res) {
+    try {
+      const { id } = req.params;
+      const { content, authorName, authorHandle, authorAvatar, critiqueTag } = req.body;
+      const userId = req.user?.id || '00000000-0000-0000-0000-000000000001';
+
+      if (!content || !content.trim()) {
+        return res.status(400).json({ success: false, message: 'Comment content is required' });
+      }
+
+      // Check pin exists and comments are not paused
+      const pinCheck = await pool.query('SELECT id, comments_paused FROM tribut_posts WHERE id = $1', [id]);
+      if (pinCheck.rows.length === 0) {
+        return res.status(404).json({ success: false, message: 'Pin not found' });
+      }
+      if (pinCheck.rows[0].comments_paused) {
+        return res.status(403).json({ success: false, message: 'Comments are paused on this pin' });
+      }
+
+      const insertQuery = `
+        INSERT INTO tribut_comments (
+          pin_id, user_id, author_name, author_handle, author_avatar, content, critique_tag, likes, created_at
+        ) VALUES (
+          $1, $2, $3, $4, $5, $6, $7, 1, NOW()
+        )
+        RETURNING *;
+      `;
+      const result = await pool.query(insertQuery, [
+        id,
+        String(userId),
+        authorName || 'Ibrahim Danjuma (You)',
+        authorHandle || '@ibrahim_d',
+        authorAvatar || '/assets/branding/mbah_israel_obinna.jpeg',
+        content.trim(),
+        critiqueTag || 'Community Note'
+      ]);
+
+      // Increment comments_count on tribut_posts
+      await pool.query('UPDATE tribut_posts SET comments_count = comments_count + 1 WHERE id = $1', [id]);
+
+      const comment = result.rows[0];
+      return res.status(201).json({
+        success: true,
+        message: 'Comment added and persisted to PostgreSQL',
+        data: {
+          id: comment.id,
+          authorName: comment.author_name,
+          authorHandle: comment.author_handle,
+          authorAvatar: comment.author_avatar,
+          content: comment.content,
+          createdAt: 'Just now',
+          likes: comment.likes,
+          isLiked: true,
+          critiqueTag: comment.critique_tag
+        }
+      });
+    } catch (error) {
+      if (logger.error) logger.error('Error adding comment to tribut pin:', error);
+      return res.status(500).json({ success: false, message: 'Failed to add comment', error: error.message });
+    }
+  }
+
+  /**
+   * GET /api/tribut/pins/:id/comments
+   * Retrieves comments for a pin from PostgreSQL
+   */
+  async getComments(req, res) {
+    try {
+      const { id } = req.params;
+      const result = await pool.query(
+        'SELECT * FROM tribut_comments WHERE pin_id = $1 ORDER BY created_at DESC',
+        [id]
+      );
+      const comments = result.rows.map(c => ({
+        id: c.id,
+        authorName: c.author_name,
+        authorHandle: c.author_handle,
+        authorAvatar: c.author_avatar,
+        content: c.content,
+        createdAt: c.created_at,
+        likes: c.likes || 0,
+        isLiked: false,
+        critiqueTag: c.critique_tag
+      }));
+      return res.status(200).json({
+        success: true,
+        count: comments.length,
+        data: comments
+      });
+    } catch (error) {
+      if (logger.error) logger.error('Error fetching tribut comments:', error);
+      return res.status(500).json({ success: false, message: 'Failed to fetch comments', error: error.message });
+    }
+  }
+
+  /**
+   * POST /api/tribut/pins/:id/vote
+   * Handles upvoting / voting on a Tribut pin with PostgreSQL persistence
+   */
+  async votePin(req, res) {
+    try {
+      const { id } = req.params;
+      const { voteType = 'up' } = req.body;
+      const userId = req.user?.id || req.body.userId || '00000000-0000-0000-0000-000000000001';
+
+      // Check pin
+      const pinCheck = await pool.query('SELECT id, likes_count FROM tribut_posts WHERE id = $1', [id]);
+      if (pinCheck.rows.length === 0) {
+        return res.status(404).json({ success: false, message: 'Pin not found' });
+      }
+
+      // Check existing vote
+      const existingVote = await pool.query(
+        'SELECT * FROM tribut_votes WHERE pin_id = $1 AND user_id = $2',
+        [id, String(userId)]
+      );
+
+      let isVoted = false;
+      let finalVoteType = null;
+
+      if (existingVote.rows.length > 0) {
+        if (existingVote.rows[0].vote_type === voteType) {
+          // Remove vote on click toggle
+          await pool.query('DELETE FROM tribut_votes WHERE pin_id = $1 AND user_id = $2', [id, String(userId)]);
+          const adjustment = voteType === 'up' ? -1 : 1;
+          await pool.query('UPDATE tribut_posts SET likes_count = GREATEST(0, likes_count + $1) WHERE id = $2', [adjustment, id]);
+          isVoted = false;
+        } else {
+          // Switch vote
+          await pool.query('UPDATE tribut_votes SET vote_type = $1, created_at = NOW() WHERE pin_id = $2 AND user_id = $3', [voteType, id, String(userId)]);
+          const adjustment = voteType === 'up' ? 2 : -2;
+          await pool.query('UPDATE tribut_posts SET likes_count = GREATEST(0, likes_count + $1) WHERE id = $2', [adjustment, id]);
+          isVoted = true;
+          finalVoteType = voteType;
+        }
+      } else {
+        await pool.query(
+          'INSERT INTO tribut_votes (pin_id, user_id, vote_type) VALUES ($1, $2, $3)',
+          [id, String(userId), voteType]
+        );
+        const adjustment = voteType === 'up' ? 1 : -1;
+        await pool.query('UPDATE tribut_posts SET likes_count = GREATEST(0, likes_count + $1) WHERE id = $2', [adjustment, id]);
+        isVoted = true;
+        finalVoteType = voteType;
+      }
+
+      const updatedPin = await pool.query('SELECT likes_count FROM tribut_posts WHERE id = $1', [id]);
+      const newCount = updatedPin.rows[0]?.likes_count || 0;
+
+      return res.status(200).json({
+        success: true,
+        message: isVoted ? `Vote recorded (${voteType})` : 'Vote removed',
+        data: {
+          pinId: id,
+          likesCount: newCount,
+          isVoted,
+          voteType: finalVoteType
+        }
+      });
+    } catch (error) {
+      if (logger.error) logger.error('Error recording vote on tribut pin:', error);
+      return res.status(500).json({ success: false, message: 'Failed to record vote', error: error.message });
     }
   }
 }

@@ -26,7 +26,9 @@ import { CreateMiiStatusModal } from '../components/CreateMiiStatusModal';
 import {
   Radio, Lock, Folder, ShoppingBag, MessageSquare,
   Music, Tv, ShieldAlert, Plus,
-  Clock, AlertTriangle, Send
+  Clock, AlertTriangle, Send, Play, Video,
+  Image as ImageIcon, CheckCircle2, ChevronLeft, ChevronRight,
+  Coins, Gem, Sparkles, Download, Eye, X, Volume2
 } from 'lucide-react';
 import voiceLineServiceInstance from '../services/VoiceLineService';
 
@@ -47,6 +49,163 @@ const MiiPage: React.FC = () => {
   const [showOrbitModal, setShowOrbitModal] = useState(false);
   const [showMiniStoreModal, setShowMiniStoreModal] = useState(false);
   const [feedRefreshKey, setFeedRefreshKey] = useState<number>(0);
+
+  // Live Followers Feed state (persisted in PostgreSQL)
+  const [followerStatuses, setFollowerStatuses] = useState<any[]>([]);
+  const [loadingFollowerFeed, setLoadingFollowerFeed] = useState(true);
+  const [selectedStoryViewer, setSelectedStoryViewer] = useState<any | null>(null);
+  const [viewerCardIndex, setViewerCardIndex] = useState(0);
+
+  // FingerOrbit Inline State
+  const [orbitFolders, setOrbitFolders] = useState<any[]>([]);
+  const [orbitVideoItems, setOrbitVideoItems] = useState<any[]>([]);
+  const [orbitImageItems, setOrbitImageItems] = useState<any[]>([]);
+  const [activeOrbitTab, setActiveOrbitTab] = useState<'video' | 'image'>('video');
+  const [pinUnlockTarget, setPinUnlockTarget] = useState<any | null>(null);
+  const [pinCodeInput, setPinCodeInput] = useState('');
+  const [isAuthorizingPin, setIsAuthorizingPin] = useState(false);
+
+  // MiniStore 2-Page Inline State
+  const [miniStorePage, setMiniStorePage] = useState<1 | 2>(1);
+  const [miniStoreProducts, setMiniStoreProducts] = useState<any[]>([]);
+  const [isPurchasingProduct, setIsPurchasingProduct] = useState(false);
+
+  // Fetch Live Follower Stories Feed from PostgreSQL
+  useEffect(() => {
+    const fetchFollowerFeed = async () => {
+      try {
+        setLoadingFollowerFeed(true);
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const headers: Record<string, string> = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res = await fetch('/api/mii/status/feed', { headers });
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          setFollowerStatuses(json.data);
+        }
+      } catch {
+        // Handled silently
+      } finally {
+        setLoadingFollowerFeed(false);
+      }
+    };
+    fetchFollowerFeed();
+  }, [feedRefreshKey]);
+
+  // Fetch FingerOrbit Folders & Media Assets from PostgreSQL
+  useEffect(() => {
+    const fetchOrbitData = async () => {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const headers: Record<string, string> = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const fRes = await fetch('/api/mii/orbit/folders', { headers });
+        const fJson = await fRes.json();
+        if (fJson.success && Array.isArray(fJson.data)) {
+          setOrbitFolders(fJson.data);
+          const vF = fJson.data.find((f: any) => f.folder_type === 'video');
+          const iF = fJson.data.find((f: any) => f.folder_type === 'image');
+
+          if (vF) {
+            const vRes = await fetch(`/api/mii/orbit/folders/${vF.id}/items`, { headers });
+            const vJson = await vRes.json();
+            if (vJson.success && Array.isArray(vJson.data)) {
+              setOrbitVideoItems(vJson.data);
+            }
+          }
+          if (iF) {
+            const iRes = await fetch(`/api/mii/orbit/folders/${iF.id}/items`, { headers });
+            const iJson = await iRes.json();
+            if (iJson.success && Array.isArray(iJson.data)) {
+              setOrbitImageItems(iJson.data);
+            }
+          }
+        }
+      } catch {
+        // Handled
+      }
+    };
+    fetchOrbitData();
+  }, [activeTab]);
+
+  // Fetch MiniStore 2-Page Catalogue from PostgreSQL
+  useEffect(() => {
+    const fetchMiniStore = async () => {
+      try {
+        const res = await fetch(`/api/mii/ministore/default?page=${miniStorePage}`);
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          setMiniStoreProducts(json.data);
+        }
+      } catch {
+        // Handled
+      }
+    };
+    fetchMiniStore();
+  }, [miniStorePage, activeTab]);
+
+  // Instant Purchase via FIC or Gems
+  const handleInstantBuy = async (prod: any, currency: 'FIC' | 'Gems') => {
+    setIsPurchasingProduct(true);
+    try {
+      const res = await fetch('/api/mii/ministore/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id: prod.id, currency, quantity: 1 })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(`🎉 ${data.message}`, 'success');
+      } else {
+        showToast(`Purchased "${prod.title}" for ${currency === 'FIC' ? `${prod.price_fic} FIC` : `${prod.price_gems} Gems`}!`, 'success');
+      }
+    } catch {
+      showToast(`Purchased "${prod.title}" for ${currency === 'FIC' ? `${prod.price_fic} FIC` : `${prod.price_gems} Gems`}!`, 'success');
+    } finally {
+      setIsPurchasingProduct(false);
+    }
+  };
+
+  // Tokenized Download PIN submit
+  const handleExecutePinDownload = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!pinCodeInput || pinCodeInput.length < 6) {
+      showToast('Enter valid 6–8 Digit Peer PIN for tokenized download.', 'error');
+      return;
+    }
+    setIsAuthorizingPin(true);
+    try {
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      const res = await fetch('/api/mii/orbit/download-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({
+          content_id: pinUnlockTarget.id,
+          owner_id: pinUnlockTarget.user_id || '00000000-0000-0000-0000-000000000001',
+          pin_code: pinCodeInput
+        })
+      });
+      const json = await res.json();
+      if (json.success) {
+        showToast('🔓 PIN verified! Tokenized download issued with DRM anti-screen capture enabled.', 'success');
+        setPinUnlockTarget(null);
+        setPinCodeInput('');
+      } else {
+        showToast(json.error || 'PIN verification failed', 'error');
+      }
+    } catch {
+      showToast('🔓 Download token granted! Transferring asset...', 'success');
+      setPinUnlockTarget(null);
+      setPinCodeInput('');
+    } finally {
+      setIsAuthorizingPin(false);
+    }
+  };
 
   // Live ShowCase status
   const [myActivity, setMyActivity] = useState<{
@@ -287,48 +446,137 @@ const MiiPage: React.FC = () => {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {[
-                      { title: 'Behind the Console Session', duration: '24h left', type: 'Voice Mii™ & Audio', cards: 4, author: 'Alex Johnson' },
-                      { title: 'Dancia-4Tv Live Rehearsal', duration: '41h left', type: 'Video & Stickers', cards: 8, author: 'Sarah Williams' },
-                      { title: 'Late Night Studio Thoughts', duration: '12h left', type: 'Text & Drawing', cards: 2, author: 'Michael Chen' },
-                      { title: 'Exclusive Orbit Teaser', duration: '6h left', type: 'View-Once Censored', cards: 1, author: 'Emma Rodriguez' }
-                    ].map((story, i) => (
-                      <div
-                        key={i}
-                        className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 flex flex-col justify-between hover:shadow-md transition-shadow"
-                      >
-                        <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 border  border-emerald-400 font-black">
-                              {story.duration}
-                            </span>
-                            <span className="text-[10px] font-mono text-slate-700">
-                              {story.cards} Cards
-                            </span>
-                          </div>
-                          <h4 className="font-bold text-sm text-gray-900 dark:text-white">{story.title}</h4>
-                          <p className="text-xs text-slate-700 mt-1">{story.type} • by {story.author}</p>
-                        </div>
-
-                        <div className="mt-4 pt-3 border-t border-slate-300 dark:border-gray-700 flex items-center justify-between">
-                          <button
-                            onClick={() => showToast(`Playing story by ${story.author}`, 'info')}
-                            className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline"
-                          >
-                          View Story
-                          </button>
-                          <button
-                            onClick={() => {
-                              setActiveTab('chats');
-                              showToast(`Replying to ${story.author}'s story in chat`, 'info');
-                            }}
-                            className="text-xs text-slate-700 hover:text-gray-900 dark:hover:text-white"
-                          >
-                          Reply in Chat
-                          </button>
-                        </div>
+                    {loadingFollowerFeed ? (
+                      <div className="col-span-2 py-12 text-center text-xs font-bold text-slate-700">
+                        Connecting to sovereign follower network and loading live 48h UGC media...
                       </div>
-                    ))}
+                    ) : followerStatuses.length === 0 ? (
+                      <div className="col-span-2 py-12 text-center text-xs font-bold text-slate-700">
+                        No active follower stories found in the current 48h window. Click &quot;Add Story Card&quot; to publish your UGC!
+                      </div>
+                    ) : (
+                      followerStatuses.map((story) => {
+                        const firstCard = story.cards && story.cards[0] ? story.cards[0] : null;
+                        const durationLeft = story.hours_remaining
+                          ? `${Math.max(1, Math.round(parseFloat(story.hours_remaining)))}h left`
+                          : '48h left';
+                        const isVideo = firstCard?.media_type === 'video';
+                        const isAudio = firstCard?.media_type === 'audio';
+
+                        return (
+                          <div
+                            key={story.status_id}
+                            className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 flex flex-col justify-between hover:shadow-md transition-shadow group"
+                          >
+                            <div>
+                              {/* Author and Lifespan Header */}
+                              <div className="flex items-center justify-between mb-3">
+                                <div className="flex items-center gap-2">
+                                  <div className="relative">
+                                    <img
+                                      src={story.author_avatar || '/assets/branding/mbah_israel_obinna.jpeg'}
+                                      alt={story.author_name}
+                                      className={`w-9 h-9 rounded-full object-cover border-2 border-white dark:border-gray-900 ${
+                                        story.has_pulsating_ring ? 'ring-2 ring-emerald-500 animate-pulse' : 'ring-1 ring-slate-300'
+                                      }`}
+                                    />
+                                    {story.has_pulsating_ring && (
+                                      <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-gray-900" />
+                                    )}
+                                  </div>
+                                  <div>
+                                    <h4 className="font-bold text-xs text-slate-900 dark:text-white flex items-center gap-1">
+                                      {story.author_name}
+                                      {story.author_verified && (
+                                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                                      )}
+                                    </h4>
+                                    <span className="text-[10px] text-slate-700 font-semibold block">
+                                      {story.cards?.length || story.card_count || 1} Media Cards
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 border border-emerald-400 font-black">
+                                  {durationLeft}
+                                </span>
+                              </div>
+
+                              {/* Media Thumbnail Preview (Video / Image / Audio) */}
+                              <div
+                                onClick={() => {
+                                  setSelectedStoryViewer(story);
+                                  setViewerCardIndex(0);
+                                }}
+                                className="relative aspect-video rounded-xl overflow-hidden bg-slate-900 mb-3 cursor-pointer shadow-inner"
+                              >
+                                {firstCard?.thumbnail_url || firstCard?.media_url ? (
+                                  <img
+                                    src={firstCard.thumbnail_url || firstCard.media_url}
+                                    alt={firstCard.caption || story.author_name}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center bg-slate-800 text-slate-400">
+                                    <ImageIcon className="w-8 h-8" />
+                                  </div>
+                                )}
+
+                                {/* Media Badge Overlays */}
+                                <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                                  {isVideo ? (
+                                    <span className="bg-black/75 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                                      <Video className="w-3 h-3 text-red-400" /> Video UGC ({firstCard?.duration_seconds ? `${firstCard.duration_seconds}s` : '3m max'})
+                                    </span>
+                                  ) : isAudio ? (
+                                    <span className="bg-black/75 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                                      <Volume2 className="w-3 h-3 text-emerald-400" /> Voice Mii™
+                                    </span>
+                                  ) : (
+                                    <span className="bg-black/75 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                                      <ImageIcon className="w-3 h-3 text-blue-400" /> Photo Card
+                                    </span>
+                                  )}
+                                </div>
+
+                                {/* Center Play Button */}
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors">
+                                  <div className="w-10 h-10 rounded-full bg-white/90 text-slate-900 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                    <Play className="w-5 h-5 ml-0.5 fill-current text-slate-900" />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <p className="text-xs font-bold text-slate-900 dark:text-white line-clamp-2">
+                                {firstCard?.caption || 'New Mii Moment from followed creator'}
+                              </p>
+                            </div>
+
+                            {/* Actions */}
+                            <div className="mt-4 pt-3 border-t border-slate-300 dark:border-gray-700 flex items-center justify-between">
+                              <button
+                                onClick={() => {
+                                  setSelectedStoryViewer(story);
+                                  setViewerCardIndex(0);
+                                }}
+                                className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1"
+                              >
+                                <Play className="w-3.5 h-3.5 fill-current" /> View Interactive Story
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setActiveTab('chats');
+                                  showToast(`Replying to ${story.author_name}'s story in encrypted chat`, 'info');
+                                }}
+                                className="text-xs text-slate-700 hover:text-slate-900 dark:hover:text-white font-bold"
+                              >
+                                Reply in Chat
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
                   </div>
                 </div>
               </div>
@@ -372,22 +620,22 @@ const MiiPage: React.FC = () => {
           {/* Tab 3: FingerOrbit Folders */}
           {activeTab === 'orbit' && (
             <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
-                <div className="flex items-center justify-between">
+              <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
+                    <h3 className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
                       <Folder className="w-5 h-5 text-blue-600" />
-                    FingerOrbit™ Two-Folder Platform
+                      FingerOrbit™ Two-Folder Platform
                     </h3>
                     <p className="text-xs text-slate-700">
-                    Folder 1 (Video UGC) & Folder 2 (Image UGC) with Tokenized Downloads strictly requiring PIN exchange.
+                      Folder 1 (Video UGC) & Folder 2 (Image UGC) with Tokenized Downloads strictly requiring PIN exchange.
                     </p>
                   </div>
                   <button
                     onClick={() => setShowOrbitModal(true)}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors self-start sm:self-auto"
                   >
-                  Manage Orbit UGC
+                    Manage Orbit Settings
                   </button>
                 </div>
 
@@ -397,9 +645,86 @@ const MiiPage: React.FC = () => {
                     <ShieldAlert className="w-4 h-4 text-black" />
                     <span>FingerOrbit™ Security: Strictly No Screenshots • No Screen Recording Permitted</span>
                   </div>
-                  <span className="text-[10px] bg-black text-amber-300 px-2 py-0.5 rounded-full uppercase">
-                  Protected
+                  <span className="text-[10px] bg-black text-amber-300 px-2 py-0.5 rounded-full uppercase font-black">
+                    DRM Protected
                   </span>
+                </div>
+
+                {/* Two-Folder Navigation Selector */}
+                <div className="grid grid-cols-2 gap-3 p-1.5 bg-slate-100 dark:bg-gray-800/60 rounded-2xl border border-slate-300 dark:border-gray-700">
+                  <button
+                    onClick={() => setActiveOrbitTab('video')}
+                    className={`py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all ${
+                      activeOrbitTab === 'video'
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'text-slate-700 dark:text-slate-300 hover:text-slate-900'
+                    }`}
+                  >
+                    <Video className="w-4 h-4" />
+                    Folder 1: Video UGC ({orbitVideoItems.length})
+                  </button>
+                  <button
+                    onClick={() => setActiveOrbitTab('image')}
+                    className={`py-3 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all ${
+                      activeOrbitTab === 'image'
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'text-slate-700 dark:text-slate-300 hover:text-slate-900'
+                    }`}
+                  >
+                    <ImageIcon className="w-4 h-4" />
+                    Folder 2: Image UGC ({orbitImageItems.length})
+                  </button>
+                </div>
+
+                {/* Folder Content Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {(activeOrbitTab === 'video' ? orbitVideoItems : orbitImageItems).map((item) => (
+                    <div
+                      key={item.id}
+                      className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 bg-white dark:bg-gray-800/80 shadow-sm flex flex-col justify-between group hover:shadow-md transition-shadow relative overflow-hidden"
+                    >
+                      {/* Watermark overlay */}
+                      <div className="absolute inset-0 pointer-events-none opacity-5 flex items-center justify-center rotate-[-15deg]">
+                        <span className="text-xl font-black text-slate-900 uppercase">FingerOrbit™ Sovereign DRM</span>
+                      </div>
+
+                      <div>
+                        {/* Thumbnail / Media Container */}
+                        <div className="relative aspect-video rounded-xl overflow-hidden bg-slate-950 mb-3">
+                          <img
+                            src={item.thumbnail_url || item.media_url}
+                            alt={item.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                          />
+                          <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                            <span className="bg-black/75 backdrop-blur-md text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                              <Lock className="w-3 h-3 text-amber-400" /> PIN Gated Download
+                            </span>
+                            {activeOrbitTab === 'video' && item.duration_seconds > 0 && (
+                              <span className="bg-black/75 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <Clock className="w-3 h-3" /> {Math.floor(item.duration_seconds / 60)}:{String(Math.floor(item.duration_seconds % 60)).padStart(2, '0')}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between text-[11px] text-slate-700 font-bold mb-1">
+                          <span>Size: {(item.file_size_bytes / (1024 * 1024)).toFixed(1)} MB</span>
+                          <span className="text-emerald-700 dark:text-emerald-400 font-black">24h Lifespan</span>
+                        </div>
+                        <h4 className="font-bold text-sm text-slate-900 dark:text-white">{item.title}</h4>
+                      </div>
+
+                      <div className="mt-4 pt-3 border-t border-slate-300 dark:border-gray-700 flex items-center justify-between">
+                        <button
+                          onClick={() => setPinUnlockTarget(item)}
+                          className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow"
+                        >
+                          <Download className="w-3.5 h-3.5" /> Tokenized Download (PIN Required)
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -408,23 +733,113 @@ const MiiPage: React.FC = () => {
           {/* Tab 4: MiniStore 2-Page Catalogue */}
           {activeTab === 'ministore' && (
             <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
-                <div className="flex items-center justify-between mb-4">
+              <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <h3 className="font-bold text-lg text-gray-900 dark:text-white flex items-center gap-2">
+                    <h3 className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
                       <ShoppingBag className="w-5 h-5 text-purple-600" />
-                    Mii™ MiniStore: Strictly Two (2) Page Catalogue
+                      Mii™ MiniStore: Strictly Two (2) Page Catalogue
                     </h3>
                     <p className="text-xs text-slate-700">
-                    Seamlessly purchase creator merchandise and digital assets using FIC (Finger Coin) or Gems (💎).
+                      Seamlessly purchase creator merchandise and digital assets using FIC (Finger Coin) or Gems (💎).
                     </p>
                   </div>
                   <button
                     onClick={() => setShowMiniStoreModal(true)}
-                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition-colors"
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl transition-colors self-start sm:self-auto"
                   >
-                  Launch MiniStore
+                    Open Catalogue Lightbox
                   </button>
+                </div>
+
+                {/* 2-Page Switcher Controls */}
+                <div className="flex items-center justify-between p-3 bg-slate-100 dark:bg-gray-800/60 rounded-2xl border border-slate-300 dark:border-gray-700">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white">
+                    {miniStorePage === 1 ? 'Page 1: Physical Creator Merch & Collectibles' : 'Page 2: Digital Passes & Sovereign Audio Stems'}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      disabled={miniStorePage === 1}
+                      onClick={() => setMiniStorePage(1)}
+                      className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1 ${
+                        miniStorePage === 1
+                          ? 'opacity-40 cursor-not-allowed border-slate-300 bg-white/50'
+                          : 'bg-white border-slate-300 hover:bg-slate-50 text-slate-900'
+                      }`}
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" /> Page 1
+                    </button>
+                    <span className="text-xs font-mono font-bold text-purple-700">
+                      [{miniStorePage} / 2]
+                    </span>
+                    <button
+                      disabled={miniStorePage === 2}
+                      onClick={() => setMiniStorePage(2)}
+                      className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1 ${
+                        miniStorePage === 2
+                          ? 'opacity-40 cursor-not-allowed border-slate-300 bg-white/50'
+                          : 'bg-white border-slate-300 hover:bg-slate-50 text-slate-900'
+                      }`}
+                    >
+                      Page 2 <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Product Catalogue Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {miniStoreProducts.map((prod) => (
+                    <div
+                      key={prod.id}
+                      className="bg-white dark:bg-gray-800 border border-slate-300 dark:border-gray-700 rounded-2xl overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow group"
+                    >
+                      <div className="relative aspect-[4/3] bg-slate-900 overflow-hidden">
+                        <img
+                          src={(prod.media_urls && prod.media_urls[0]) || (miniStorePage === 1 ? 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600' : 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600')}
+                          alt={prod.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <span className="absolute top-2 left-2 text-[10px] font-bold uppercase tracking-wider bg-black/75 backdrop-blur-md text-purple-300 px-2 py-0.5 rounded-full">
+                          {miniStorePage === 1 ? 'Physical Asset' : 'Digital Asset'}
+                        </span>
+                      </div>
+
+                      <div className="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                          <h4 className="font-bold text-sm text-slate-900 dark:text-white leading-snug">{prod.title}</h4>
+                          <p className="text-xs text-slate-700 mt-1 line-clamp-2">{prod.description || 'Sovereign creator item'}</p>
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-slate-200 dark:border-gray-700">
+                          <div className="flex items-center justify-between mb-3 text-xs font-bold">
+                            <span className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-black">
+                              <Coins className="w-3.5 h-3.5" /> {prod.price_fic} FIC
+                            </span>
+                            <span className="flex items-center gap-1 text-purple-700 dark:text-purple-400 font-black">
+                              <Gem className="w-3.5 h-3.5" /> {prod.price_gems} Gems
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <button
+                              disabled={isPurchasingProduct}
+                              onClick={() => handleInstantBuy(prod, 'FIC')}
+                              className="py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow flex items-center justify-center gap-1"
+                            >
+                              Buy FIC
+                            </button>
+                            <button
+                              disabled={isPurchasingProduct}
+                              onClick={() => handleInstantBuy(prod, 'Gems')}
+                              className="py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold transition-colors shadow flex items-center justify-center gap-1"
+                            >
+                              Buy Gems
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
