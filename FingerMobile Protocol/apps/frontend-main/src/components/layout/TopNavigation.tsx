@@ -56,7 +56,6 @@ export const TopNavigation = () => {
               // @ts-expect-error: auto-fixed by agent
               staticUrl={member.avatarUrl || member.avatar || ''}
               animatedUrl={(member as any).animatedAvatarUrl || ''}
-              // @ts-expect-error: auto-fixed by agent
               altText={member.name || 'Member'}
               className="w-10 h-10 rounded-full"
             />

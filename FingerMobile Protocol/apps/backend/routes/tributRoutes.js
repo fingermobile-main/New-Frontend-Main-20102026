@@ -49,6 +49,9 @@ router.post('/pins/reorder', tributController.reorderPins.bind(tributController)
 // Tribut pins & posts endpoints
 router.post('/pins', tributController.createPin);
 router.get('/pins', tributController.getPins);
+router.post('/pins/:id/comments', tributController.addComment.bind(tributController));
+router.get('/pins/:id/comments', tributController.getComments.bind(tributController));
+router.post('/pins/:id/vote', tributController.votePin.bind(tributController));
 router.put('/pins/:id', tributController.updatePin.bind(tributController));
 router.patch('/pins/:id/pin-status', tributController.togglePinStatus);
 router.patch('/pins/:id/freeze', tributController.toggleFreeze.bind(tributController));

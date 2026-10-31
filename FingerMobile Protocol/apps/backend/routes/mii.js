@@ -68,15 +68,16 @@ router.post('/pin/accept', authenticate, mii.acceptPin);
 router.post('/pin/revoke', authenticate, mii.revokePin); // Instant Vanish
 
 // --- 4. FINGERORBIT™©® (Video & Image Folders, UGC Timers, Tokenized Downloads) ---
-router.get('/orbit/folders', authenticate, mii.getOrbitFolders);
+router.get('/orbit/folders', optionalAuthenticate, mii.getOrbitFolders);
 router.put('/orbit/folders/:folderType', authenticate, mii.configureOrbitFolder);
 router.post('/orbit/items', authenticate, mii.addOrbitItem);
-router.get('/orbit/folders/:folderId/items', authenticate, mii.getOrbitItems);
-router.post('/orbit/download-token', authenticate, mii.requestTokenizedDownload);
+router.get('/orbit/folders/:folderId/items', optionalAuthenticate, mii.getOrbitItems);
+router.post('/orbit/download-token', optionalAuthenticate, mii.requestTokenizedDownload);
 
 // --- 5. MINISTORE (Two-Page Catalogue) ---
 router.get('/ministore/:sellerId', mii.getMiniStoreCatalog);
 router.post('/ministore/products', authenticate, mii.addMiniStoreProduct);
+router.post('/ministore/order', mii.createMiniStoreOrder);
 
 // --- 6. CHANNELS ---
 router.get('/channels', mii.getChannels);
