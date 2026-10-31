@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useOnboarding } from '../contexts/OnboardingContext';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from '../components/ui/Button';
@@ -39,6 +39,10 @@ import { CountryAvailabilityData, CreatorTier } from '../types/creatorOnboarding
 import userProfileSyncService from '../services/UserProfileSyncService';
 import AuthBrandingPanel from '../components/auth/AuthBrandingPanel';
 import QRCodeDisplay from '../components/common/QRCodeDisplay';
+import {
+  LiveSelfieCaptureModal,
+  LiveSelfieVerificationResult
+} from '../components/verification/LiveSelfieCaptureModal';
 
 export const ONBOARDING_BACKGROUNDS = {
   // FingerMobile Login screen Background image (from Assets/WebP converted Images)
@@ -80,12 +84,17 @@ export const getOnboardingBackground = (stepNumber: number, stepId?: string): st
 
 const OnboardingPage: React.FC = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { state, initializeOnboarding, updateProgress, setAccountType, setInterests, setDemographics, markVerificationComplete, finalizeOnboarding, nextStep, previousStep } = useOnboarding();
   const { state: authState } = useAuth();
   const [tempData, setTempData] = useState<any>({});
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [creatorPassportFile, setCreatorPassportFile] = useState<File | null>(null);
   const [creatorSelfieFile, setCreatorSelfieFile] = useState<File | null>(null);
+  const [selfiePreviewUrl, setSelfiePreviewUrl] = useState<string | null>(null);
+  const [selfieVerificationResult, setSelfieVerificationResult] = useState<LiveSelfieVerificationResult | null>(null);
+  const [isSelfieModalOpen, setIsSelfieModalOpen] = useState<boolean>(false);
+  const [selfieModalInitialMode, setSelfieModalInitialMode] = useState<'camera' | 'upload'>('camera');
   const [businessDocuments, setBusinessDocuments] = useState<FileList | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [mapInstance, setMapInstance] = useState<maplibregl.Map | null>(null);
@@ -180,6 +189,17 @@ const OnboardingPage: React.FC = () => {
       initializeOnboarding('new_user', {});
     }
   }, [authState.user]);
+
+  // Handle direct step jumping via URL parameter (e.g., ?step=content-creator-verification or ?step=creator)
+  useEffect(() => {
+    const stepParam = searchParams.get('step');
+    if (stepParam) {
+      const targetStep = stepParam === 'creator' ? 'content-creator-verification' : stepParam;
+      if (state.progress && state.progress.currentStep !== targetStep) {
+        updateProgress({ currentStep: targetStep as any });
+      }
+    }
+  }, [searchParams, state.progress, updateProgress]);
 
   // Calculate progress percentage
   const progressPercentage = state.steps.length > 0 
@@ -338,13 +358,34 @@ const OnboardingPage: React.FC = () => {
     const userId = authState.user?.id || state.progress?.userId || `creator_${Date.now()}`;
     const phone = tempData.phoneNumber || (authState.user as any)?.phone || '+2348012345678';
 
+    // Optional upload of selfie to backend
+    let uploadedSelfieUrl = '';
+    if (creatorSelfieFile) {
+      try {
+        const formData = new FormData();
+        formData.append('file', creatorSelfieFile);
+        formData.append('fileType', 'image');
+        const uploadRes = await api.post('/uploads', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        if (uploadRes.data?.data?.url) {
+          uploadedSelfieUrl = uploadRes.data.data.url;
+        }
+      } catch {
+        // Fallback handled gracefully
+      }
+    }
+
     try {
       const res = await api.post('/creators/signup', {
         userId,
         countryCode: country,
         tier: selectedTier,
         phoneNumber: phone,
-        inviteToken: selectedTier === 'TIER_1' ? inviteToken : undefined
+        inviteToken: selectedTier === 'TIER_1' ? inviteToken : undefined,
+        selfieUrl: uploadedSelfieUrl || selfiePreviewUrl || undefined,
+        isLivenessVerified: selfieVerificationResult?.isLiveMotionVerified || false,
+        livenessScore: selfieVerificationResult?.livenessScore || 0
       });
 
       if (res.data?.success) {
@@ -1729,28 +1770,82 @@ const OnboardingPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 bg-white rounded border">
-                    <div className="flex items-center">
-                      <UserIcon className="h-5 w-5 text-purple-500 mr-2" />
-                      <span className="font-medium">Selfie Photo</span>
+                  <div className="p-3.5 bg-white rounded-xl border border-slate-300 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      {selfiePreviewUrl ? (
+                        <div className="relative flex-shrink-0">
+                          <img
+                            src={selfiePreviewUrl}
+                            alt="Verified Selfie"
+                            className="w-12 h-12 rounded-full object-cover border-2 border-emerald-400 shadow-sm"
+                          />
+                          {selfieVerificationResult?.isLiveMotionVerified && (
+                            <span className="absolute -bottom-1 -right-1 bg-emerald-600 text-white rounded-full p-0.5 shadow-xs">
+                              <CheckCircleIcon className="h-3.5 w-3.5" />
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="w-10 h-10 rounded-xl bg-purple-100 border border-purple-200 flex items-center justify-center text-purple-700 flex-shrink-0">
+                          <CameraIcon className="h-5 w-5 text-purple-600" />
+                        </div>
+                      )}
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-slate-900 text-sm">Selfie Photo</span>
+                          {selfieVerificationResult?.isLiveMotionVerified ? (
+                            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-400">
+                              Live Motion Verified ({selfieVerificationResult.livenessScore}%)
+                            </span>
+                          ) : creatorSelfieFile ? (
+                            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-950 border border-purple-300">
+                              Uploaded Photo
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-950 border border-amber-300">
+                              Live Motion Required
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-slate-700 font-medium mt-0.5">
+                          {creatorSelfieFile
+                            ? creatorSelfieFile.name
+                            : 'Open device camera for a live photo snap and live motion verification (reduces fraud)'}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <input 
-                        type="file" 
-                        id="creatorSelfie" 
-                        className="hidden text-slate-900 font-bold border border-slate-300 rounded bg-white focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" 
-                        onChange={(e) => {
-                          if (e.target.files && e.target.files.length > 0) {
-                            setCreatorSelfieFile(e.target.files[0]);
-                          }
+
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <Button
+                        size="sm"
+                        type="button"
+                        onClick={() => {
+                          setSelfieModalInitialMode('camera');
+                          setIsSelfieModalOpen(true);
                         }}
-                      />
-                      <label htmlFor="creatorSelfie" className="cursor-pointer">
-                        <Button size="sm" type="button" onClick={() => document.getElementById('creatorSelfie')?.click()}>
-                          {creatorSelfieFile ? 'Uploaded' : 'Upload'}
+                        className={
+                          creatorSelfieFile
+                            ? 'bg-slate-800 hover:bg-slate-900 text-white font-bold'
+                            : 'bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-sm'
+                        }
+                      >
+                        {creatorSelfieFile ? 'Retake / Change' : 'Upload'}
+                      </Button>
+
+                      {!creatorSelfieFile && (
+                        <Button
+                          size="sm"
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            setSelfieModalInitialMode('upload');
+                            setIsSelfieModalOpen(true);
+                          }}
+                          className="text-xs font-bold text-slate-700 border-slate-300 bg-white hover:bg-slate-50"
+                        >
+                          Choose File
                         </Button>
-                      </label>
-                      {creatorSelfieFile && <div className="text-xs text-green-600 mt-1">{creatorSelfieFile.name}</div>}
+                      )}
                     </div>
                   </div>
                 </div>
@@ -2174,6 +2269,24 @@ const OnboardingPage: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* Live Selfie Camera & Motion Verification Modal */}
+      <LiveSelfieCaptureModal
+        isOpen={isSelfieModalOpen}
+        onClose={() => setIsSelfieModalOpen(false)}
+        initialMode={selfieModalInitialMode}
+        onCaptureComplete={(result) => {
+          setCreatorSelfieFile(result.file);
+          setSelfiePreviewUrl(result.previewUrl);
+          setSelfieVerificationResult(result);
+          showNotice(
+            result.isLiveMotionVerified
+              ? 'Live motion selfie verified! Anti-fraud liveness confirmed.'
+              : 'Selfie photo attached successfully.',
+            'success'
+          );
+        }}
+      />
     </div>
   );
 };
