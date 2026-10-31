@@ -101,6 +101,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkAuthStatus();
   }, []);
 
+  // Listen to live cross-component sovereign profile updates
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleProfileUpdate = (e: any) => {
+      const updated = e?.detail;
+      if (updated) {
+        setUser((prev) => {
+          if (!prev) return prev;
+          const nameParts = (updated.name || '').split(' ');
+          return {
+            ...prev,
+            name: updated.name || prev.name,
+            firstName: nameParts[0] || prev.firstName,
+            lastName: nameParts.slice(1).join(' ') || prev.lastName,
+            username: updated.username || prev.username,
+            avatar: updated.avatar || prev.avatar,
+            bio: updated.headline || updated.bio || prev.bio,
+            location: updated.location || prev.location
+          };
+        });
+      }
+    };
+    window.addEventListener('fmp_profile_updated', handleProfileUpdate);
+    return () => {
+      window.removeEventListener('fmp_profile_updated', handleProfileUpdate);
+    };
+  }, []);
+
   const clearAuthData = () => {
     // Remove tokens and authentication keys from localStorage
     localStorage.removeItem('accessToken');

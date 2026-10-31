@@ -17,6 +17,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { identityService, UserProfileData } from '../../services/identityService';
 import { useAppContext } from '../../contexts/AppContext';
+import { useAuth } from '../../contexts/AuthContext';
 import {
   SovereignMediaCropperModal,
   SovereignCropperResult,
@@ -201,7 +202,8 @@ export interface ExtendedUserProfile extends UserProfileData {
 export const ProfilePage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { member, showToast } = useAppContext();
+  const { member, showToast, setMember } = useAppContext();
+  const { user: authUser, setUser } = useAuth();
 
   // 1. Core Profile & Relationship States
   const [profile, setProfile] = useState<ExtendedUserProfile>(() => {
@@ -312,6 +314,14 @@ export const ProfilePage: React.FC = () => {
     userProfileSyncService.updateProfile({
       coverImage: coverData.coverPhotoUrl
     });
+
+    if (setUser && authUser) {
+      setUser({
+        ...authUser,
+        coverPhotoUrl: coverData.coverPhotoUrl,
+        coverImage: coverData.coverPhotoUrl
+      } as any);
+    }
 
     const targetId = id || member?.id || '00000000-0000-0000-0000-000000000001';
     try {
@@ -1022,6 +1032,19 @@ export const ProfilePage: React.FC = () => {
       avatar: result.url
     });
 
+    if (setUser && authUser) {
+      setUser({
+        ...authUser,
+        avatar: result.url
+      });
+    }
+    if (setMember) {
+      setMember({
+        ...member,
+        avatar: result.url
+      } as any);
+    }
+
     setAvatarScheduleDuration(result.scheduleDuration);
     setRotateWeeklyActive(result.rotateWeekly);
 
@@ -1095,6 +1118,39 @@ export const ProfilePage: React.FC = () => {
         avatar: profile.avatarUrl || undefined,
         coverImage: profile.coverPhotoUrl || undefined
       });
+
+      if (setUser && authUser) {
+        const parts = updated.name.split(' ');
+        setUser({
+          ...authUser,
+          name: updated.name,
+          firstName: parts[0] || authUser.firstName,
+          lastName: parts.slice(1).join(' ') || authUser.lastName,
+          username: updated.username,
+          avatar: profile.avatarUrl,
+          bio: updated.bio || updated.headline,
+          location: updated.location
+        });
+      }
+
+      if (setMember) {
+        setMember({
+          id: targetId || (authUser as any)?.id || '00000000-0000-0000-0000-000000000001',
+          name: updated.name,
+          username: updated.username,
+          avatar: profile.avatarUrl || '/assets/branding/default-avatar.svg',
+          email: updated.contact_email || (authUser as any)?.email || '',
+          role: (authUser as any)?.role || 'Member',
+          status: 'Active',
+          tier: 'Gold',
+          kycStatus: 'Verified',
+          reputationScore: 980,
+          joinedAt: '2026-01-01',
+          lastActive: new Date().toISOString(),
+          walletAddress: '0x7498...22',
+          ficBalance: 1000
+        } as any);
+      }
 
       // Synchronize with backend consolidated profile update endpoint
       await fetch(`http://localhost:5001/api/v1/profiles/${targetId || '00000000-0000-0000-0000-000000000001'}`, {

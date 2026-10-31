@@ -228,10 +228,18 @@ class SearchController {
       }
 
       if (pool && typeof pool.query === 'function') {
-        const postResults = await pool.query(
+        const searchResults = await pool.query(
           `SELECT id, title, content as description, 'post' as type, created_at
            FROM posts
            WHERE is_active = true AND (title ILIKE $1 OR content ILIKE $1)
+           UNION ALL
+           SELECT id, COALESCE(display_name, username) as title, bio as description, 'user' as type, created_at
+           FROM users
+           WHERE is_active = true AND (username ILIKE $1 OR display_name ILIKE $1 OR bio ILIKE $1)
+           UNION ALL
+           SELECT id, name as title, description, 'community' as type, created_at
+           FROM communities
+           WHERE status = 'active' AND (name ILIKE $1 OR description ILIKE $1)
            ORDER BY created_at DESC
            LIMIT $2 OFFSET $3`,
           [`%${q}%`, limit, offset]
@@ -239,8 +247,8 @@ class SearchController {
 
         return res.json({
           success: true,
-          results: postResults.rows,
-          total: postResults.rows.length
+          results: searchResults.rows,
+          total: searchResults.rows.length
         });
       }
 

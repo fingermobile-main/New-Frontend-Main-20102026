@@ -95,15 +95,20 @@ const TopHeaderNavigation: React.FC = () => {
 
             {/* Column 2 (Center) - Search */}
             <div className="flex items-center justify-center">
-              <div className="w-full max-w-2xl bg-white bg-opacity-20 rounded-full px-4 py-2">
+              <form onSubmit={handleSearchSubmit} className="w-full max-w-2xl bg-white bg-opacity-20 rounded-full px-4 py-2">
                 <div className="flex items-center">
-                  <span className="mr-2">🔍</span>
+                  <button type="submit" className="mr-2 hover:opacity-80 transition cursor-pointer" title="Search">
+                    🔍
+                  </button>
                   <input
                     type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search for people, communities, jobs..."
-                    className="bg-white focus:outline-none w-full text-sm text-slate-900 font-bold border border-slate-300 rounded focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400" />
+                    className="bg-white focus:outline-none w-full text-sm text-slate-900 font-bold border border-slate-300 rounded px-2 py-0.5 focus:ring-2 focus:ring-indigo-500 placeholder:text-slate-400"
+                  />
                 </div>
-              </div>
+              </form>
             </div>
 
             {/* Column 3 (Right) - User Actions */}

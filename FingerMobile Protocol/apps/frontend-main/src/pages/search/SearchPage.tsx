@@ -95,6 +95,18 @@ const SearchPage: React.FC = () => {
     }
   };
 
+  const getItemLink = (item: any) => {
+    if (item.type === 'user') return `/profile?id=${item.id}`;
+    if (item.type === 'community') return `/communities`;
+    return `/forum`;
+  };
+
+  const getItemLinkLabel = (item: any) => {
+    if (item.type === 'user') return 'View Member Profile →';
+    if (item.type === 'community') return 'View Community →';
+    return 'View in Forum →';
+  };
+
   return (
     <div className="max-w-[1536px] 2xl:max-w-[1680px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 w-full max-w-full overflow-x-hidden pb-28 md:pb-12">
       {/* Header Banner */}
@@ -210,10 +222,10 @@ const SearchPage: React.FC = () => {
                     </div>
                     <div className="pt-3 border-t border-slate-200">
                       <a
-                        href={`/forum`}
+                        href={getItemLink(item)}
                         className="text-sm font-bold text-blue-600 hover:text-blue-800"
                       >
-                        View in Forum &rarr;
+                        {getItemLinkLabel(item)}
                       </a>
                     </div>
                   </div>
@@ -287,8 +299,8 @@ const SearchPage: React.FC = () => {
                     )}
                   </div>
                   <div className="pt-3 border-t border-slate-200">
-                    <a href={`/forum`} className="text-sm font-bold text-blue-600 hover:text-blue-800">
-                      Open Post &rarr;
+                    <a href={getItemLink(item)} className="text-sm font-bold text-blue-600 hover:text-blue-800">
+                      {getItemLinkLabel(item)}
                     </a>
                   </div>
                 </div>

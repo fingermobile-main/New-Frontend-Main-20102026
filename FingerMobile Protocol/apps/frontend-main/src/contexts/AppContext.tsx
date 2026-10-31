@@ -798,7 +798,78 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
     setSettings(prev => ({ ...prev, ...newSettings }));
   }, []);
 
-  const [member, setMember] = useState<Member | null>(null);
+  const [member, setMemberState] = useState<Member | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        const u = JSON.parse(storedUser);
+        return {
+          id: u.id || '00000000-0000-0000-0000-000000000001',
+          name: u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || u.username || 'Sovereign Member',
+          username: u.username || 'member',
+          email: u.email || '',
+          avatar: u.avatar || u.avatarUrl || '/assets/branding/default-avatar.svg',
+          role: u.role || 'Member',
+          status: u.status || 'Active',
+          tier: u.tier || 'Gold',
+          kycStatus: u.kycStatus || 'Verified',
+          reputationScore: u.reputationScore || 980,
+          joinedAt: u.joinedAt || '2026-01-01',
+          lastActive: u.lastActive || new Date().toISOString(),
+          walletAddress: u.walletAddress || '0x7498...22',
+          ficBalance: u.ficBalance || 1000
+        } as Member;
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
+
+  const setMember = useCallback((newMember: Member | null) => {
+    setMemberState(newMember);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleProfileUpdate = (e: any) => {
+      const updated = e?.detail;
+      if (updated) {
+        setMemberState((prev) => {
+          if (!prev) {
+            return {
+              id: (updated as any).id || '00000000-0000-0000-0000-000000000001',
+              name: updated.name || 'Sovereign Member',
+              username: updated.username || 'member',
+              email: updated.email || '',
+              avatar: updated.avatar || '/assets/branding/default-avatar.svg',
+              role: 'Member',
+              status: 'Active',
+              tier: 'Gold',
+              kycStatus: 'Verified',
+              reputationScore: 980,
+              joinedAt: '2026-01-01',
+              lastActive: new Date().toISOString(),
+              walletAddress: '0x7498...22',
+              ficBalance: 1000
+            } as Member;
+          }
+          return {
+            ...prev,
+            name: updated.name || prev.name,
+            username: updated.username || prev.username,
+            avatar: updated.avatar || prev.avatar,
+            email: updated.email || prev.email
+          };
+        });
+      }
+    };
+    window.addEventListener('fmp_profile_updated', handleProfileUpdate);
+    return () => {
+      window.removeEventListener('fmp_profile_updated', handleProfileUpdate);
+    };
+  }, []);
   const [isLoading] = useState<boolean>(true);
   const [activeSubProfile] = useState<unknown>(null);
   const [ficBalance] = useState<number>(0);

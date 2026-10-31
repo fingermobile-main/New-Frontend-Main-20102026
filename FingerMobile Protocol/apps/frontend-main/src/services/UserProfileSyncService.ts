@@ -389,9 +389,6 @@ class UserProfileSyncService {
       if (storedComp) {
         try {
           compData = JSON.parse(storedComp);
-          if (!isSuperAdmin && (compData.username === 'ObinnaMbah' || compData.username === 'israelobinna' || compData.name === 'Israel Obinna Mbah' || compData.email === 'obinnambah@fingermobileprotocol.com')) {
-            compData = {};
-          }
         } catch (_e) {
           compData = {};
         }
@@ -400,18 +397,25 @@ class UserProfileSyncService {
       const merged: ComprehensiveUserProfile = {
         ...baseProfile,
         ...compData,
+        id: compData.id || userData.id || baseProfile.id || '00000000-0000-0000-0000-000000000001',
         name:
           compData.name ||
+          userData.name ||
+          userData.displayName ||
+          userData.display_name ||
           (userData.firstName
             ? `${userData.firstName} ${userData.lastName || ''}`.trim()
-            : userData.name) ||
+            : '') ||
           baseProfile.name,
         username: compData.username || userData.username || baseProfile.username,
         headline: compData.headline || userData.headline || userData.bio || baseProfile.headline,
-        avatar: compData.avatar || userData.avatar || userData.avatarUrl || baseProfile.avatar,
+        bio: compData.bio || userData.bio || userData.headline || baseProfile.bio,
+        avatar: compData.avatar || userData.avatar || userData.avatarUrl || userData.avatar_url || baseProfile.avatar,
+        coverImage: compData.coverImage || userData.coverImage || userData.cover_url || userData.coverPhotoUrl || baseProfile.coverImage,
         email: compData.email || userData.email || baseProfile.email,
         phone: compData.phone || userData.phone || baseProfile.phone,
         location: compData.location || userData.location || baseProfile.location,
+        pinNumber: compData.pinNumber || userData.pinNumber || userData.sovereign_pin || baseProfile.pinNumber,
       };
 
       // Load blocked macs if any
@@ -453,40 +457,54 @@ class UserProfileSyncService {
         };
         localStorage.setItem(STORAGE_KEY_LEGACY, JSON.stringify(legacy));
 
-        // Sync auth user in localStorage
+        // Sync auth user in localStorage reliably
         const storedUser = localStorage.getItem(STORAGE_KEY_USER);
+        let parsedUser: any = {};
         if (storedUser) {
           try {
-            const parsedUser = JSON.parse(storedUser);
-            const nameParts = updated.name.split(' ');
-            const syncedUser = {
-              ...parsedUser,
-              firstName: nameParts[0] || parsedUser.firstName,
-              lastName: nameParts.slice(1).join(' ') || parsedUser.lastName,
-              username: updated.username,
-              avatar: updated.avatar,
-              bio: updated.headline,
-              location: updated.location,
-            };
-            localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(syncedUser));
+            parsedUser = JSON.parse(storedUser);
           } catch {
-            // ignore
+            parsedUser = {};
           }
         }
+        const nameParts = (updated.name || '').split(' ');
+        const syncedUser = {
+          ...parsedUser,
+          id: parsedUser.id || (updated as any).id || '00000000-0000-0000-0000-000000000001',
+          name: updated.name,
+          displayName: updated.name,
+          display_name: updated.name,
+          firstName: nameParts[0] || parsedUser.firstName || 'Sovereign',
+          lastName: nameParts.slice(1).join(' ') || parsedUser.lastName || 'Member',
+          username: updated.username,
+          avatar: updated.avatar,
+          avatarUrl: updated.avatar,
+          avatar_url: updated.avatar,
+          bio: updated.headline || updated.bio,
+          headline: updated.headline,
+          location: updated.location,
+          coverImage: updated.coverImage,
+          coverUrl: updated.coverImage,
+          coverPhotoUrl: updated.coverImage,
+          pinNumber: updated.pinNumber
+        };
+        localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(syncedUser));
 
         // Broadcast live custom event across all windows / tabs
         window.dispatchEvent(new CustomEvent('fmp_profile_updated', { detail: updated }));
 
-        // Persist directly to PostgreSQL database via Consolidated Profile Charter API
+        // Persist directly to PostgreSQL database via Consolidated Profile Charter API & User Management API
         try {
           const targetId = (updated as any).id || (storedUser ? (JSON.parse(storedUser)?.id) : null) || '00000000-0000-0000-0000-000000000001';
           const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+          const authHeaders = {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {})
+          };
+
           fetch(`http://localhost:5001/api/v1/profiles/${targetId}`, {
             method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              ...(token ? { Authorization: `Bearer ${token}` } : {})
-            },
+            headers: authHeaders,
             body: JSON.stringify({
               name: updated.name,
               headline: updated.headline,
@@ -495,6 +513,21 @@ class UserProfileSyncService {
               avatarUrl: updated.avatar,
               coverPhotoUrl: updated.coverImage,
               username: updated.username
+            })
+          }).catch(() => {});
+
+          fetch('http://localhost:5001/api/users/profile', {
+            method: 'PUT',
+            headers: authHeaders,
+            body: JSON.stringify({
+              userId: targetId,
+              displayName: updated.name,
+              username: updated.username,
+              bio: updated.headline,
+              headline: updated.headline,
+              location: updated.location,
+              avatarUrl: updated.avatar,
+              coverPhotoUrl: updated.coverImage
             })
           }).catch(() => {});
         } catch {

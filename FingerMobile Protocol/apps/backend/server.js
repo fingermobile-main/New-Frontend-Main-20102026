@@ -333,6 +333,11 @@ const profileCharterRoutes = require('./routes/profileCharterRoutes');
 app.use('/api/v1/profiles', profileCharterRoutes);
 app.use('/api/profiles/charter', profileCharterRoutes);
 
+// User Management & Profile Persistence Routes
+const userManagementRoutes = require('./routes/userManagement.js');
+app.use('/api/users', userManagementRoutes);
+app.use('/users', userManagementRoutes);
+
 // Privacy Consent & CMP Routes (NDPA 2023, GDPR, EU AI Act)
 const userConsentRoutes = require('./routes/userConsentRoutes');
 app.use('/api/v1/users', userConsentRoutes);

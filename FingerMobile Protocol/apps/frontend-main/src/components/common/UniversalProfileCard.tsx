@@ -79,10 +79,11 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
   onEditProfile
 }) => {
   const navigate = useNavigate();
-  const { user: authUser } = useAuth();
+  const { user: authUser, setUser } = useAuth();
   const appContext = useAppContext();
   const ficBalance = appContext.ficBalance ?? 2500;
   const showToast = appContext.showToast;
+  const setMember = appContext.setMember;
 
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
@@ -150,13 +151,15 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
         pinNumber: customUser.pinNumber || prev.pinNumber,
       }));
     } else if (authUser) {
-      const authName = (authUser as any).name || `${authUser.firstName || ''} ${authUser.lastName || ''}`.trim() || authUser.username;
+      const authName = (authUser as any).name || (authUser as any).displayName || (authUser as any).display_name || `${authUser.firstName || ''} ${authUser.lastName || ''}`.trim() || authUser.username;
       if (authName) {
         setProfileData((prev) => ({
           ...prev,
           name: authName,
           username: authUser.username || prev.username,
-          avatar: authUser.avatar || prev.avatar,
+          avatar: authUser.avatar || (authUser as any).avatarUrl || prev.avatar,
+          headline: authUser.bio || (authUser as any).headline || prev.headline,
+          location: authUser.location || prev.location
         }));
       }
     }
@@ -174,7 +177,41 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
       pinNumber: updated.pinNumber,
     });
 
-    // 1. Persist to protocol backend database (/users/profile)
+    // 1. Update AuthContext & AppContext in memory
+    if (setUser && authUser) {
+      const parts = updated.name.split(' ');
+      setUser({
+        ...authUser,
+        name: updated.name,
+        firstName: parts[0] || authUser.firstName,
+        lastName: parts.slice(1).join(' ') || authUser.lastName,
+        username: updated.username,
+        avatar: updated.avatar,
+        bio: updated.headline,
+        location: updated.location
+      });
+    }
+
+    if (setMember) {
+      setMember({
+        id: (authUser as any)?.id || '00000000-0000-0000-0000-000000000001',
+        name: updated.name,
+        username: updated.username,
+        avatar: updated.avatar,
+        email: (authUser as any)?.email || '',
+        role: (authUser as any)?.role || 'Member',
+        status: 'Active',
+        tier: 'Gold',
+        kycStatus: 'Verified',
+        reputationScore: 980,
+        joinedAt: '2026-01-01',
+        lastActive: new Date().toISOString(),
+        walletAddress: '0x7498...22',
+        ficBalance: 1000
+      } as any);
+    }
+
+    // 2. Persist to protocol backend database (/users/profile)
     try {
       const parts = updated.name.split(' ');
       const firstName = parts[0] || 'Israel';
@@ -190,7 +227,7 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
       console.warn('Backend database sync fallback', err);
     }
 
-    // 2. Synchronize directly with /profile Charter API (Source of Truth)
+    // 3. Synchronize directly with /profile Charter API (Source of Truth)
     try {
       const targetUserId = (customUser as any)?.id || authUser?.id || (authUser as any)?.userId || '00000000-0000-0000-0000-000000000001';
       await fetch(`http://localhost:5001/api/v1/profiles/${targetUserId}`, {
