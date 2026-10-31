@@ -170,7 +170,7 @@ class OnboardingService {
     return progress;
   }
 
-  private getNextStep(currentStep: string, _completedSteps: string[], accountType?: string | null): string {
+  public getNextStep(currentStep: string, _completedSteps: string[] = [], accountType?: string | null): string {
     if (currentStep === 'terms-permissions') {
       return 'account-type-selection';
     }
@@ -187,8 +187,8 @@ class OnboardingService {
       'welcome',
       'terms-permissions',
       'account-type-selection',
-      'content-creator-verification',
-      'business-verification',
+      ...(accountType === 'creator' ? ['content-creator-verification'] : []),
+      ...(accountType === 'business' ? ['business-verification'] : []),
       'two-factor-setup',
       'verification-captcha',
       'demographics-interests',
@@ -204,6 +204,38 @@ class OnboardingService {
     }
 
     return onboardingFlow[currentIndex + 1];
+  }
+
+  public getPreviousStep(currentStep: string, accountType?: string | null): string {
+    if (currentStep === 'terms-permissions') return 'welcome';
+    if (currentStep === 'account-type-selection') return 'terms-permissions';
+    if (currentStep === 'content-creator-verification' || currentStep === 'business-verification') {
+      return 'account-type-selection';
+    }
+    if (currentStep === 'two-factor-setup') {
+      if (accountType === 'creator') return 'content-creator-verification';
+      if (accountType === 'business') return 'business-verification';
+      return 'account-type-selection';
+    }
+
+    const onboardingFlow = [
+      'welcome',
+      'terms-permissions',
+      'account-type-selection',
+      ...(accountType === 'creator' ? ['content-creator-verification'] : []),
+      ...(accountType === 'business' ? ['business-verification'] : []),
+      'two-factor-setup',
+      'verification-captcha',
+      'demographics-interests',
+      'profile-customization',
+      'p2p-algorithm-calibration',
+      'ces-formula-education',
+      'completion'
+    ];
+
+    const currentIndex = onboardingFlow.indexOf(currentStep);
+    if (currentIndex <= 0) return 'welcome';
+    return onboardingFlow[currentIndex - 1];
   }
 
   public async setAccountType(userId: string, accountType: 'personal' | 'creator' | 'business'): Promise<OnboardingProgress> {
@@ -311,6 +343,18 @@ class OnboardingService {
         }).catch((err) => {
           console.warn('Could not persist profile to API (fallback in-memory):', err?.message);
         });
+
+        // Persist P2P preferences & matching calibration to backend
+        await api.post('/p2p-matching/member-profiles', {
+          userId,
+          accountType: progress.accountType || 'personal',
+          interests: progress.interests || [],
+          demographics: progress.demographicInfo || {},
+          p2pAlgorithmData: progress.p2pAlgorithmData || {},
+          cesFormula: progress.cesFormula || {}
+        }).catch((err) => {
+          console.warn('Could not persist P2P profile to API:', err?.message);
+        });
       }
     } catch (e) {
       console.warn('Onboarding finalize error:', e);
@@ -401,15 +445,15 @@ class OnboardingService {
       }
     ];
 
-    // Filter steps based on account type
-    if (accountType !== 'creator') {
-      const creatorIndex = baseSteps.findIndex(s => s.id === 'content-creator-verification');
-      if (creatorIndex !== -1) baseSteps.splice(creatorIndex, 1);
+    // Filter steps immutably based on account type
+    if (accountType === 'personal') {
+      return baseSteps.filter(s => s.id !== 'content-creator-verification' && s.id !== 'business-verification');
     }
-
-    if (accountType !== 'business') {
-      const businessIndex = baseSteps.findIndex(s => s.id === 'business-verification');
-      if (businessIndex !== -1) baseSteps.splice(businessIndex, 1);
+    if (accountType === 'creator') {
+      return baseSteps.filter(s => s.id !== 'business-verification');
+    }
+    if (accountType === 'business') {
+      return baseSteps.filter(s => s.id !== 'content-creator-verification');
     }
 
     return baseSteps;

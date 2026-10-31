@@ -84,7 +84,7 @@ const onboardingReducer = (state: OnboardingState, action: OnboardingAction): On
     return {
       ...state,
       progress: action.payload,
-      currentStepIndex: stepIndex >= 0 ? stepIndex : 0
+      currentStepIndex: stepIndex >= 0 ? stepIndex : state.currentStepIndex
     };
   }
   case 'UPDATE_PROGRESS': {
@@ -94,7 +94,7 @@ const onboardingReducer = (state: OnboardingState, action: OnboardingAction): On
     return {
       ...state,
       progress: updatedProgress,
-      currentStepIndex: updatedStepIndex >= 0 ? updatedStepIndex : 0
+      currentStepIndex: updatedStepIndex >= 0 ? updatedStepIndex : state.currentStepIndex
     };
   }
   case 'SET_STEPS': {
@@ -119,32 +119,11 @@ const onboardingReducer = (state: OnboardingState, action: OnboardingAction): On
       };
     }
     
-    // Determine the next step based on account type
-    let nextStepId: string;
-    switch (state.progress.currentStep) {
-      case 'terms-permissions':
-        nextStepId = 'account-type-selection';
-        break;
-      case 'account-type-selection':
-        if (state.progress.accountType === 'creator') {
-          nextStepId = 'content-creator-verification';
-        } else if (state.progress.accountType === 'business') {
-          nextStepId = 'business-verification';
-        } else {
-          nextStepId = 'two-factor-setup';
-        }
-        break;
-      case 'content-creator-verification':
-      case 'business-verification':
-        nextStepId = 'two-factor-setup';
-        break;
-      default:
-        // For all other steps, go to the next sequential step
-        const currentIndex = state.steps.findIndex(step => step.id === state.progress!.currentStep);
-        const nextIndex = Math.min(currentIndex + 1, Math.max(state.steps.length - 1, 0));
-        nextStepId = state.steps[nextIndex]?.id || 'completion';
-        break;
-    }
+    const nextStepId = OnboardingService.getNextStep(
+      state.progress.currentStep,
+      state.progress.completedSteps,
+      state.progress.accountType
+    );
     
     const nextStepIndex = state.steps.findIndex(step => step.id === nextStepId);
     const updatedProgress = { ...state.progress, currentStep: nextStepId };
@@ -165,34 +144,10 @@ const onboardingReducer = (state: OnboardingState, action: OnboardingAction): On
       };
     }
     
-    let prevStepId: string;
-    switch (state.progress.currentStep) {
-      case 'terms-permissions':
-        prevStepId = 'welcome';
-        break;
-      case 'account-type-selection':
-        prevStepId = 'terms-permissions';
-        break;
-      case 'content-creator-verification':
-      case 'business-verification':
-        prevStepId = 'account-type-selection';
-        break;
-      case 'two-factor-setup':
-        if (state.progress.accountType === 'creator') {
-          prevStepId = 'content-creator-verification';
-        } else if (state.progress.accountType === 'business') {
-          prevStepId = 'business-verification';
-        } else {
-          prevStepId = 'account-type-selection';
-        }
-        break;
-      default: {
-        const currentIndex = state.steps.findIndex(step => step.id === state.progress!.currentStep);
-        const prevIndex = Math.max(currentIndex - 1, 0);
-        prevStepId = state.steps[prevIndex]?.id || 'welcome';
-        break;
-      }
-    }
+    const prevStepId = OnboardingService.getPreviousStep(
+      state.progress.currentStep,
+      state.progress.accountType
+    );
 
     const prevStepIndex = state.steps.findIndex(step => step.id === prevStepId);
     return {
@@ -275,11 +230,36 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
       const updatedProgress = await OnboardingService.setAccountType(state.progress.userId, accountType);
-      dispatch({ type: 'SET_PROGRESS', payload: updatedProgress });
 
       // Update steps based on new account type
       const steps = await OnboardingService.getOnboardingSteps(accountType);
       dispatch({ type: 'SET_STEPS', payload: steps });
+
+      // Determine the exact next step based on accountType
+      const nextStepId = OnboardingService.getNextStep(
+        'account-type-selection',
+        updatedProgress.completedSteps,
+        accountType
+      );
+
+      const completed = [...(updatedProgress.completedSteps || [])];
+      if (!completed.includes('account-type-selection')) {
+        completed.push('account-type-selection');
+      }
+
+      await OnboardingService.updateProgress(state.progress.userId, {
+        currentStep: nextStepId,
+        completedSteps: completed
+      });
+
+      dispatch({
+        type: 'SET_PROGRESS',
+        payload: {
+          ...updatedProgress,
+          currentStep: nextStepId,
+          completedSteps: completed
+        }
+      });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to set account type';
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
@@ -394,52 +374,59 @@ export const OnboardingProvider: React.FC<{ children: ReactNode }> = ({ children
   };
 
   const nextStep = async () => {
-    if (state.progress && state.steps.length > 0) {
-      const currentIndex = state.steps.findIndex(step => step.id === state.progress?.currentStep);
-      
-      // Ensure the current step is marked as completed
-      const currentStepId = state.progress.currentStep;
-      let completedSteps = [...(state.progress.completedSteps || [])];
-      if (!completedSteps.includes(currentStepId)) {
-        completedSteps.push(currentStepId);
-      }
-
-      if (currentIndex >= 0 && currentIndex < state.steps.length - 1) {
-        const nextStepId = state.steps[currentIndex + 1].id;
-        await OnboardingService.updateProgress(state.progress.userId, { 
-          currentStep: nextStepId,
-          completedSteps: completedSteps
-        });
-        
-        // Also update the local state immediately
-        dispatch({ 
-          type: 'SET_PROGRESS', 
-          payload: { 
-            ...state.progress, 
-            currentStep: nextStepId,
-            completedSteps: completedSteps 
-          } as OnboardingProgress 
-        });
-      } else {
-        await OnboardingService.updateProgress(state.progress.userId, { completedSteps });
-        dispatch({ 
-          type: 'SET_PROGRESS', 
-          payload: { ...state.progress, completedSteps } as OnboardingProgress 
-        });
-      }
+    if (!state.progress) {
+      dispatch({ type: 'NEXT_STEP' });
+      return;
     }
-    dispatch({ type: 'NEXT_STEP' });
+
+    const currentStepId = state.progress.currentStep;
+    const completedSteps = [...(state.progress.completedSteps || [])];
+    if (!completedSteps.includes(currentStepId)) {
+      completedSteps.push(currentStepId);
+    }
+
+    const nextStepId = OnboardingService.getNextStep(
+      currentStepId,
+      completedSteps,
+      state.progress.accountType
+    );
+
+    await OnboardingService.updateProgress(state.progress.userId, {
+      currentStep: nextStepId,
+      completedSteps
+    });
+
+    dispatch({
+      type: 'SET_PROGRESS',
+      payload: {
+        ...state.progress,
+        currentStep: nextStepId,
+        completedSteps
+      } as OnboardingProgress
+    });
   };
 
   const previousStep = async () => {
-    if (state.progress && state.steps.length > 0) {
-      const currentIndex = state.steps.findIndex(step => step.id === state.progress?.currentStep);
-      if (currentIndex > 0) {
-        const prevStepId = state.steps[currentIndex - 1].id;
-        await OnboardingService.updateProgress(state.progress.userId, { currentStep: prevStepId });
-      }
+    if (!state.progress) {
+      dispatch({ type: 'PREVIOUS_STEP' });
+      return;
     }
-    dispatch({ type: 'PREVIOUS_STEP' });
+
+    const currentStepId = state.progress.currentStep;
+    const prevStepId = OnboardingService.getPreviousStep(
+      currentStepId,
+      state.progress.accountType
+    );
+
+    await OnboardingService.updateProgress(state.progress.userId, { currentStep: prevStepId });
+
+    dispatch({
+      type: 'SET_PROGRESS',
+      payload: {
+        ...state.progress,
+        currentStep: prevStepId
+      } as OnboardingProgress
+    });
   };
 
   const value = {
