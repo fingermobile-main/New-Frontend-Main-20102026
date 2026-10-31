@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BellIcon, CheckIcon, TrashIcon, ChatBubbleLeftRightIcon, GiftIcon, HeartIcon } from '@heroicons/react/24/outline';
+import { api } from '../services/api';
 
 interface Notification {
   id: string;
-  type: 'match' | 'message' | 'gift' | 'like' | 'comment' | 'system';
+  type: string;
   title: string;
   message: string;
   timestamp: string;
@@ -14,180 +15,222 @@ interface Notification {
   referenceId?: string;
 }
 
+interface RawNotification {
+  id: string;
+  type: string;
+  title: string;
+  message?: string;
+  created_at: string;
+  is_read: boolean;
+  actor_id?: string;
+  actor_username?: string;
+  actor_display_name?: string;
+  actor_avatar_url?: string;
+  reference_id?: string;
+}
+
 const NotificationsPage: React.FC = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: '1',
-      type: 'match',
-      title: 'New Match!',
-      message: 'You matched with Alex Johnson. Send a gift to start chatting!',
-      timestamp: '2 hours ago',
-      isRead: false,
-      actorName: 'Alex Johnson',
-      actorAvatar: 'https://randomuser.me/api/portraits/men/32.jpg'
-    },
-    {
-      id: '2',
-      type: 'gift',
-      title: 'Gift Received',
-      message: 'Sarah sent you a Virtual Plushie Gift!',
-      timestamp: '1 day ago',
-      isRead: false,
-      actorName: 'Sarah',
-      actorAvatar: 'https://randomuser.me/api/portraits/women/44.jpg'
-    },
-    {
-      id: '3',
-      type: 'message',
-      title: 'New Message',
-      message: 'Michael replied to your message',
-      timestamp: '2 days ago',
-      isRead: true,
-      actorName: 'Michael',
-      actorAvatar: 'https://randomuser.me/api/portraits/men/22.jpg'
-    },
-    {
-      id: '4',
-      type: 'like',
-      title: 'Profile Liked',
-      message: 'Emma liked your profile',
-      timestamp: '3 days ago',
-      isRead: true,
-      actorName: 'Emma',
-      actorAvatar: 'https://randomuser.me/api/portraits/women/68.jpg'
-    },
-    {
-      id: '5',
-      type: 'system',
-      title: 'System Update',
-      message: 'New privacy features are now available in settings',
-      timestamp: '1 week ago',
-      isRead: true
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchNotifications = useCallback(async () => {
+    try {
+      setLoading(true);
+      const res = await api.get('/notifications?limit=50');
+      if (res.data?.success && Array.isArray(res.data.notifications)) {
+        const mapped: Notification[] = res.data.notifications.map((n: RawNotification) => ({
+          id: n.id,
+          type: n.type || 'system',
+          title: n.title,
+          message: n.message || '',
+          timestamp: new Date(n.created_at).toLocaleDateString(undefined, {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          isRead: Boolean(n.is_read),
+          actorId: n.actor_id,
+          actorName: n.actor_display_name || n.actor_username || 'Someone',
+          actorAvatar: n.actor_avatar_url,
+          referenceId: n.reference_id,
+        }));
+        setNotifications(mapped);
+      }
+    } catch (err) {
+      console.debug('Failed to fetch persistent notifications, keeping existing:', err);
+    } finally {
+      setLoading(false);
     }
-  ]);
-  const [loading, setLoading] = useState(false);
+  }, []);
 
-  const markAsRead = (id: string) => {
-    setNotifications(notifications.map(n =>
-      n.id === id ? {...n, isRead: true} : n
-    ));
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
+  const markAsRead = async (id: string) => {
+    try {
+      await api.patch(`/notifications/${id}/read`);
+      setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+    } catch {
+      setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+    }
   };
 
-  const markAllAsRead = () => {
-    setNotifications(notifications.map(n => ({...n, isRead: true})));
+  const markAllAsRead = async () => {
+    try {
+      await api.patch('/notifications/read-all');
+      setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+    } catch {
+      setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+    }
   };
 
-  const deleteNotification = (id: string) => {
-    setNotifications(notifications.filter(n => n.id !== id));
+  const deleteNotification = async (id: string) => {
+    try {
+      await api.delete(`/notifications/${id}`);
+      setNotifications(prev => prev.filter(n => n.id !== id));
+    } catch {
+      setNotifications(prev => prev.filter(n => n.id !== id));
+    }
   };
 
-  const deleteAllNotifications = () => {
+  const deleteAllNotifications = async () => {
     setNotifications([]);
-  };
-
-  const getNotificationIcon = (type: string) => {
-    switch(type) {
-    case 'match':
-      return <HeartIcon className="h-5 w-5 text-rose-500" />;
-    case 'message':
-      return <ChatBubbleLeftRightIcon className="h-5 w-5 text-blue-500" />;
-    case 'gift':
-      return <GiftIcon className="h-5 w-5 text-amber-500" />;
-    case 'like':
-      return <HeartIcon className="h-5 w-5 text-pink-500" />;
-    default:
-      return <BellIcon className="h-5 w-5 text-slate-600" />;
-    }
   };
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case 'match':
+        return <HeartIcon className="h-6 w-6 text-pink-500" />;
+      case 'gift':
+        return <GiftIcon className="h-6 w-6 text-purple-500" />;
+      case 'message':
+      case 'comment':
+      case 'mention':
+        return <ChatBubbleLeftRightIcon className="h-6 w-6 text-blue-500" />;
+      case 'like':
+        return <HeartIcon className="h-6 w-6 text-rose-500" />;
+      default:
+        return <BellIcon className="h-6 w-6 text-gray-500" />;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white shadow rounded-lg overflow-hidden">
+    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 pb-24 md:pb-8">
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-300 overflow-hidden">
           {/* Header */}
-          <div className="border-b border-slate-300 px-6 py-4 flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
-              <p className="mt-1 text-sm text-slate-700">
-                {unreadCount} unread {unreadCount === 1 ? 'notification' : 'notifications'}
-              </p>
+          <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-indigo-50 rounded-lg">
+                <BellIcon className="h-6 w-6 text-indigo-600" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-slate-900">Notifications</h1>
+                <p className="text-xs text-slate-700">
+                  {unreadCount > 0 ? `${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}` : 'All caught up'}
+                </p>
+              </div>
             </div>
-            <div className="flex space-x-3">
-              <button
-                onClick={markAllAsRead}
-                disabled={unreadCount === 0}
-                className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue disabled:opacity-50"
-              >
-                <CheckIcon className="h-4 w-4 mr-1" />
-                Mark all as read
-              </button>
-              <button
-                onClick={deleteAllNotifications}
-                className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              >
-                <TrashIcon className="h-4 w-4 mr-1" />
-                Clear all
-              </button>
+
+            <div className="flex items-center space-x-2">
+              {unreadCount > 0 && (
+                <button
+                  type="button"
+                  onClick={markAllAsRead}
+                  className="inline-flex items-center px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-semibold text-slate-800 bg-white hover:bg-slate-50 transition-colors"
+                >
+                  <CheckIcon className="h-4 w-4 mr-1 text-emerald-600" />
+                  Mark all read
+                </button>
+              )}
+              {notifications.length > 0 && (
+                <button
+                  type="button"
+                  onClick={deleteAllNotifications}
+                  className="inline-flex items-center px-3 py-1.5 border border-rose-300 rounded-lg text-xs font-semibold text-rose-700 bg-white hover:bg-rose-50 transition-colors"
+                >
+                  <TrashIcon className="h-4 w-4 mr-1 text-rose-600" />
+                  Clear all
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Notifications List */}
-          <div className="divide-y divide-gray-200">
-            {notifications.length === 0 ? (
-              <div className="p-12 text-center">
-                <BellIcon className="mx-auto h-12 w-12 text-slate-700" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">No notifications</h3>
-                <p className="mt-1 text-sm text-slate-700">Check back later for updates.</p>
+          {/* List */}
+          <div className="divide-y divide-slate-200">
+            {loading ? (
+              <div className="py-12 text-center text-sm font-medium text-slate-600">
+                Loading live notifications...
+              </div>
+            ) : notifications.length === 0 ? (
+              <div className="py-16 text-center">
+                <BellIcon className="mx-auto h-12 w-12 text-slate-400 mb-3" />
+                <h3 className="text-sm font-semibold text-slate-900">No notifications yet</h3>
+                <p className="text-xs text-slate-700 mt-1 max-w-sm mx-auto">
+                  Interactions like comments, mentions, likes, and messages will arrive here in real time.
+                </p>
               </div>
             ) : (
               notifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className={`p-4 ${!notification.isRead ? 'bg-blue-50' : 'bg-white'}`}
+                  className={`p-4 sm:p-5 flex items-start space-x-4 transition-colors ${
+                    notification.isRead ? 'bg-white' : 'bg-indigo-50/40'
+                  }`}
                 >
-                  <div className="flex space-x-3">
-                    <div className="flex-shrink-0">
-                      {notification.actorAvatar ? (
-                        <img
-                          className="h-10 w-10 rounded-full"
-                          src={notification.actorAvatar}
-                          alt={notification.actorName}
-                        />
-                      ) : (
-                        <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center border text-gray-950 border-gray-400 font-black">
-                          {getNotificationIcon(notification.type)}
-                        </div>
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium text-gray-900">
+                  <div className="flex-shrink-0 mt-0.5">
+                    {notification.actorAvatar ? (
+                      <img
+                        src={notification.actorAvatar}
+                        alt={notification.actorName || 'User'}
+                        className="h-10 w-10 rounded-full object-cover border border-slate-300"
+                      />
+                    ) : (
+                      <div className="p-2 bg-slate-100 rounded-full border border-slate-200">
+                        {getNotificationIcon(notification.type)}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-bold text-slate-900 truncate">
                         {notification.title}
                       </p>
-                      <p className="mt-0.5 text-sm text-slate-700">
+                      <span className="text-xs text-slate-600 whitespace-nowrap ml-2">
+                        {notification.timestamp}
+                      </span>
+                    </div>
+                    {notification.message && (
+                      <p className="mt-1 text-xs text-slate-800 line-clamp-2">
                         {notification.message}
                       </p>
-                      <p className="mt-1 text-xs text-slate-700">
-                        {notification.timestamp}
-                      </p>
-                    </div>
-                    <div className="flex-shrink-0 flex space-x-2">
-                      {!notification.isRead && (
-                        <button type="button" aria-label="Confirm"
-                          onClick={() => markAsRead(notification.id)}
-                          className="inline-flex items-center p-1 text-sm font-medium text-slate-700 hover:text-gray-700"
-                        >
-                          <CheckIcon className="h-4 w-4" />
-                        </button>
-                      )}
-                      <button type="button" aria-label="Delete"
-                        onClick={() => deleteNotification(notification.id)}
-                        className="inline-flex items-center p-1 text-sm font-medium text-slate-700 hover:text-red-700"
+                    )}
+                  </div>
+
+                  <div className="flex-shrink-0 flex items-center space-x-2">
+                    {!notification.isRead && (
+                      <button
+                        type="button"
+                        aria-label="Mark notification as read"
+                        onClick={() => markAsRead(notification.id)}
+                        className="p-1.5 rounded-lg border border-slate-200 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 transition-colors"
                       >
-                        <TrashIcon className="h-4 w-4" />
+                        <CheckIcon className="h-4 w-4" />
                       </button>
-                    </div>
+                    )}
+                    <button
+                      type="button"
+                      aria-label="Delete notification"
+                      onClick={() => deleteNotification(notification.id)}
+                      className="p-1.5 rounded-lg border border-slate-200 text-slate-700 hover:text-rose-700 hover:bg-rose-50 transition-colors"
+                    >
+                      <TrashIcon className="h-4 w-4" />
+                    </button>
                   </div>
                 </div>
               ))
