@@ -64,8 +64,8 @@ const SuccessPage: React.FC = () => {
     return {
       accountType: 'personal',
       roleName: 'Sovereign Citizen Member',
-      destination: '/forum',
-      destinationLabel: 'Sovereign Social Mesh & Forum',
+      destination: '/login',
+      destinationLabel: 'Sign In / Log In',
       badgeColor: 'bg-blue-100 text-blue-950 border-blue-400',
       cesScore: 50,
       features: [
