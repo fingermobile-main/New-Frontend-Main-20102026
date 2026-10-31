@@ -4,6 +4,7 @@ import H2AdBucket from '../../components/layout/H2AdBucket';
 import { advertisingService, QueueItem } from '../../services/advertisingService';
 import { useAppContext } from '../../contexts/AppContext';
 import PlatformOwnershipCard from '../../components/dashboard/PlatformOwnershipCard';
+import SovereignModuleEngagementHub from '../../components/common/SovereignModuleEngagementHub';
 
 export const CanaryAdsManagementPage: React.FC = () => {
   const { showToast } = useAppContext();
@@ -103,6 +104,9 @@ export const CanaryAdsManagementPage: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Sovereign Engagement & Activity Console */}
+        <SovereignModuleEngagementHub module="publicitee" />
 
         {/* WORKSPACE GRID */}
         {loading ? (

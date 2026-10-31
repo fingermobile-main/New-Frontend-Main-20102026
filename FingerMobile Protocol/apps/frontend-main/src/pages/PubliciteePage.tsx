@@ -5,6 +5,7 @@ import MainLayout from '../components/layout/MainLayout';
 import { PubliciteeSection, PubliciteeItem } from '../components/PubliciteeSection';
 import { CreatePubliciteeShortsModal } from '../components/CreatePubliciteeShortsModal';
 import { API_BASE_URL } from '../services/api';
+import SovereignModuleEngagementHub from '../components/common/SovereignModuleEngagementHub';
 import {
   Film, Sparkles, Clock, DollarSign,
   Layers, Upload, Video, ShieldCheck,
@@ -302,6 +303,9 @@ const PubliciteePage: React.FC = () => {
             <Upload className="w-4 h-4" /> Upload Reel (168h TTL)
           </button>
         </div>
+
+        {/* Sovereign Engagement & Activity Console */}
+        <SovereignModuleEngagementHub module="publicitee" />
 
         {/* TAB 1: EXPLORE REELS */}
         {activeMainTab === 'explore' && (

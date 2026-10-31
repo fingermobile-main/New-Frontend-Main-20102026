@@ -20,6 +20,7 @@ import UniversalProfileCard from '../components/common/UniversalProfileCard';
 import ConnectWidget, { ConnectPeer } from '../components/widgets/ConnectWidget';
 import DiscoverWidget from '../components/widgets/DiscoverWidget';
 import MiiEncryptedPeerChat from '../components/mii/MiiEncryptedPeerChat';
+import SovereignModuleEngagementHub from '../components/common/SovereignModuleEngagementHub';
 import {
   MiiPinExchangeModal,
   MiiFingerOrbitModal,
@@ -345,6 +346,8 @@ const MiiPage: React.FC = () => {
 
         {/* Main Tabs Content Column */}
         <div className="lg:col-span-3 space-y-6">
+          {/* Sovereign Engagement & Activity Console */}
+          <SovereignModuleEngagementHub module="mii" />
           {/* Tab 1: Moments & Live ShowCase */}
           {activeTab === 'moments' && (
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">

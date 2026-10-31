@@ -39,6 +39,7 @@ import {
 import communitiesConsoleService from '../../services/communitiesConsoleService';
 import audioEngine from '../../services/SuperViAudioEngine';
 import { useAppContext } from '../../contexts/AppContext';
+import SovereignModuleEngagementHub from '../common/SovereignModuleEngagementHub';
 
 // 11 Community Microservices Definition
 export const COMMUNITY_SERVICES: {
@@ -570,6 +571,13 @@ export const MasterCommunitiesConsole: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* Sovereign Engagement & Activity Hub (Granular Comments, Mentions, Connects, Responded, Activity Log) */}
+      <SovereignModuleEngagementHub
+        module={(activeService as any) || 'all'}
+        title={`${activeConfig.name} Live Engagement & Activity Command`}
+        subtitle={`Live monitoring of comments, mentions, connection links, response states and complete activity audit trail for ${activeConfig.name}.`}
+      />
 
       {/* Filter & Search Bar */}
       <div className="bg-white p-4 rounded-2xl border border-slate-300 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">

@@ -36,6 +36,7 @@ import {
 } from '../../types/miiStoriesConsole';
 import { miiStoriesConsoleService, ReorderEntry } from '../../services/miiStoriesConsoleService';
 import superViAudio from '../../services/SuperViAudioEngine';
+import SovereignModuleEngagementHub from '../common/SovereignModuleEngagementHub';
 
 export const MasterMiiStoriesConsole: React.FC = () => {
   // 1. Core State
@@ -404,6 +405,9 @@ export const MasterMiiStoriesConsole: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Sovereign Engagement & Activity Console */}
+      <SovereignModuleEngagementHub module="mii" />
 
       {/* Pillar 2: Controls & Filters */}
       <div className="bg-white p-4 rounded-xl border border-slate-300 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">

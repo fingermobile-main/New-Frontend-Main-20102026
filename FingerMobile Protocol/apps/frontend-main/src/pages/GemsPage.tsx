@@ -7,6 +7,7 @@ import { PlatformWidgetsAndAdsRail } from '../components/widgets/PlatformWidgets
 import ConnectWidget from '../components/widgets/ConnectWidget';
 import DiscoverWidget from '../components/widgets/DiscoverWidget';
 import voiceLineServiceInstance from '../services/VoiceLineService';
+import SovereignModuleEngagementHub from '../components/common/SovereignModuleEngagementHub';
 import {
   Sparkles,
   Radio,
@@ -657,6 +658,8 @@ const GemsPage: React.FC = () => {
 
           {/* Center Column: Scrollable Infinite Stream */}
           <div className="lg:col-span-6 space-y-6">
+            {/* Sovereign Engagement & Activity Console */}
+            <SovereignModuleEngagementHub module="gems" />
         {/* ======================================================== */}
         {/* TAB 1: MARKETPLACE & STORE */}
         {/* ======================================================== */}

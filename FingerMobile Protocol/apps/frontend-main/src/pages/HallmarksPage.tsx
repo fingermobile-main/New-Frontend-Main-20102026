@@ -41,6 +41,7 @@ import MainLayout from '../components/layout/MainLayout';
 import { PlatformWidgetsAndAdsRail } from '../components/widgets/PlatformWidgetsAndAdsRail';
 import ConnectWidget from '../components/widgets/ConnectWidget';
 import DiscoverWidget from '../components/widgets/DiscoverWidget';
+import SovereignModuleEngagementHub from '../components/common/SovereignModuleEngagementHub';
 
 interface Community {
   id: number;
@@ -779,6 +780,9 @@ const HallmarksPage: React.FC = () => {
 
           {/* CENTER COLUMN (6 cols): Scrollable, no load more, no end */}
           <div className="lg:col-span-6 space-y-6">
+            {/* Sovereign Engagement & Activity Console */}
+            <SovereignModuleEngagementHub module="hallmarks" />
+
             {/* 3. Navigation Tabs, Search & Filters Toolbar */}
             <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-300 pb-3">
