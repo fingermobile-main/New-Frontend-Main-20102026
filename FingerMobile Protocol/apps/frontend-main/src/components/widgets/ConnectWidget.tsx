@@ -19,7 +19,9 @@ export interface ConnectPeer {
 }
 
 interface ConnectWidgetProps {
-  pageContext?: 'forum' | 'tribut' | 'hallmarks' | 'blogs' | 'groups' | 'gems' | 'trends' | 'lushpressies';
+  pageContext?: 'forum' | 'tribut' | 'hallmarks' | 'blogs' | 'groups' | 'gems' | 'trends' | 'lushpressies' | 'mii' | 'default';
+  onSelectPeer?: (peer: ConnectPeer) => void;
+  selectedPeerId?: string;
 }
 
 const DEFAULT_PEERS: Record<string, ConnectPeer[]> = {
@@ -200,10 +202,43 @@ const DEFAULT_PEERS: Record<string, ConnectPeer[]> = {
       mutualCount: 14,
       isOnline: true
     }
+  ],
+  mii: [
+    {
+      id: 'a1e00000-0000-0000-0000-000000000001',
+      name: 'Alex Johnson',
+      handle: '@alexjohnson',
+      role: 'Voice Mii™ & Audio Creator',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150',
+      mutualCount: 19,
+      isOnline: true
+    },
+    {
+      id: 'cp-mii2',
+      name: 'Nia Adebayo',
+      handle: '@nia_architect',
+      role: 'FingerOrbit™ 4K Curator',
+      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150',
+      mutualCount: 14,
+      isOnline: true
+    },
+    {
+      id: 'cp-mii3',
+      name: 'Tariq Al-Mansoor',
+      handle: '@tariq_node',
+      role: 'Encrypted P2P Node Operator',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+      mutualCount: 11,
+      isOnline: true
+    }
   ]
 };
 
-export const ConnectWidget: React.FC<ConnectWidgetProps> = ({ pageContext = 'default' }) => {
+export const ConnectWidget: React.FC<ConnectWidgetProps> = ({
+  pageContext = 'default',
+  onSelectPeer,
+  selectedPeerId
+}) => {
   const navigate = useNavigate();
   const peers = DEFAULT_PEERS[pageContext] || DEFAULT_PEERS.default;
   const [connectedIds, setConnectedIds] = useState<Record<string, boolean>>({});
@@ -242,10 +277,16 @@ export const ConnectWidget: React.FC<ConnectWidgetProps> = ({ pageContext = 'def
       <div className="space-y-2.5">
         {peers.map((peer) => {
           const isConnected = !!connectedIds[peer.id];
+          const isSelected = selectedPeerId === peer.id;
           return (
             <div
               key={peer.id}
-              className="flex items-center justify-between gap-2.5 p-2 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 hover:border-blue-300 transition-colors"
+              onClick={() => onSelectPeer?.(peer)}
+              className={`flex items-center justify-between gap-2.5 p-2 rounded-xl transition-all cursor-pointer ${
+                isSelected
+                  ? 'bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-500 shadow-xs'
+                  : 'bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 hover:border-blue-400'
+              }`}
             >
               <div className="relative shrink-0">
                 <img

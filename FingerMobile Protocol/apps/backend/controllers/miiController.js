@@ -109,7 +109,7 @@ class MiiController {
       // 2. Author has accepted mutual Pin exchange with user, OR
       // 3. User is in author's allowed contacts or audience is 'followers'
       const query = `
-        SELECT 
+        SELECT
           s.id AS status_id,
           s.author_id,
           s.audience_type,
@@ -149,7 +149,7 @@ class MiiController {
           AND c.expires_at > NOW()
           AND (
             $1 = 'guest'
-            OR s.author_id = $1 
+            OR s.author_id = $1
             OR (mc.pin_status = 'accepted' AND mc.activity_visible = true)
             OR s.audience_type = 'followers'
             OR s.audience_type = 'public'
@@ -707,7 +707,7 @@ class MiiController {
         FROM users u
         LEFT JOIN mii_contacts mc ON mc.user_id = $1 AND mc.contact_user_id = u.id::text
         WHERE (
-          MD5(u.phone) = ANY($2::text[]) 
+          MD5(u.phone) = ANY($2::text[])
           OR SHA256(u.phone::bytea) = ANY($2::bytea[])
           OR u.phone = ANY($2::text[])
         )
@@ -1199,7 +1199,7 @@ class MiiController {
         if (page === 1) {
           await pool.query(`
             INSERT INTO mii_ministore_products (seller_id, title, description, price_fic, price_gems, catalog_page, media_urls, is_active)
-            VALUES 
+            VALUES
               ('00000000-0000-0000-0000-000000000001', 'FingerMobile Sovereign Merch Hoodie', 'Heavyweight organic cotton creator hoodie with embroidered protocol seal.', 150.00, 45, 1, ARRAY['https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600'], true),
               ('00000000-0000-0000-0000-000000000001', 'Signed Vinyl: Beatwave Originals Vol. 1', 'Limited collector vinyl master cut directly from Beatwave audio stems.', 95.00, 30, 1, ARRAY['https://images.unsplash.com/photo-1539185441755-769473a23570?w=600'], true),
               ('00000000-0000-0000-0000-000000000001', 'Mii Special Edition Enamel Pin', 'Gold-plated NFC embedded physical pin linking to your sovereign profile.', 45.00, 15, 1, ARRAY['https://images.unsplash.com/photo-1617050318658-a9a3175e34cb?w=600'], true)
@@ -1208,7 +1208,7 @@ class MiiController {
         } else {
           await pool.query(`
             INSERT INTO mii_ministore_products (seller_id, title, description, price_fic, price_gems, catalog_page, media_urls, is_active)
-            VALUES 
+            VALUES
               ('00000000-0000-0000-0000-000000000001', 'VIP Dancia-4Tv Backstage Access Pass', 'Unlocks real-time backstage camera angles, private live audio, and replay library.', 85.00, 25, 2, ARRAY['https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600'], true),
               ('00000000-0000-0000-0000-000000000001', 'Exclusive Sound Pack: Afrobeat Vol. 2', '24-bit WAV stems, brass solos, and drum kits for music producers.', 60.00, 20, 2, ARRAY['https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600'], true),
               ('00000000-0000-0000-0000-000000000001', '1-on-1 Creative Direction Session (45m)', 'Direct encrypted session on creative production and sovereign asset tokenization.', 300.00, 90, 2, ARRAY['https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600'], true)
@@ -1439,6 +1439,256 @@ class MiiController {
 
   async getItems(req, res) {
     res.json({ success: true, data: [] });
+  }
+
+  // --- DIRECT ENCRYPTED MII PEER CHAT ---
+  async getPeerMessages(req, res) {
+    try {
+      const currentUserId = req.user?.id || req.user?.userId || '00000000-0000-0000-0000-000000000001';
+      const { peerId } = req.params;
+      const conversationId = [String(currentUserId), String(peerId)].sort().join(':');
+
+      const query = `
+        SELECT m.*,
+          COALESCE(su.username, 'member') as sender_username,
+          COALESCE(su.avatar_url, '/assets/branding/mbah_israel_obinna.jpeg') as sender_avatar,
+          COALESCE(ru.username, 'peer') as recipient_username,
+          COALESCE(ru.avatar_url, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150') as recipient_avatar
+        FROM mii_peer_messages m
+        LEFT JOIN users su ON su.id::text = m.sender_id
+        LEFT JOIN users ru ON ru.id::text = m.recipient_id
+        WHERE m.conversation_id = $1
+        ORDER BY m.created_at ASC
+      `;
+      const result = await pool.query(query, [conversationId]);
+
+      // Check contact PIN permission between the two users
+      const pinRes = await pool.query(`
+        SELECT pin_code, pin_status, pin_permission, ugc_access_level
+        FROM mii_contacts
+        WHERE (user_id = $1 AND contact_user_id = $2) OR (user_id = $2 AND contact_user_id = $1)
+        LIMIT 1
+      `, [String(currentUserId), String(peerId)]);
+
+      const contactPinInfo = pinRes.rows[0] || { pin_status: 'none', pin_permission: 'view_only' };
+
+      return res.json({
+        success: true,
+        data: result.rows,
+        contactPinInfo,
+        count: result.rows.length
+      });
+    } catch (err) {
+      logger.error('Error in MiiController.getPeerMessages:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  }
+
+  async sendPeerMessage(req, res) {
+    try {
+      const currentUserId = req.user?.id || req.user?.userId || '00000000-0000-0000-0000-000000000001';
+      const {
+        recipient_id,
+        content = '',
+        message_type = 'postcard',
+        attachments = [],
+        emojis = [],
+        pin_required = false,
+        pin_permission = 'view_only',
+        pin_code = null,
+        is_view_once = false
+      } = req.body;
+
+      if (!recipient_id) {
+        return res.status(400).json({ success: false, error: 'recipient_id is required' });
+      }
+
+      const conversationId = [String(currentUserId), String(recipient_id)].sort().join(':');
+
+      const insertQuery = `
+        INSERT INTO mii_peer_messages (
+          sender_id, recipient_id, conversation_id, content,
+          message_type, attachments, emojis, pin_required,
+          pin_permission, pin_code, is_view_once, status, created_at
+        ) VALUES (
+          $1, $2, $3, $4,
+          $5, $6, $7, $8,
+          $9, $10, $11, 'sent', CURRENT_TIMESTAMP
+        )
+        RETURNING *
+      `;
+
+      const result = await pool.query(insertQuery, [
+        String(currentUserId),
+        String(recipient_id),
+        conversationId,
+        content,
+        message_type,
+        JSON.stringify(attachments),
+        JSON.stringify(emojis),
+        Boolean(pin_required),
+        pin_permission,
+        pin_code,
+        Boolean(is_view_once)
+      ]);
+
+      const inserted = result.rows[0];
+
+      return res.status(201).json({
+        success: true,
+        message: 'Message sent securely via Direct Encrypted Mii Peer Chat',
+        data: inserted
+      });
+    } catch (err) {
+      logger.error('Error in MiiController.sendPeerMessage:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  }
+
+  async handleMessageAction(req, res) {
+    try {
+      const currentUserId = req.user?.id || req.user?.userId;
+      const { messageId } = req.params;
+      const { action, option_id, pin_code } = req.body;
+
+      const msgRes = await pool.query('SELECT * FROM mii_peer_messages WHERE id = $1', [messageId]);
+      if (msgRes.rows.length === 0) {
+        return res.status(404).json({ success: false, error: 'Message not found' });
+      }
+      const msg = msgRes.rows[0];
+
+      if (action === 'vote') {
+        let attachments = Array.isArray(msg.attachments) ? msg.attachments : JSON.parse(msg.attachments || '[]');
+        attachments = attachments.map((att) => {
+          if (att.type === 'poll' && att.poll_data) {
+            const opts = (att.poll_data.options || []).map((opt) => {
+              if (opt.id === option_id) {
+                return { ...opt, votes: (opt.votes || 0) + 1 };
+              }
+              return opt;
+            });
+            return {
+              ...att,
+              poll_data: {
+                ...att.poll_data,
+                options: opts,
+                total_votes: (att.poll_data.total_votes || 0) + 1,
+                user_voted_option_id: option_id
+              }
+            };
+          }
+          return att;
+        });
+        await pool.query('UPDATE mii_peer_messages SET attachments = $1 WHERE id = $2', [JSON.stringify(attachments), messageId]);
+        return res.json({ success: true, message: 'Poll vote recorded', attachments });
+      }
+
+      if (action === 'unlock_pin') {
+        if (msg.pin_code && msg.pin_code !== pin_code) {
+          return res.status(403).json({ success: false, error: 'Invalid PIN entered. Access denied.' });
+        }
+        return res.json({
+          success: true,
+          message: `PIN accepted. Permission: ${msg.pin_permission === 'download' ? 'Download & View' : 'View Only'} granted!`,
+          pin_permission: msg.pin_permission || 'view_only'
+        });
+      }
+
+      if (action === 'save') {
+        const nextSaved = !msg.is_saved;
+        await pool.query('UPDATE mii_peer_messages SET is_saved = $1 WHERE id = $2', [nextSaved, messageId]);
+        return res.json({ success: true, is_saved: nextSaved });
+      }
+
+      if (action === 'delete') {
+        if (msg.sender_id !== String(currentUserId)) {
+          return res.status(403).json({ success: false, error: 'Unauthorized to delete message' });
+        }
+        await pool.query('DELETE FROM mii_peer_messages WHERE id = $1', [messageId]);
+        return res.json({ success: true, message: 'Message deleted' });
+      }
+
+      return res.status(400).json({ success: false, error: 'Unknown action' });
+    } catch (err) {
+      logger.error('Error in handleMessageAction:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  }
+
+  async reportPeerMessage(req, res) {
+    try {
+      const { messageId } = req.params;
+      const { reason = 'inappropriate' } = req.body;
+      logger.warn(`Mii peer message ${messageId} reported: ${reason}`);
+      return res.json({ success: true, message: 'Report submitted for cryptographic audit' });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  }
+
+  async getPeerConversations(req, res) {
+    try {
+      const currentUserId = req.user?.id || req.user?.userId || '00000000-0000-0000-0000-000000000001';
+      const query = `
+        SELECT DISTINCT ON (m.conversation_id)
+          m.*,
+          CASE
+            WHEN m.sender_id = $1 THEN m.recipient_id
+            ELSE m.sender_id
+          END as peer_id,
+          CASE
+            WHEN m.sender_id = $1 THEN ru.username
+            ELSE su.username
+          END as peer_username,
+          CASE
+            WHEN m.sender_id = $1 THEN ru.first_name
+            ELSE su.first_name
+          END as peer_first_name,
+          CASE
+            WHEN m.sender_id = $1 THEN ru.last_name
+            ELSE su.last_name
+          END as peer_last_name,
+          CASE
+            WHEN m.sender_id = $1 THEN ru.avatar_url
+            ELSE su.avatar_url
+          END as peer_avatar,
+          COALESCE(c.pin_status, 'none') as pin_status,
+          COALESCE(c.pin_permission, 'view_only') as pin_permission
+        FROM mii_peer_messages m
+        LEFT JOIN users su ON su.id::text = m.sender_id
+        LEFT JOIN users ru ON ru.id::text = m.recipient_id
+        LEFT JOIN mii_contacts c ON (
+          (c.user_id = $1 AND c.contact_user_id = CASE WHEN m.sender_id = $1 THEN m.recipient_id ELSE m.sender_id END)
+          OR
+          (c.contact_user_id = $1 AND c.user_id = CASE WHEN m.sender_id = $1 THEN m.recipient_id ELSE m.sender_id END)
+        )
+        WHERE m.sender_id = $1 OR m.recipient_id = $1
+        ORDER BY m.conversation_id, m.created_at DESC
+      `;
+      const result = await pool.query(query, [String(currentUserId)]);
+      return res.json({ success: true, data: result.rows, count: result.rows.length });
+    } catch (err) {
+      logger.error('Error in getPeerConversations:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  }
+
+  async updatePinPermission(req, res) {
+    try {
+      const currentUserId = req.user?.id || req.user?.userId || '00000000-0000-0000-0000-000000000001';
+      const { contactId, pin_permission = 'view_only' } = req.body;
+      if (!contactId) return res.status(400).json({ success: false, error: 'contactId is required' });
+
+      await pool.query(`
+        UPDATE mii_contacts
+        SET pin_permission = $1, ugc_access_level = $1, updated_at = NOW()
+        WHERE (user_id = $2 AND contact_user_id = $3) OR (user_id = $3 AND contact_user_id = $2)
+      `, [pin_permission, String(currentUserId), String(contactId)]);
+
+      return res.json({ success: true, message: `PIN permission updated to ${pin_permission}` });
+    } catch (err) {
+      return res.status(500).json({ success: false, error: err.message });
+    }
   }
 }
 

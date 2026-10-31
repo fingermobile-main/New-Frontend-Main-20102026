@@ -74,7 +74,15 @@ router.post('/orbit/items', authenticate, mii.addOrbitItem);
 router.get('/orbit/folders/:folderId/items', optionalAuthenticate, mii.getOrbitItems);
 router.post('/orbit/download-token', optionalAuthenticate, mii.requestTokenizedDownload);
 
-// --- 5. MINISTORE (Two-Page Catalogue) ---
+// --- 5. DIRECT ENCRYPTED MII PEER CHAT & FOLDER PERMISSIONS ---
+router.get('/messages/conversations', optionalAuthenticate, mii.getPeerConversations);
+router.get('/messages/:peerId', optionalAuthenticate, mii.getPeerMessages);
+router.post('/messages', optionalAuthenticate, mii.sendPeerMessage);
+router.post('/messages/:messageId/action', optionalAuthenticate, mii.handleMessageAction);
+router.post('/messages/:messageId/report', optionalAuthenticate, mii.reportPeerMessage);
+router.post('/pin/permission', optionalAuthenticate, mii.updatePinPermission);
+
+// --- 6. MINISTORE (Two-Page Catalogue) ---
 router.get('/ministore/:sellerId', mii.getMiniStoreCatalog);
 router.post('/ministore/products', authenticate, mii.addMiniStoreProduct);
 router.post('/ministore/order', mii.createMiniStoreOrder);

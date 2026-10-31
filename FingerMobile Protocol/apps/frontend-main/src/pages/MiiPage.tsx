@@ -17,6 +17,9 @@ import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { MiiStoriesBar } from '../components/MiiStoriesBar';
 import UniversalProfileCard from '../components/common/UniversalProfileCard';
+import ConnectWidget, { ConnectPeer } from '../components/widgets/ConnectWidget';
+import DiscoverWidget from '../components/widgets/DiscoverWidget';
+import MiiEncryptedPeerChat from '../components/mii/MiiEncryptedPeerChat';
 import {
   MiiPinExchangeModal,
   MiiFingerOrbitModal,
@@ -26,22 +29,15 @@ import { CreateMiiStatusModal } from '../components/CreateMiiStatusModal';
 import {
   Radio, Lock, Folder, ShoppingBag, MessageSquare,
   Music, Tv, ShieldAlert, Plus,
-  Clock, AlertTriangle, Send, Play, Video,
+  Clock, AlertTriangle, Play, Video,
   Image as ImageIcon, CheckCircle2, ChevronLeft, ChevronRight,
   Coins, Gem, Download, X, Volume2
 } from 'lucide-react';
-import voiceLineServiceInstance from '../services/VoiceLineService';
-
-interface DirectMessage {
-  id: string;
-  sender: 'me' | 'peer';
-  text: string;
-  timestamp: string;
-}
 
 const MiiPage: React.FC = () => {
   const { showToast } = useAppContext();
-  const [activeTab, setActiveTab] = useState<'moments' | 'contacts' | 'orbit' | 'ministore' | 'chats'>('moments');
+  const [activeTab, setActiveTab] = useState<'chats' | 'moments' | 'contacts' | 'orbit' | 'ministore'>('chats');
+  const [activeChatPeer, setActiveChatPeer] = useState<ConnectPeer | undefined>(undefined);
 
   // Modals
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -241,29 +237,6 @@ const MiiPage: React.FC = () => {
     fetchActivity();
   }, []);
 
-  // Direct Peer Encrypted Messages
-  const [messages, setMessages] = useState<DirectMessage[]>([
-    { id: '1', sender: 'peer', text: 'Hey! Did you check out my latest Voice Mii™ snippet?', timestamp: '10:45 AM' },
-    { id: '2', sender: 'me', text: 'Yes, absolutely love the BeatwaveNG track you synced in ShowCase!', timestamp: '10:46 AM' }
-  ]);
-  const [chatInput, setChatInput] = useState('');
-
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!chatInput.trim()) return;
-    setMessages(prev => [
-      ...prev,
-      {
-        id: Date.now().toString(),
-        sender: 'me',
-        text: chatInput.trim(),
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      }
-    ]);
-    voiceLineServiceInstance.playCommentaryVoiceLine('mii');
-    setChatInput('');
-  };
-
   return (
     <div className="max-w-[1536px] 2xl:max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 md:pb-12 max-w-full overflow-x-hidden text-slate-900 space-y-6">
       {/* Mii™ Protocol Specs Hero Banner */}
@@ -329,11 +302,11 @@ const MiiPage: React.FC = () => {
       <div className="flex items-center justify-between flex-wrap gap-4 border-b border-gray-200 dark:border-gray-800 pb-3">
         <div className="flex items-center space-x-2 overflow-x-auto pb-1">
           {[
+            { id: 'chats', label: 'Direct Encrypted Mii Peer Chat', icon: MessageSquare },
             { id: 'moments', label: 'Disappearing Moments & ShowCase', icon: Radio },
             { id: 'contacts', label: 'PIN Exchange & Contacts', icon: Lock },
             { id: 'orbit', label: 'FingerOrbit™ Folders', icon: Folder },
-            { id: 'ministore', label: 'MiniStore Catalogue', icon: ShoppingBag },
-            { id: 'chats', label: 'Encrypted Peer Chat', icon: MessageSquare }
+            { id: 'ministore', label: 'MiniStore Catalogue', icon: ShoppingBag }
           ].map((tab) => {
             const Icon = tab.icon;
             return (
@@ -359,6 +332,15 @@ const MiiPage: React.FC = () => {
         {/* Top Left ProfileCard Column */}
         <div className="lg:col-span-1 space-y-4">
           <UniversalProfileCard />
+          <ConnectWidget
+            pageContext="mii"
+            selectedPeerId={activeChatPeer?.id}
+            onSelectPeer={(peer) => {
+              setActiveChatPeer(peer);
+              setActiveTab('chats');
+            }}
+          />
+          <DiscoverWidget pageContext="mii" />
         </div>
 
         {/* Main Tabs Content Column */}
@@ -839,52 +821,13 @@ const MiiPage: React.FC = () => {
             </div>
           )}
 
-          {/* Tab 5: Encrypted Peer Chat */}
+          {/* Tab 5: Direct Encrypted Mii Peer Chat */}
           {activeTab === 'chats' && (
-            <div className="bg-white dark:bg-gray-900 border border-slate-300 dark:border-gray-800 rounded-3xl p-6 shadow-sm space-y-4">
-              <h3 className="font-bold text-base text-gray-900 dark:text-white flex items-center gap-2">
-                <MessageSquare className="w-5 h-5 text-emerald-600" />
-              Direct Encrypted Mii Peer Chat
-              </h3>
-
-              <div className="h-64 overflow-y-auto space-y-3 p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-slate-300 dark:border-gray-700">
-                {messages.map((m) => (
-                  <div
-                    key={m.id}
-                    className={`flex ${m.sender === 'me' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div
-                      className={`max-w-xs md:max-w-md p-3 rounded-2xl text-xs ${
-                        m.sender === 'me'
-                          ? 'bg-emerald-600 text-white rounded-br-none'
-                          : 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-600 rounded-bl-none'
-                      }`}
-                    >
-                      <p>{m.text}</p>
-                      <span className={`text-[10px] mt-1 block text-right ${m.sender === 'me' ? 'text-emerald-100' : 'text-slate-600 font-medium'}`}>
-                        {m.timestamp}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <form onSubmit={handleSendMessage} className="flex gap-2">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  placeholder="Type encrypted message or reply to Mii..."
-                  className="flex-1 px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-500 text-slate-900 dark:text-white font-bold border-slate-300 placeholder:text-slate-400"
-                />
-                <button
-                  type="submit"
-                  className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition-colors shadow flex items-center gap-1.5"
-                >
-                  <Send className="w-3.5 h-3.5" /> Send
-                </button>
-              </form>
-            </div>
+            <MiiEncryptedPeerChat
+              initialPeer={activeChatPeer}
+              onSelectPeer={(peer) => setActiveChatPeer(peer)}
+              showToast={showToast}
+            />
           )}
         </div>
       </div>
@@ -1177,6 +1120,19 @@ const MiiPage: React.FC = () => {
         aria-label="Mii Mobile Navigation"
         className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-300 px-3 py-2 flex items-center justify-around gap-1 shadow-lg"
       >
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab('chats');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className={`flex-1 flex flex-col items-center justify-center min-h-[44px] py-1 text-xs font-bold transition-colors cursor-pointer ${
+            activeTab === 'chats' ? 'text-emerald-600' : 'text-slate-700 hover:text-slate-900'
+          }`}
+        >
+          <MessageSquare className="w-5 h-5 mb-0.5" />
+          <span>Chat</span>
+        </button>
         <button
           type="button"
           onClick={() => {

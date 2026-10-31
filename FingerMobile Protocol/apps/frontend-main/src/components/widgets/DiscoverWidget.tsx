@@ -18,7 +18,7 @@ export interface DiscoverChannel {
 }
 
 interface DiscoverWidgetProps {
-  pageContext?: 'forum' | 'tribut' | 'hallmarks' | 'blogs' | 'groups' | 'gems' | 'trends' | 'lushpressies';
+  pageContext?: 'forum' | 'tribut' | 'hallmarks' | 'blogs' | 'groups' | 'gems' | 'trends' | 'lushpressies' | 'mii';
 }
 
 const ALL_DISCOVERY_CHANNELS: DiscoverChannel[] = [
