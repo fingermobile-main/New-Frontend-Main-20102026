@@ -52,6 +52,7 @@ import FingerMobileLogoViewerModal from '../components/modals/FingerMobileLogoVi
 import { MiiStoriesBar } from '../components/forum/MiiStoriesBar';
 import { PhotoCreditsFeedBanner } from '../components/photocredits/PhotoCreditsFeedBanner';
 import { PubliciteeAdCard } from '../components/forum/PubliciteeAdCard';
+import { PubliciteeSection } from '../components/PubliciteeSection';
 import { FingerShortsSection } from '../components/FingerShortsSection';
 import { DiscoverFeedSection } from '../components/forum/DiscoverFeedSection';
 import { CanaryAdsManager } from '../components/canary/CanaryAdsManager';
@@ -4338,6 +4339,7 @@ export const ForumPage: React.FC = () => {
                         <>
                           <PhotoCreditsFeedBanner />
                           <PubliciteeAdCard />
+                          <PubliciteeSection placement="forum_feed" maxItems={4} />
                         </>
                       )}
                       {Math.floor(index / 9) % 3 === 1 && (
@@ -4359,6 +4361,7 @@ export const ForumPage: React.FC = () => {
                 <div className="space-y-6 mt-8 pt-4 border-t border-slate-200 dark:border-slate-800">
                   <PhotoCreditsFeedBanner />
                   <PubliciteeAdCard />
+                  <PubliciteeSection placement="forum_feed" maxItems={4} />
                   <FingerShortsSection />
                   <DiscoverFeedSection />
                 </div>

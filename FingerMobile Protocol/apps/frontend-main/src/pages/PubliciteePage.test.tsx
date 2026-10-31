@@ -8,6 +8,13 @@ jest.mock('../contexts/AppContext', () => ({
   }),
 }));
 
+jest.mock('../contexts/AuthContext', () => ({
+  useAuth: () => ({
+    user: { id: '00000000-0000-0000-0000-000000000001', username: 'ObinnaMbah' },
+    isAuthenticated: true,
+  }),
+}));
+
 jest.mock('../components/layout/MainLayout', () => ({
   __esModule: true,
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="main-layout">{children}</div>

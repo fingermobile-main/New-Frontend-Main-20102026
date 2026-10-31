@@ -7,9 +7,7 @@ import {
   Sparkles,
   Eye,
   MousePointerClick,
-  Share2,
-  CheckCircle2,
-  TrendingUp
+  Share2
 } from 'lucide-react';
 
 interface PubliciteeAdCardProps {
@@ -27,7 +25,20 @@ export const PubliciteeAdCard: React.FC<PubliciteeAdCardProps> = ({
 
   const handleCtaClick = () => {
     if (onAdClick) onAdClick();
-    navigate('/camus');
+    navigate('/publicitee');
+  };
+
+  const handleShare = async () => {
+    const url = `${window.location.origin}/publicitee`;
+    try {
+      if (navigator.share && navigator.canShare && navigator.canShare({ url })) {
+        await navigator.share({ title: 'Publicitee Sovereign Ads & Reels', url });
+      } else {
+        await navigator.clipboard.writeText(url);
+      }
+    } catch {
+      // Aborted or fallback
+    }
   };
 
   return (
@@ -103,16 +114,33 @@ export const PubliciteeAdCard: React.FC<PubliciteeAdCardProps> = ({
           >
             <span>❤️</span> {likes}
           </button>
+          <button
+            type="button"
+            onClick={handleShare}
+            className="flex items-center gap-1 font-bold text-slate-700 hover:text-slate-900"
+            title="Share"
+          >
+            <Share2 className="w-3.5 h-3.5" />
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleCtaClick}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:brightness-105 text-slate-950 text-xs font-black shadow-xs transition"
-        >
-          <span>Create Ad Campaign</span>
-          <ExternalLink className="w-3.5 h-3.5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => navigate('/canaryads')}
+            className="hidden sm:inline-flex items-center gap-1 px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold transition"
+          >
+            <span>Canary Ads</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleCtaClick}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:brightness-105 text-slate-950 text-xs font-black shadow-xs transition"
+          >
+            <span>Explore Publicitee</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
     </div>
   );

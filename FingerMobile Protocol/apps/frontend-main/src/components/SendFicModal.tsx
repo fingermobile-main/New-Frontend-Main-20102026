@@ -6,12 +6,13 @@ import { Web3Context } from '../contexts/Web3Context';
 interface SendFicModalProps {
   onClose: () => void;
   onSend: (recipient: string, amount: string, message: string) => Promise<void>;
+  initialRecipient?: string;
 }
 
-const SendFicModal: React.FC<SendFicModalProps> = ({ onClose, onSend }) => {
+const SendFicModal: React.FC<SendFicModalProps> = ({ onClose, onSend, initialRecipient = '' }) => {
   const web3Context = useContext(Web3Context);
   const { ficBalance, showToast } = useAppContext();
-  const [recipient, setRecipient] = useState('');
+  const [recipient, setRecipient] = useState(initialRecipient);
   const [amount, setAmount] = useState('');
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);

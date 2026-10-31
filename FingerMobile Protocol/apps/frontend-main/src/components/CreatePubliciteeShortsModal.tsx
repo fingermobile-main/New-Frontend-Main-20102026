@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Film, Smartphone, Clock, CheckCircle2, AlertCircle, X, Layers } from 'lucide-react';
 
 import { uploadService } from '../services/UploadService';
+import { API_BASE_URL } from '../services/api';
 
 interface CreatePubliciteeShortsModalProps {
   isOpen: boolean;
@@ -106,7 +107,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
           uploadedThumbUrl = uploadedThumb.url;
         }
 
-        const res = await fetch('/api/publicitee', {
+        const res = await fetch(`${API_BASE_URL}/publicitee`, {
           method: 'POST',
           headers,
           body: JSON.stringify({
@@ -153,7 +154,7 @@ export const CreatePubliciteeShortsModal: React.FC<CreatePubliciteeShortsModalPr
           return c;
         }));
 
-        const res = await fetch('/api/fingershorts/sessions', {
+        const res = await fetch(`${API_BASE_URL}/fingershorts/sessions`, {
           method: 'POST',
           headers,
           body: JSON.stringify({
