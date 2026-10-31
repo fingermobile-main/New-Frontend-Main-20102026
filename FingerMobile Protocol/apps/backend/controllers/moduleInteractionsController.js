@@ -278,3 +278,4 @@ exports.getModuleActivityLogs = async (req, res) => {
     return res.status(500).json({ success: false, error: 'Failed to retrieve activity logs' });
   }
 };
+
