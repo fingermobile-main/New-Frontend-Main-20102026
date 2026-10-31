@@ -721,6 +721,14 @@ router.post('/complete-onboarding', async (req, res) => {
   try {
     const userId = req.body.userId || req.body.id;
     const accountType = (req.body.accountType || '').toLowerCase();
+    const interests = Array.isArray(req.body.interests) ? req.body.interests : [];
+    const demographics = req.body.demographics || {};
+    const p2pAlgorithmData = req.body.p2pAlgorithmData || {
+      locationBasedMatching: true,
+      interestAlignment: true,
+      behavioralScoring: true
+    };
+
     let newRole = null;
     if (accountType === 'creator') {
       newRole = 'Creator';
@@ -739,6 +747,61 @@ router.post('/complete-onboarding', async (req, res) => {
           'UPDATE users SET onboarding_completed = TRUE, updated_at = NOW() WHERE id::text = $1 OR username = $1',
           [String(userId)]
         );
+      }
+
+      // Persist P2P profile and compatibility data into ml_p2p_profiles & user_profiles
+      try {
+        const userRes = await pool.query(
+          'SELECT id, username, role FROM users WHERE id::text = $1 OR username = $1 OR email = $1 LIMIT 1',
+          [String(userId)]
+        );
+        if (userRes.rows.length > 0) {
+          const dbUser = userRes.rows[0];
+          const dbUserId = dbUser.id;
+          const assignedRole = newRole || dbUser.role || 'Member';
+          const calculatedCes = assignedRole === 'Business' ? 300 : assignedRole === 'Creator' ? 150 : 50;
+
+          await pool.query(
+            `INSERT INTO ml_p2p_profiles (
+              user_id,
+              interests,
+              compatibility_factors,
+              match_preferences,
+              location_data,
+              last_updated
+            )
+            VALUES ($1, $2, $3, $4, $5, NOW())
+            ON CONFLICT (user_id) DO UPDATE SET
+              interests = EXCLUDED.interests,
+              compatibility_factors = EXCLUDED.compatibility_factors,
+              match_preferences = EXCLUDED.match_preferences,
+              location_data = EXCLUDED.location_data,
+              last_updated = NOW()`,
+            [
+              dbUserId,
+              JSON.stringify(interests),
+              JSON.stringify({ accountType: accountType || (assignedRole === 'Creator' ? 'creator' : assignedRole === 'Business' ? 'business' : 'personal'), cesScore: calculatedCes, verified: true }),
+              JSON.stringify(p2pAlgorithmData),
+              JSON.stringify(demographics)
+            ]
+          );
+
+          await pool.query(
+            `INSERT INTO user_profiles (user_id, interests, headline, updated_at)
+             VALUES ($1, $2, $3, NOW())
+             ON CONFLICT (user_id) DO UPDATE SET
+               interests = EXCLUDED.interests,
+               headline = COALESCE(EXCLUDED.headline, user_profiles.headline),
+               updated_at = NOW()`,
+            [
+              dbUserId,
+              interests,
+              assignedRole === 'Creator' ? 'Sovereign Content Creator' : assignedRole === 'Business' ? 'Verified Business Organization' : 'Sovereign Protocol Citizen'
+            ]
+          );
+        }
+      } catch (p2pErr) {
+        getLogger().warn('⚠️ Could not upsert ml_p2p_profiles in complete-onboarding:', p2pErr.message);
       }
     }
     res.json({ success: true, message: 'Onboarding successfully completed', role: newRole || undefined });

@@ -28,6 +28,7 @@ const SecuritySetupPage = lazy(() => import('../pages/auth/SecuritySetupPage'));
 const ChangePasswordPage = lazy(() => import('../pages/ChangePasswordPage'));
 const AccountDeletionPage = lazy(() => import('../pages/AccountDeletionPage'));
 const OnboardingPage = lazy(() => import('../pages/OnboardingPage'));
+const SuccessPage = lazy(() => import('../pages/common/SuccessPage'));
 const ForgotPasswordPage = lazy(() => import('../pages/auth/ForgotPasswordPage'));
 
 // Module 2: Core Social, Discovery & Consumption
@@ -829,7 +830,7 @@ export const routes: RouteObject[] = [
           { path: '/campaigns', element: redirectTo('/advertising') },
           { path: '/create-post', element: redirectTo('/createpost') },
           { path: '/resources', element: redirectTo('/mydownloads') },
-          { path: '/success', element: redirectTo('/forum') },
+          { path: '/success', element: <SuccessPage /> },
           { path: '/community-guidelines', element: redirectTo('/communityguidelines') },
           { path: '/csae-policy', element: redirectTo('/csaepolicy') },
           { path: '/live-spaces', element: redirectTo('/livestreaming') },

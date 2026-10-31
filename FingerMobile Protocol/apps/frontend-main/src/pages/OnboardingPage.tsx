@@ -324,9 +324,8 @@ const OnboardingPage: React.FC = () => {
   // Handle account type selection
   const handleAccountTypeSelect = async (type?: 'personal' | 'creator' | 'business') => {
     const selected = type || tempData.accountType || 'personal';
+    setTempData((prev: any) => ({ ...prev, accountType: selected }));
     await setAccountType(selected);
-    setTempData({ ...tempData, accountType: selected });
-    await nextStep();
   };
 
   // Handle content creator verification with regional quota registration
@@ -401,6 +400,7 @@ const OnboardingPage: React.FC = () => {
   // Handle completion
   const handleCompleteOnboarding = async (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
+    const accountType = state.progress?.accountType || tempData.accountType || 'personal';
     try {
       localStorage.setItem('onboardingComplete', 'true');
       localStorage.setItem('hasCompletedOnboarding', 'true');
@@ -409,7 +409,6 @@ const OnboardingPage: React.FC = () => {
 
       // Update stored user if available
       const storedUser = localStorage.getItem('user');
-      const accountType = state.progress?.accountType || 'personal';
       if (storedUser) {
         try {
           const u = JSON.parse(storedUser);
@@ -441,15 +440,25 @@ const OnboardingPage: React.FC = () => {
         }
       }
 
-      // Notify backend if online
-      await api.post('/auth/complete-onboarding', { userId, accountType }).catch(() => {});
+      // Notify backend if online with full P2P preferences & profile calibration
+      await api.post('/auth/complete-onboarding', {
+        userId,
+        accountType,
+        interests: state.progress?.interests || selectedInterests,
+        demographics: state.progress?.demographicInfo || tempData,
+        p2pAlgorithmData: state.progress?.p2pAlgorithmData || {
+          locationBasedMatching: true,
+          interestAlignment: true,
+          behavioralScoring: true
+        }
+      }).catch(() => {});
 
       await finalizeOnboarding();
     } catch {
       // Ignore fallback errors
     } finally {
-      // Step 3 -> Step 4: Success Screen
-      navigate('/success');
+      // Navigate to Success screen with explicit role query param
+      navigate(`/success?role=${accountType}`);
     }
   };
 

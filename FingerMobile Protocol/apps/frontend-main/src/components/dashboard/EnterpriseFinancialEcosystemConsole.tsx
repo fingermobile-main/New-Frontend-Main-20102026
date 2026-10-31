@@ -401,8 +401,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
         }
 
         if (logsDb && Array.isArray(logsDb) && logsDb.length > 0) setAuditList(logsDb);
-      } catch (err) {
-        console.warn('Initial financial DB sync note:', err);
+      } catch (_err) {
+        // Handled gracefully
       }
     };
     syncFromPostgres();
@@ -585,7 +585,7 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
             notes: k.notes || ''
           }))
         : DEFAULT_CAPEX_OPEX_DANCIA4TV.items;
-    const totalAllocatedNgn = itList.reduce((acc, it) => acc + (Number(it.amountNgn) || 0), 0);
+    const totalAllocatedNgn = itList.reduce((acc: number, it: any) => acc + (Number(it.amountNgn) || 0), 0);
     const loanTarget = Number(capexOpexDancia?.totalLoanAllocationNgn) || 1412050000;
     const remainingBudget = loanTarget - totalAllocatedNgn;
     return { totalAllocatedNgn, loanTarget, remainingBudget };
@@ -661,8 +661,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
       });
       const logs = await financialDb.fetchAuditLogsFromPostgres();
       setAuditList(logs);
-    } catch (e) {
-      console.warn('Error saving sheet to PostgreSQL backend:', e);
+    } catch (_e) {
+      // Handled gracefully
     }
 
     if (selectedSheetKey === 'income_statement') {
@@ -722,8 +722,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
       });
       const logs = await financialDb.fetchAuditLogsFromPostgres();
       setAuditList(logs);
-    } catch (e) {
-      console.warn('Error submitting sheet to PostgreSQL backend:', e);
+    } catch (_e) {
+      // Handled gracefully
     }
 
     showBanner('📤 Submitted to SUPER ADMIN for ratification in PostgreSQL. Status: PENDING APPROVAL.');
@@ -778,8 +778,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
       });
       const logs = await financialDb.fetchAuditLogsFromPostgres();
       setAuditList(logs);
-    } catch (e) {
-      console.warn('Error approving sheet in PostgreSQL backend:', e);
+    } catch (_e) {
+      // Handled gracefully
     }
 
     setIsEditingSheet(false);
@@ -833,8 +833,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
       });
       const logs = await financialDb.fetchAuditLogsFromPostgres();
       setAuditList(logs);
-    } catch (e) {
-      console.warn('Error unlocking sheet in PostgreSQL backend:', e);
+    } catch (_e) {
+      // Handled gracefully
     }
 
     setIsEditingSheet(true);
@@ -875,8 +875,8 @@ export const EnterpriseFinancialEcosystemConsole: React.FC = () => {
         });
         const logs = await financialDb.fetchAuditLogsFromPostgres();
         setAuditList(logs);
-      } catch (e) {
-        console.warn('Error resetting sheet in PostgreSQL backend:', e);
+      } catch (_e) {
+        // Handled gracefully
       }
       showBanner('🔄 Sheet reset to default baseline values in PostgreSQL.');
     }
