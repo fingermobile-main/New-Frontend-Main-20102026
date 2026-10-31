@@ -888,7 +888,7 @@ class ProfileCharterController {
 
   /**
    * POST /api/v1/profiles/:profile_id/friend-request
-   * Send, accept, or remove a friendship connection
+   * Send, accept, or remove a friendship connection with PostgreSQL database persistence
    */
   async handleFriendRequest(req, res) {
     const targetProfileId = req.params.profile_id;
@@ -900,24 +900,74 @@ class ProfileCharterController {
 
     const action = req.body?.action || 'request';
 
-    if (action === 'accept' || action === 'request') {
+    // 1. Memory fallback cache sync
+    if (action === 'accept') {
       memoryDb.friendships[`${currentViewerId}:${targetProfileId}`] = 'friends';
       memoryDb.friendships[`${targetProfileId}:${currentViewerId}`] = 'friends';
+    } else if (action === 'request') {
+      memoryDb.friendships[`${currentViewerId}:${targetProfileId}`] = 'pending';
     } else if (action === 'remove') {
       delete memoryDb.friendships[`${currentViewerId}:${targetProfileId}`];
       delete memoryDb.friendships[`${targetProfileId}:${currentViewerId}`];
     }
 
+    // 2. PostgreSQL Relational Database Persistence
+    try {
+      let viewerUuid = currentViewerId;
+      let targetUuid = targetProfileId;
+
+      const vRes = await pool.query('SELECT id FROM users WHERE id::text = $1 OR username = $1 LIMIT 1', [currentViewerId]);
+      if (vRes.rows.length > 0) viewerUuid = vRes.rows[0].id;
+
+      const tRes = await pool.query('SELECT id FROM users WHERE id::text = $1 OR username = $1 LIMIT 1', [targetProfileId]);
+      if (tRes.rows.length > 0) targetUuid = tRes.rows[0].id;
+
+      if (viewerUuid && targetUuid && viewerUuid !== targetUuid) {
+        if (action === 'accept') {
+          await pool.query(
+            `INSERT INTO friendships (user_id, friend_id, status, updated_at)
+             VALUES ($1, $2, 'friends', NOW())
+             ON CONFLICT (user_id, friend_id) DO UPDATE SET status = 'friends', updated_at = NOW();`,
+            [viewerUuid, targetUuid]
+          );
+          await pool.query(
+            `INSERT INTO friendships (user_id, friend_id, status, updated_at)
+             VALUES ($1, $2, 'friends', NOW())
+             ON CONFLICT (user_id, friend_id) DO UPDATE SET status = 'friends', updated_at = NOW();`,
+            [targetUuid, viewerUuid]
+          );
+        } else if (action === 'request') {
+          await pool.query(
+            `INSERT INTO friendships (user_id, friend_id, status, updated_at)
+             VALUES ($1, $2, 'pending', NOW())
+             ON CONFLICT (user_id, friend_id) DO UPDATE SET status = 'pending', updated_at = NOW();`,
+            [viewerUuid, targetUuid]
+          );
+        } else if (action === 'remove') {
+          await pool.query(
+            `DELETE FROM friendships 
+             WHERE (user_id::text = $1 AND friend_id::text = $2) 
+                OR (user_id::text = $2 AND friend_id::text = $1);`,
+            [viewerUuid, targetUuid]
+          );
+        }
+      }
+    } catch (dbErr) {
+      if (logger && typeof logger.warn === 'function') {
+        logger.warn('PostgreSQL handleFriendRequest fallback:', dbErr.message);
+      }
+    }
+
     return res.json({
       success: true,
-      message: `Relationship updated to ${action === 'remove' ? 'stranger' : 'friends'}.`,
-      relationship: action === 'remove' ? 'stranger' : 'friends'
+      message: `Relationship updated to ${action === 'remove' ? 'stranger' : action === 'accept' ? 'friends' : 'pending'}.`,
+      relationship: action === 'remove' ? 'stranger' : action === 'accept' ? 'friends' : 'pending'
     });
   }
 
   /**
    * POST /api/v1/profiles/:profile_id/block
-   * Enforce Total Opacity Block rule
+   * Enforce Total Opacity Block rule with PostgreSQL database persistence
    */
   async handleBlock(req, res) {
     const targetProfileId = req.params.profile_id;
@@ -934,6 +984,35 @@ class ProfileCharterController {
       delete memoryDb.friendships[blockKey];
     } else {
       memoryDb.friendships[blockKey] = 'blocked';
+    }
+
+    try {
+      let vUuid = currentViewerId;
+      let tUuid = targetProfileId;
+      const vRes = await pool.query('SELECT id FROM users WHERE id::text = $1 OR username = $1 LIMIT 1', [currentViewerId]);
+      if (vRes.rows.length > 0) vUuid = vRes.rows[0].id;
+      const tRes = await pool.query('SELECT id FROM users WHERE id::text = $1 OR username = $1 LIMIT 1', [targetProfileId]);
+      if (tRes.rows.length > 0) tUuid = tRes.rows[0].id;
+
+      if (vUuid && tUuid && vUuid !== tUuid) {
+        if (isCurrentlyBlocked) {
+          await pool.query(
+            `DELETE FROM friendships WHERE user_id::text = $1 AND friend_id::text = $2 AND status = 'blocked';`,
+            [vUuid, tUuid]
+          );
+        } else {
+          await pool.query(
+            `INSERT INTO friendships (user_id, friend_id, status, updated_at)
+             VALUES ($1, $2, 'blocked', NOW())
+             ON CONFLICT (user_id, friend_id) DO UPDATE SET status = 'blocked', updated_at = NOW();`,
+            [vUuid, tUuid]
+          );
+        }
+      }
+    } catch (dbErr) {
+      if (logger && typeof logger.warn === 'function') {
+        logger.warn('PostgreSQL handleBlock fallback:', dbErr.message);
+      }
     }
 
     return res.json({
