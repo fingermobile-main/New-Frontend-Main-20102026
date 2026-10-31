@@ -1301,12 +1301,12 @@ export const MasterFinancialsConsole: React.FC = () => {
                     <tr key={item.id} className="hover:bg-zinc-800/40">
                       <td className="p-3 font-sans">
                         <div className="font-bold text-white">{item.walletName}</div>
-                        <div className="text-[10px] text-zinc-300 font-medium">{item.custodianTitle}</div>
+                        <div className="text-[10px] text-zinc-200 font-medium">{item.custodianTitle}</div>
                         <div className="text-[10px] text-amber-400 font-mono mt-0.5">{item.walletAddress}</div>
                       </td>
                       <td className="p-3 font-bold text-amber-400 text-sm">
                         {item.amountFIC.toLocaleString()} FIC
-                        <div className="text-[10px] text-zinc-300 font-sans font-medium">
+                        <div className="text-[10px] text-zinc-200 font-sans font-medium">
                           ₦{(item.amountFIC * exchangeRateNaira).toLocaleString()} NGN
                         </div>
                       </td>
@@ -1317,19 +1317,19 @@ export const MasterFinancialsConsole: React.FC = () => {
                         <span
                           className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                             item.isMultiSig
-                              ? 'bg-purple-950 text-purple-300 border border-purple-500/40'
-                              : 'bg-zinc-800 text-zinc-300'
+                              ? 'bg-purple-950 text-purple-200 border border-purple-500/40'
+                              : 'bg-zinc-800 text-zinc-200'
                           }`}
                         >
                           {item.governanceType}
                         </span>
                         {item.isMultiSig && (
-                          <div className="text-[10px] text-purple-400 mt-1">
+                          <div className="text-[10px] text-purple-300 mt-1 font-bold">
                             Requires {item.signaturesRequired} of 5 Board Signatures
                           </div>
                         )}
                       </td>
-                      <td className="p-3 font-sans text-zinc-300 max-w-xs leading-relaxed">
+                      <td className="p-3 font-sans text-zinc-200 max-w-xs leading-relaxed">
                         {item.purpose}
                       </td>
                     </tr>
@@ -1348,13 +1348,13 @@ export const MasterFinancialsConsole: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-white">Execute FIC Allocation</h3>
-                  <p className="text-[11px] text-zinc-300 font-medium">Commissioned under Mbah Israel Obinna exclusive charter.</p>
+                  <p className="text-[11px] text-zinc-200 font-medium">Commissioned under Mbah Israel Obinna exclusive charter.</p>
                 </div>
               </div>
 
               <form onSubmit={handleMintAllocate} className="space-y-4 text-xs">
                 <div>
-                  <label className="block font-bold text-zinc-200 mb-1">
+                  <label className="block font-bold text-zinc-100 mb-1">
                     Recipient Address or Designated Wallet
                   </label>
                   <input
@@ -1368,7 +1368,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block font-bold text-zinc-200 mb-1">
+                  <label className="block font-bold text-zinc-100 mb-1">
                     FIC Amount
                   </label>
                   <div className="relative">
@@ -1385,14 +1385,14 @@ export const MasterFinancialsConsole: React.FC = () => {
                     <span className="absolute right-3 top-2.5 font-bold font-mono text-amber-500">FIC</span>
                   </div>
                   {amountInput && !isNaN(parseFloat(amountInput)) && (
-                    <div className="text-[11px] text-zinc-300 font-mono font-medium mt-1">
+                    <div className="text-[11px] text-zinc-200 font-mono font-medium mt-1">
                       FIAT Parity: ₦{(parseFloat(amountInput) * exchangeRateNaira).toLocaleString()} NGN (~${(parseFloat(amountInput) * ficUSDValue).toFixed(2)} USD)
                     </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-zinc-300 mb-1">
+                  <label className="block font-bold text-zinc-100 mb-1">
                     Mint Purpose (8 Statutory Categories)
                   </label>
                   <select
@@ -1412,7 +1412,7 @@ export const MasterFinancialsConsole: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-zinc-300 mb-1">
+                  <label className="block font-bold text-zinc-100 mb-1">
                     Ledger Audit Justification
                   </label>
                   <textarea
@@ -1460,14 +1460,14 @@ export const MasterFinancialsConsole: React.FC = () => {
                       <tr key={tx.id} className="hover:bg-zinc-800/40">
                         <td className="p-3 font-sans">
                           <div className="font-bold text-white">{tx.recipientName}</div>
-                          <div className="text-[10px] text-zinc-300 font-mono font-medium">{tx.recipientAddress}</div>
+                          <div className="text-[10px] text-zinc-200 font-mono font-medium">{tx.recipientAddress}</div>
                           {tx.serialNumber && (
                             <div className="text-[10px] text-amber-400 font-mono mt-0.5">{tx.serialNumber}</div>
                           )}
                         </td>
                         <td className="p-3">
                           <span className="font-bold text-amber-400">+{tx.amountFIC.toLocaleString()} FIC</span>
-                          <div className="text-[10px] text-zinc-300 font-medium">₦{tx.fiatEquivalentNaira.toLocaleString()}</div>
+                          <div className="text-[10px] text-zinc-200 font-medium">₦{tx.fiatEquivalentNaira.toLocaleString()}</div>
                         </td>
                         <td className="p-3 font-sans">
                           <span className="px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-200 text-[10px] font-bold">
@@ -1476,9 +1476,9 @@ export const MasterFinancialsConsole: React.FC = () => {
                         </td>
                         <td className="p-3">
                           <div className="text-[10px] text-blue-400 font-bold">{tx.txHash}</div>
-                          <div className="text-[10px] text-zinc-300 font-sans line-clamp-1 font-medium">{tx.authorizedBy}</div>
+                          <div className="text-[10px] text-zinc-200 font-sans line-clamp-1 font-medium">{tx.authorizedBy}</div>
                         </td>
-                        <td className="p-3 text-right text-zinc-300 text-[10px] font-sans font-medium">
+                        <td className="p-3 text-right text-zinc-200 text-[10px] font-sans font-medium">
                           {tx.timestamp}
                         </td>
                       </tr>
