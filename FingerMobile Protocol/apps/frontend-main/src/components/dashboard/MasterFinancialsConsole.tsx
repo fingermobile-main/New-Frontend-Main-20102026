@@ -855,10 +855,10 @@ export const MasterFinancialsConsole: React.FC = () => {
       </div>
 
       {/* ========================================================================= */}
-      {/* 9 SUB-TABS NAVIGATION BAR                                                */}
+      {/* 12 SUB-TABS NAVIGATION BAR                                                */}
       {/* ========================================================================= */}
-      <div className="border-b border-zinc-800">
-        <nav className="flex space-x-4 overflow-x-auto pb-1 text-xs sm:text-sm font-medium">
+      <div className="bg-white dark:bg-zinc-900 border border-slate-300 dark:border-zinc-800 rounded-2xl p-2.5 shadow-sm">
+        <nav className="flex space-x-2 overflow-x-auto pb-1 text-xs sm:text-sm font-medium">
           {[
             { id: 'autonomous-treasury-control', label: 'Autonomous Treasury Control (Option C)', icon: Landmark },
             { id: 'financial-ecosystem', label: 'Financial Ecosystem & Ratios (Fidelity Bank)', icon: Landmark },
@@ -879,13 +879,13 @@ export const MasterFinancialsConsole: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => handleSubTabChange(tab.id as SubTabType)}
-                className={`py-3 px-2 border-b-2 transition-all flex items-center gap-2 whitespace-nowrap ${
+                className={`py-2.5 px-3.5 rounded-xl transition-all flex items-center gap-2 whitespace-nowrap text-xs font-bold ${
                   isActive
-                    ? 'border-amber-500 text-amber-400 font-bold'
-                    : 'border-transparent text-zinc-300 hover:text-white font-medium'
+                    ? 'bg-slate-900 text-amber-300 dark:bg-amber-500 dark:text-slate-950 shadow-md font-black border border-slate-950 dark:border-amber-600 ring-2 ring-amber-500/40'
+                    : 'text-slate-800 hover:text-slate-950 hover:bg-slate-100 dark:text-zinc-200 dark:hover:text-white dark:hover:bg-zinc-800 font-bold border border-transparent'
                 }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-amber-300 dark:text-slate-950' : 'text-slate-700 dark:text-zinc-300'}`} />
                 <span>{tab.label}</span>
               </button>
             );
