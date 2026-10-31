@@ -8,6 +8,19 @@ const { pool } = require('../db');
 const logger = require('../utils/logger');
 
 class P2PMatchingController {
+  constructor() {
+    this.findMatch = this.findMatch.bind(this);
+    this.getActiveMatches = this.getActiveMatches.bind(this);
+    this.saveMemberProfile = this.saveMemberProfile.bind(this);
+    this.getMemberProfile = this.getMemberProfile.bind(this);
+    this.getAllMemberProfiles = this.getAllMemberProfiles.bind(this);
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.create = this.create.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+  }
+
   /**
    * POST /api/p2p-matching/find-match
    * Find a peer match based on criteria
