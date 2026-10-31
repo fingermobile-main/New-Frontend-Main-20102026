@@ -9,6 +9,13 @@ jest.mock('../contexts/AppContext', () => ({
   }),
 }));
 
+jest.mock('../contexts/AuthContext', () => ({
+  useAuth: () => ({
+    user: { id: '00000000-0000-0000-0000-000000000001', username: 'israelobinna' },
+    setUser: jest.fn(),
+  }),
+}));
+
 describe('NetworkSuggestionsPage', () => {
   it('renders the title and initial recommendations', () => {
     render(

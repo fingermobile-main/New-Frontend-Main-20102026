@@ -104,6 +104,11 @@ router.put('/:profile_id/cover', optionalAuthenticate, (req, res) => {
   return profileCharterController.updateCoverPhoto(req, res);
 });
 
+// GET /api/v1/profiles/:profile_id/friends
+router.get('/:profile_id/friends', optionalAuthenticate, (req, res) => {
+  return profileCharterController.getFriends(req, res);
+});
+
 // GET /api/v1/profiles/:profile_id/recommendations
 router.get('/:profile_id/recommendations', optionalAuthenticate, (req, res) => {
   return profileCharterController.getRecommendations(req, res);

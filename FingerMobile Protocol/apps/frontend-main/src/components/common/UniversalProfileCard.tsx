@@ -134,8 +134,23 @@ export const UniversalProfileCard: React.FC<UniversalProfileCardProps> = ({
       });
       setPinQuotaRemaining(updated.pinQuotaRemaining);
     });
+
+    const targetUserId = (customUser as any)?.id || authUser?.id || (authUser as any)?.userId || '00000000-0000-0000-0000-000000000001';
+    userProfileSyncService.fetchFromBackend(targetUserId).then((live) => {
+      setProfileData({
+        name: live.name,
+        username: live.username,
+        headline: live.headline || live.bio || '',
+        location: live.location || 'Lagos, Nigeria',
+        avatar: live.avatar,
+        coverImage: live.coverImage,
+        pinNumber: live.pinNumber,
+      });
+      setPinQuotaRemaining(live.pinQuotaRemaining);
+    }).catch(() => {});
+
     return unsub;
-  }, []);
+  }, [customUser, authUser]);
 
   // Synchronize when customUser or authUser changes
   useEffect(() => {

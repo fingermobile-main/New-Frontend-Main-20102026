@@ -5,6 +5,7 @@ import { useAppContext } from '../contexts/AppContext';
 import PlatformWidgetsAndAdsRail from '../components/widgets/PlatformWidgetsAndAdsRail';
 import ConnectWidget from '../components/widgets/ConnectWidget';
 import DiscoverWidget from '../components/widgets/DiscoverWidget';
+import { ForumPostCard, FeedPost, FeedComment } from '../components/forum/ForumPostCard';
 import {
   FireIcon,
   SparklesIcon,
@@ -18,8 +19,14 @@ import {
   MemberIcon,
   MegaphoneIcon,
   MusicNoteIcon,
-  ArrowPathIcon
+  ArrowPathIcon,
+  BookmarkIcon,
+  LinkIcon
 } from '../icons';
+import {
+  HeartIcon as HeartSolidIcon,
+  BookmarkIcon as BookmarkSolidIcon
+} from '@heroicons/react/24/solid';
 
 export interface TrendItem {
   id: string;
@@ -73,6 +80,19 @@ const TrendsPage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('24h');
   const [likedTrends, setLikedTrends] = useState<Record<string, boolean>>({});
+
+  const [viewMode, setViewMode] = useState<'radar' | 'discussion'>('radar');
+  const [bookmarkedTrends, setBookmarkedTrends] = useState<Record<string, boolean>>(() => {
+    try {
+      const stored = localStorage.getItem('fmp_trend_bookmarks');
+      return stored ? JSON.parse(stored) : {};
+    } catch {
+      return {};
+    }
+  });
+  const [expandedComments, setExpandedComments] = useState<Record<string, boolean>>({});
+  const [commentInputs, setCommentInputs] = useState<Record<string, string>>({});
+  const [trendComments, setTrendComments] = useState<Record<string, FeedComment[]>>({});
 
   const fetchTrends = useCallback(async () => {
     try {
@@ -172,17 +192,118 @@ const TrendsPage: React.FC = () => {
     });
   };
 
+  const handleToggleBookmark = (id: string) => {
+    setBookmarkedTrends((prev) => {
+      const isBookmarked = !prev[id];
+      const updated = { ...prev, [id]: isBookmarked };
+      try {
+        localStorage.setItem('fmp_trend_bookmarks', JSON.stringify(updated));
+      } catch {
+        // Ignore
+      }
+      showToast(isBookmarked ? 'Trend bookmarked to your library!' : 'Trend removed from bookmarks', 'info');
+      return updated;
+    });
+  };
+
+  const handleCopyLink = (trend: TrendItem) => {
+    const url = `${window.location.origin}/trends?id=${trend.id}&topic=${encodeURIComponent(trend.topic)}`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+      showToast(`Link to "${trend.topic}" copied to clipboard!`, 'success');
+    } else {
+      showToast(`Link: ${url}`, 'info');
+    }
+  };
+
   const handleShareTrend = (trend: TrendItem) => {
+    const url = `${window.location.origin}/trends?id=${trend.id}&topic=${encodeURIComponent(trend.topic)}`;
     if (navigator.share) {
       navigator.share({
-        title: `FingerMobile Trends: ${trend.topic}`,
-        text: `${trend.title} — trending on FingerMobile Protocol`,
-        url: window.location.href
+        title: `FingerMobile Cultural Radar: ${trend.topic}`,
+        text: `${trend.title} — trending now on FingerMobile Protocol`,
+        url
       }).catch(() => {});
     } else {
-      navigator.clipboard.writeText(`${trend.topic}: ${trend.title} - ${window.location.href}`);
-      showToast(`Link to ${trend.topic} copied to clipboard!`, 'info');
+      handleCopyLink(trend);
     }
+  };
+
+  const handleToggleComments = (trendId: string) => {
+    setExpandedComments((prev) => ({
+      ...prev,
+      [trendId]: !prev[trendId]
+    }));
+  };
+
+  const handleAddComment = (trendId: string, text: string) => {
+    if (!text.trim()) return;
+    const newComment: FeedComment = {
+      id: `comm_${Date.now()}`,
+      authorName: 'Sovereign Contributor',
+      authorHandle: '@sovereign_member',
+      authorAvatar: '/assets/branding/mbah_israel_obinna.jpeg',
+      text: text.trim(),
+      createdAt: 'Just now'
+    };
+
+    setTrendComments((prev) => ({
+      ...prev,
+      [trendId]: [...(prev[trendId] || []), newComment]
+    }));
+
+    setTrends((curTrends) =>
+      curTrends.map((t) =>
+        t.id === trendId
+          ? { ...t, metrics: { ...t.metrics, comments: t.metrics.comments + 1 } }
+          : t
+      )
+    );
+
+    setCommentInputs((prev) => ({ ...prev, [trendId]: '' }));
+    showToast('Comment posted to cultural radar discussion!', 'success');
+  };
+
+  const handleTipTrend = (_trendId: string, amount: number = 50) => {
+    showToast(`Successfully tipped ${amount} FIC to trend curation node!`, 'success');
+  };
+
+  // Convert TrendItem to FeedPost for ForumPostCard
+  const mapTrendToFeedPost = (t: TrendItem): FeedPost => {
+    const isLiked = Boolean(likedTrends[t.id]);
+    const isBookmarked = Boolean(bookmarkedTrends[t.id]);
+    const comments = trendComments[t.id] || [
+      {
+        id: `comm-default-${t.id}`,
+        authorName: 'Sovereign Community',
+        authorHandle: '@sovereign_voice',
+        authorAvatar: '/assets/branding/mbah_israel_obinna.jpeg',
+        text: `Dominating discussions across the global enclave. Essential updates on ${t.topic}.`,
+        createdAt: '1h ago'
+      }
+    ];
+
+    return {
+      id: t.id,
+      title: t.topic,
+      content: `${t.title}\n\n${t.content}`,
+      authorName: t.author.username || 'Cultural Radar Desk',
+      authorHandle: t.author.username ? `@${t.author.username.replace('@', '')}` : '@fingermobile',
+      authorAvatar: t.author.avatarUrl || '/assets/branding/mbah_israel_obinna.jpeg',
+      authorRole: 'Trend Curator',
+      categoryName: t.category.replace('_', ' ').toUpperCase(),
+      createdAt: t.createdAt || 'Trending Now',
+      likesCount: t.metrics.likes,
+      commentsCount: (t.metrics.comments || 0) + (trendComments[t.id]?.length || 0),
+      sharesCount: t.metrics.shares,
+      isLiked,
+      isBookmarked,
+      tags: [`#${t.category.replace('_', '')}`, `#${t.topic.replace(/\s+/g, '')}`, '#FingerMobileTrends'],
+      mediaUrl: t.mediaUrl,
+      mediaUrls: t.mediaUrl ? [t.mediaUrl] : undefined,
+      commentsList: comments,
+      privacy: 'public'
+    };
   };
 
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -233,7 +354,33 @@ const TrendsPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 self-stretch md:self-auto justify-between md:justify-end">
+          <div className="flex items-center gap-2 self-stretch md:self-auto justify-between md:justify-end flex-wrap">
+            {/* View Mode Toggle: Radar Grid vs Forum Discussion Feed */}
+            <div className="flex bg-gray-100 p-1 rounded-xl border border-slate-300">
+              <button
+                type="button"
+                onClick={() => setViewMode('radar')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  viewMode === 'radar'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-700 hover:text-slate-900'
+                }`}
+              >
+                Radar Grid
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('discussion')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  viewMode === 'discussion'
+                    ? 'bg-white text-slate-900 shadow-sm'
+                    : 'text-slate-700 hover:text-slate-900'
+                }`}
+              >
+                Discussion Feed
+              </button>
+            </div>
+
             {/* Time Filter */}
             <div className="flex bg-gray-100 p-1.5 rounded-xl border border-slate-300">
               {(['24h', '7d', '30d'] as const).map((r) => (
@@ -372,9 +519,28 @@ const TrendsPage: React.FC = () => {
                 <p role={loadError ? 'alert' : undefined} className="text-sm font-bold text-slate-700">{loadError || 'No trends found in this category.'}</p>
                 {!loadError && <p className="text-xs text-slate-700 mt-1">Check back soon as new topics emerge globally.</p>}
               </div>
+            ) : viewMode === 'discussion' ? (
+              /* Forum PostCard Feed View (Unified Reusable Component from ForumPage) */
+              trends.map((trend) => (
+                <ForumPostCard
+                  key={trend.id}
+                  post={mapTrendToFeedPost(trend)}
+                  onLike={() => handleToggleLike(trend.id)}
+                  onToggleBookmark={() => handleToggleBookmark(trend.id)}
+                  onShare={() => handleShareTrend(trend)}
+                  onAddComment={(postId, text) => handleAddComment(postId, text)}
+                  onTip={(postId, amount) => handleTipTrend(postId, amount)}
+                  triggerToast={(msg, type) => showToast(msg, type)}
+                />
+              ))
             ) : (
+              /* Radar Grid View with Working CTAs (Like, Comment, Save/Bookmark, Copy, Share, Tip) */
               trends.map((trend, index) => {
-                const isLiked = !!likedTrends[trend.id];
+                const isLiked = Boolean(likedTrends[trend.id]);
+                const isBookmarked = Boolean(bookmarkedTrends[trend.id]);
+                const isCommentsOpen = Boolean(expandedComments[trend.id]);
+                const comments = trendComments[trend.id] || [];
+
                 return (
                   <div
                     key={trend.id}
@@ -394,7 +560,11 @@ const TrendsPage: React.FC = () => {
                               {(trend.metrics.likes + trend.metrics.comments + trend.metrics.shares).toLocaleString()} interactions
                             </span>
                           </div>
-                          <h2 className="text-lg font-black text-slate-900 tracking-tight hover:text-red-600 transition-colors cursor-pointer">
+                          <h2
+                            onClick={() => setViewMode('discussion')}
+                            className="text-lg font-black text-slate-900 tracking-tight hover:text-red-600 transition-colors cursor-pointer"
+                            title="Click to view full discussion card"
+                          >
                             {trend.topic}
                           </h2>
                           <h3 className="text-sm font-bold text-slate-700 mt-0.5">
@@ -403,12 +573,37 @@ const TrendsPage: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex items-center gap-1.5 shrink-0">
                         <span className="px-3 py-1 bg-emerald-50 text-emerald-950 font-black text-xs rounded-full flex items-center gap-1 border border-emerald-400">
                           <ArrowTrendingUpIcon className="w-3.5 h-3.5" />
                           {trend.velocityScore || 95} Velocity
                         </span>
                         <button
+                          type="button"
+                          onClick={() => handleToggleBookmark(trend.id)}
+                          className={`p-2 border rounded-lg transition-colors ${
+                            isBookmarked
+                              ? 'bg-amber-50 text-amber-600 border-amber-300'
+                              : 'border-slate-300 text-slate-700 hover:text-amber-600 hover:bg-amber-50'
+                          }`}
+                          title={isBookmarked ? 'Remove Bookmark' : 'Save / Bookmark Topic'}
+                        >
+                          {isBookmarked ? (
+                            <BookmarkSolidIcon className="w-4 h-4 fill-amber-500 text-amber-500" />
+                          ) : (
+                            <BookmarkIcon className="w-4 h-4" />
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleCopyLink(trend)}
+                          className="p-2 border border-slate-300 rounded-lg text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                          title="Copy Topic Permalink"
+                        >
+                          <LinkIcon className="w-4 h-4" />
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => handleShareTrend(trend)}
                           className="p-2 border border-slate-300 rounded-lg text-slate-700 hover:text-red-500 hover:bg-red-50 transition-colors"
                           title="Share Topic"
@@ -423,36 +618,148 @@ const TrendsPage: React.FC = () => {
                     </p>
 
                     {/* Author & Interaction Footer */}
-                    <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                    <div className="mt-4 pt-3 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
                         <img
-                          src={trend.author.avatarUrl}
+                          src={trend.author.avatarUrl || '/assets/branding/mbah_israel_obinna.jpeg'}
                           alt={trend.author.username}
                           className="w-6 h-6 rounded-full object-cover border border-slate-300"
                         />
                         <span className="text-xs font-bold text-slate-800">{trend.author.username}</span>
                       </div>
 
-                      <div className="flex items-center gap-4 text-xs font-semibold text-slate-700">
-                        <button type="button" aria-label="Like"
+                      <div className="flex items-center gap-3 text-xs font-semibold text-slate-700 flex-wrap">
+                        {/* Like Button */}
+                        <button
+                          type="button"
+                          aria-label="Like Topic"
                           onClick={() => handleToggleLike(trend.id)}
-                          className={`flex items-center gap-1.5 transition-colors ${
-                            isLiked ? 'text-red-600 font-bold' : 'hover:text-red-500'
+                          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border transition-colors ${
+                            isLiked
+                              ? 'bg-red-50 text-red-600 border-red-200 font-bold'
+                              : 'bg-white text-slate-700 border-slate-300 hover:text-red-500 hover:border-red-200'
                           }`}
                         >
-                          <HeartIcon className={`w-4 h-4 ${isLiked ? 'fill-current text-red-500' : ''}`} />
-                          {trend.metrics.likes.toLocaleString()}
+                          {isLiked ? (
+                            <HeartSolidIcon className="w-4 h-4 text-red-500" />
+                          ) : (
+                            <HeartIcon className="w-4 h-4" />
+                          )}
+                          <span>{trend.metrics.likes.toLocaleString()}</span>
                         </button>
-                        <div className="flex items-center gap-1 text-slate-700">
+
+                        {/* Comment Button (Toggles Inline Discussion Thread) */}
+                        <button
+                          type="button"
+                          aria-label="Toggle Comments"
+                          onClick={() => handleToggleComments(trend.id)}
+                          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border transition-colors ${
+                            isCommentsOpen
+                              ? 'bg-blue-50 text-blue-700 border-blue-300 font-bold'
+                              : 'bg-white text-slate-700 border-slate-300 hover:text-blue-600 hover:border-blue-200'
+                          }`}
+                        >
                           <ChatBubbleLeftRightIcon className="w-4 h-4" />
-                          {trend.metrics.comments.toLocaleString()}
-                        </div>
-                        <div className="flex items-center gap-1 text-slate-700">
-                          <ShareIcon className="w-4 h-4" />
-                          {trend.metrics.shares.toLocaleString()}
-                        </div>
+                          <span>{trend.metrics.comments.toLocaleString()}</span>
+                        </button>
+
+                        {/* Copy Link Button */}
+                        <button
+                          type="button"
+                          aria-label="Copy Link"
+                          onClick={() => handleCopyLink(trend)}
+                          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 hover:text-blue-600 transition-colors"
+                        >
+                          <LinkIcon className="w-3.5 h-3.5" />
+                          <span>Copy</span>
+                        </button>
+
+                        {/* Share Button */}
+                        <button
+                          type="button"
+                          aria-label="Share Topic"
+                          onClick={() => handleShareTrend(trend)}
+                          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 hover:text-red-500 transition-colors"
+                        >
+                          <ShareIcon className="w-3.5 h-3.5" />
+                          <span>Share</span>
+                        </button>
+
+                        {/* Switch to Full Forum PostCard view */}
+                        <button
+                          type="button"
+                          onClick={() => setViewMode('discussion')}
+                          className="text-[11px] font-bold text-sky-700 hover:text-sky-900 underline ml-1"
+                        >
+                          Open Discussion Card
+                        </button>
                       </div>
                     </div>
+
+                    {/* Expandable Comments Drawer */}
+                    {isCommentsOpen && (
+                      <div className="mt-4 pt-4 border-t border-slate-200 space-y-3 bg-slate-50 p-4 rounded-xl border">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                            <ChatBubbleLeftRightIcon className="w-4 h-4 text-blue-600" />
+                            Radar Topic Discussion ({comments.length + trend.metrics.comments})
+                          </h4>
+                          <span className="text-[10px] font-bold text-slate-500">Live Peer Commentary</span>
+                        </div>
+
+                        {/* Existing Comments List */}
+                        <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                          {comments.length === 0 ? (
+                            <p className="text-xs text-slate-600 italic py-1">
+                              Be the first to share your thoughts on #{trend.topic}!
+                            </p>
+                          ) : (
+                            comments.map((comm) => (
+                              <div key={comm.id} className="bg-white p-2.5 rounded-lg border border-slate-200 flex items-start gap-2.5 shadow-2xs">
+                                <img
+                                  src={comm.authorAvatar}
+                                  alt={comm.authorName}
+                                  className="w-6 h-6 rounded-full object-cover border border-slate-300 shrink-0"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center justify-between gap-2">
+                                    <span className="text-xs font-bold text-slate-900">{comm.authorName}</span>
+                                    <span className="text-[10px] text-slate-500">{comm.createdAt}</span>
+                                  </div>
+                                  <p className="text-xs text-slate-700 mt-0.5 leading-snug">{comm.text}</p>
+                                </div>
+                              </div>
+                            ))
+                          )}
+                        </div>
+
+                        {/* Add Comment Input Form */}
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            handleAddComment(trend.id, commentInputs[trend.id] || '');
+                          }}
+                          className="flex items-center gap-2 pt-2 border-t border-slate-200"
+                        >
+                          <input
+                            type="text"
+                            placeholder="Add your sovereign perspective..."
+                            value={commentInputs[trend.id] || ''}
+                            onChange={(e) =>
+                              setCommentInputs((prev) => ({ ...prev, [trend.id]: e.target.value }))
+                            }
+                            className="flex-1 px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+                          />
+                          <button
+                            type="submit"
+                            disabled={!(commentInputs[trend.id] || '').trim()}
+                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition shadow-xs shrink-0"
+                          >
+                            Post Comment
+                          </button>
+                        </form>
+                      </div>
+                    )}
                   </div>
                 );
               })

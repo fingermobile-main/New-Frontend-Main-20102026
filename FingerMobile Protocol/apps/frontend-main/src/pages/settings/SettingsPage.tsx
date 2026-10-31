@@ -70,8 +70,23 @@ export const SettingsPage: React.FC = () => {
         location: synced.location || 'Lagos, Nigeria'
       });
     });
+
+    // Hydrate directly from PostgreSQL Database Source of Truth
+    const targetId = user?.id || (user as any)?.userId || '00000000-0000-0000-0000-000000000001';
+    userProfileSyncService.fetchFromBackend(targetId).then((live) => {
+      setProfile({
+        name: live.name,
+        username: live.username,
+        email: live.email || user?.email || '',
+        phone: live.phone || '+234 801 234 5678',
+        bio: live.headline || live.bio || '',
+        avatarUrl: live.avatar,
+        location: live.location || 'Lagos, Nigeria'
+      });
+    }).catch(() => {});
+
     return unsub;
-  }, []);
+  }, [user]);
 
   // Security State
   const [security, setSecurity] = useState({

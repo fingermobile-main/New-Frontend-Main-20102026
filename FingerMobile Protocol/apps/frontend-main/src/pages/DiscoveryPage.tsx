@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useAppContext } from '../contexts/AppContext';
+import { API_BASE_URL } from '../services/api';
 import {
   MemberGroupIcon,
   MagnifyingGlassIcon,
@@ -9,8 +10,9 @@ import {
   MusicalNoteIcon,
   FilmIcon,
   AcademicCapIcon,
-  ShareIcon,
-  SparklesIcon
+  SparklesIcon,
+  CheckIcon,
+  ClockIcon
 } from '../icons';
 import MainLayout from '../components/layout/MainLayout';
 import CuratedDiscovery from '../components/CuratedDiscovery';
@@ -27,12 +29,12 @@ interface DiscoveryItem {
   mutualConnections?: number;
   location?: string;
   followers?: number;
+  status?: 'none' | 'pending' | 'connected';
 }
 
 // --- Subcomponent: Decoupled Discovery Item Card ---
 interface DiscoveryItemCardProps {
   item: DiscoveryItem;
-  // eslint-disable-next-line no-unused-vars
   // eslint-disable-next-line no-unused-vars
   onAction: (id: string, type: string) => void;
 }
@@ -58,38 +60,80 @@ const DiscoveryItemCard: React.FC<DiscoveryItemCardProps> = React.memo(({ item, 
   const getActionButton = useCallback(() => {
     switch (item.type) {
     case 'member':
+      if (item.status === 'connected') {
+        return (
+          <span className="flex items-center text-xs bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-3 py-1.5 rounded-lg shadow-xs">
+            <CheckIcon className="h-4 w-4 mr-1 text-emerald-700" />
+            Connected
+          </span>
+        );
+      }
+      if (item.status === 'pending') {
+        return (
+          <button
+            onClick={handleAction}
+            className="flex items-center text-xs bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 font-bold px-3 py-1.5 rounded-lg transition"
+            title="Click to cancel pending invitation"
+          >
+            <ClockIcon className="h-4 w-4 mr-1 text-amber-700" />
+            Pending (Cancel)
+          </button>
+        );
+      }
       return (
         <button
           onClick={handleAction}
-          className="flex items-center text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg"
+          className="flex items-center text-sm bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-lg shadow-xs transition"
         >
           <UserPlusIcon className="h-4 w-4 mr-1" />
-            Connect
+          Connect
         </button>
       );
     case 'group':
+      if (item.status === 'connected') {
+        return (
+          <button
+            onClick={handleAction}
+            className="flex items-center text-sm bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-3 py-1.5 rounded-lg"
+          >
+            <CheckIcon className="h-4 w-4 mr-1 text-emerald-700" />
+            Joined
+          </button>
+        );
+      }
       return (
         <button
           onClick={handleAction}
-          className="flex items-center text-sm bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg"
+          className="flex items-center text-sm bg-green-600 hover:bg-green-700 text-white font-bold px-3 py-1.5 rounded-lg transition"
         >
-            Join
+          Join
         </button>
       );
     case 'content':
     case 'location':
+      if (item.status === 'connected') {
+        return (
+          <button
+            onClick={handleAction}
+            className="flex items-center text-sm bg-emerald-100 text-emerald-950 border border-emerald-400 font-bold px-3 py-1.5 rounded-lg"
+          >
+            <CheckIcon className="h-4 w-4 mr-1 text-emerald-700" />
+            Following
+          </button>
+        );
+      }
       return (
         <button
           onClick={handleAction}
-          className="flex items-center text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1.5 rounded-lg"
+          className="flex items-center text-sm bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold border border-slate-300 px-3 py-1.5 rounded-lg transition"
         >
-            Follow
+          Follow
         </button>
       );
     default:
       return null;
     }
-  }, [item.type, handleAction]);
+  }, [item.type, item.status, handleAction]);
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-4 border border-slate-300">
@@ -141,8 +185,7 @@ const DiscoveryItemCard: React.FC<DiscoveryItemCardProps> = React.memo(({ item, 
 DiscoveryItemCard.displayName = 'DiscoveryItemCard';
 
 const DiscoveryPage: React.FC = () => {
-  // eslint-disable-next-line no-unused-vars
-  const { openModal, showToast, handleAiAssist: _handleAiAssist } = useAppContext();
+  const { openModal: _openModal, showToast, handleAiAssist: _handleAiAssist } = useAppContext();
   // eslint-disable-next-line no-unused-vars
   // eslint-disable-next-line no-unused-vars
   // eslint-disable-next-line no-unused-vars
@@ -238,20 +281,63 @@ const DiscoveryPage: React.FC = () => {
     setSearchQuery(e.target.value);
   }, []);
 
-  const handleItemAction = useCallback((id: string, type: string) => {
+  const handleItemAction = useCallback(async (id: string, type: string) => {
     switch (type) {
-    case 'member':
-      showToast('Connection request sent!');
-      break;
-    case 'group':
-      showToast('Successfully joined!');
-      break;
-    case 'content':
-    case 'location':
-      showToast('You are now following this content!');
+    case 'member': {
+      const item = discoveryItems.find((i) => i.id === id);
+      const isCurrentlyPending = item?.status === 'pending';
+      const action = isCurrentlyPending ? 'remove' : 'request';
+
+      try {
+        await fetch(`${API_BASE_URL}/v1/profiles/${id}/friend-request`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action })
+        });
+      } catch {
+        // Optimistic local state preserved
+      }
+
+      setDiscoveryItems((prev) =>
+        prev.map((i) =>
+          i.id === id
+            ? { ...i, status: isCurrentlyPending ? 'none' : 'pending' }
+            : i
+        )
+      );
+
+      if (isCurrentlyPending) {
+        showToast('Connection request cancelled.', 'info');
+      } else {
+        showToast('Connection request sent!', 'success');
+      }
       break;
     }
-  }, [showToast]);
+    case 'group': {
+      setDiscoveryItems((prev) =>
+        prev.map((i) =>
+          i.id === id
+            ? { ...i, status: i.status === 'connected' ? 'none' : 'connected' }
+            : i
+        )
+      );
+      showToast('Group membership updated!', 'success');
+      break;
+    }
+    case 'content':
+    case 'location': {
+      setDiscoveryItems((prev) =>
+        prev.map((i) =>
+          i.id === id
+            ? { ...i, status: i.status === 'connected' ? 'none' : 'connected' }
+            : i
+        )
+      );
+      showToast('Following preferences updated!', 'success');
+      break;
+    }
+    }
+  }, [discoveryItems, showToast]);
 
   if (loading || isLoading) {
     return (

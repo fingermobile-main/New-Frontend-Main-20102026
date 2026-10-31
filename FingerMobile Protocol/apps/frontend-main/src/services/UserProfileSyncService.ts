@@ -53,6 +53,7 @@ export interface ComprehensiveUserProfile {
   avatar: string;
   coverImage: string;
   location: string;
+  website?: string;
 
   // Addresses
   homeAddress: string;
@@ -320,6 +321,99 @@ class UserProfileSyncService {
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('fmp_profile_updated'));
     }
+  }
+
+  /**
+   * Asynchronously fetch profile from PostgreSQL database (Source of Truth)
+   * and update local reactive state and listeners across all tabs and components
+   */
+  public async fetchFromBackend(userId?: string): Promise<ComprehensiveUserProfile> {
+    const current = this.getProfile();
+    if (typeof window === 'undefined') return current;
+
+    try {
+      const storedUser = localStorage.getItem(STORAGE_KEY_USER);
+      let userData: any = {};
+      if (storedUser) {
+        try {
+          userData = JSON.parse(storedUser);
+        } catch (_e) {
+          userData = {};
+        }
+      }
+
+      const targetId = userId || userData.id || current.id || '00000000-0000-0000-0000-000000000001';
+      const host = window.location.hostname || 'localhost';
+      const baseApi = window.location.port === '3000'
+        ? `http://${host}:5001/api`
+        : '/api';
+
+      const token = localStorage.getItem('accessToken') || localStorage.getItem('fingermobile_token') || localStorage.getItem('token');
+      const res = await fetch(`${baseApi}/v1/profiles/${targetId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        }
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const header = data.header || {};
+        const about = data.about || {};
+        const cats = data.about_categories || {};
+
+        const updated: ComprehensiveUserProfile = {
+          ...current,
+          id: data.profile_id || targetId,
+          name: header.display_name || about.display_name || current.name,
+          username: header.username || about.username || current.username,
+          avatar: header.avatar_url || current.avatar,
+          coverImage: header.cover_url || current.coverImage,
+          headline: about.headline || about.bio || current.headline,
+          bio: about.bio || current.bio,
+          location: about.location || current.location,
+          website: about.website || current.website,
+          email: about.contact_email || current.email,
+          phone: cats.contact_info?.phone || current.phone,
+          birthday: about.birthday || current.birthday,
+          pinNumber: header.sovereign_pin || current.pinNumber
+        };
+
+        // Persist to local cache
+        localStorage.setItem(STORAGE_KEY_COMPREHENSIVE, JSON.stringify(updated));
+
+        // Sync auth user in localStorage
+        const nameParts = (updated.name || '').split(' ');
+        const syncedUser = {
+          ...userData,
+          id: updated.id,
+          name: updated.name,
+          displayName: updated.name,
+          display_name: updated.name,
+          firstName: nameParts[0] || userData.firstName || 'Sovereign',
+          lastName: nameParts.slice(1).join(' ') || userData.lastName || 'Member',
+          username: updated.username,
+          avatar: updated.avatar,
+          avatarUrl: updated.avatar,
+          avatar_url: updated.avatar,
+          bio: updated.headline || updated.bio,
+          headline: updated.headline,
+          location: updated.location,
+          coverImage: updated.coverImage,
+          coverUrl: updated.coverImage,
+          pinNumber: updated.pinNumber
+        };
+        localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(syncedUser));
+
+        this.notifyListeners(updated);
+        window.dispatchEvent(new CustomEvent('fmp_profile_updated', { detail: updated }));
+        return updated;
+      }
+    } catch (_err) {
+      // Fallback
+    }
+
+    return current;
   }
 
   public getProfile(): ComprehensiveUserProfile {
