@@ -110,7 +110,7 @@ class MiiController {
           s.expires_at,
           EXTRACT(EPOCH FROM (s.expires_at - NOW())) / 3600 AS hours_remaining,
           true AS has_pulsating_ring,
-          COALESCE(u.username, 'Creator') AS author_name,
+          COALESCE(u.display_name, u.full_name, u.username, 'Creator') AS author_name,
           COALESCE(u.avatar_url, '/assets/branding/default-avatar.svg') AS author_avatar,
           u.is_verified AS author_verified,
           json_agg(
@@ -146,7 +146,7 @@ class MiiController {
             OR s.audience_type = 'followers'
             OR s.audience_type = 'public'
           )
-        GROUP BY s.id, u.id, u.username, u.avatar_url, u.is_verified
+        GROUP BY s.id, u.id, u.display_name, u.full_name, u.username, u.avatar_url, u.is_verified
         ORDER BY s.created_at DESC
       `;
 

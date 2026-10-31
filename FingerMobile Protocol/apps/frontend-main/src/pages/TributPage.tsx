@@ -889,7 +889,7 @@ export const TributPage: React.FC = () => {
                       <div className="flex items-center gap-2">
                         <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
                         <span className="text-xs font-black uppercase tracking-wider text-purple-300">
-                          The Guardian AI Omnipresent UGC Curation Engine
+                          The Guardian AI Pervasive UGC Curation Engine
                         </span>
                       </div>
                       <p className="text-xs text-slate-200 leading-relaxed max-w-2xl">
