@@ -462,6 +462,17 @@ const MiiPage: React.FC = () => {
                           : '48h left';
                         const isVideo = firstCard?.media_type === 'video';
                         const isAudio = firstCard?.media_type === 'audio';
+                        const rawCaption = firstCard?.caption || '';
+                        const storyTitle = rawCaption.includes(':')
+                          ? rawCaption.split(':')[0].trim()
+                          : (rawCaption || `${story.author_name}'s Moment`);
+                        const storyType = isAudio
+                          ? 'Voice Mii™ & Audio'
+                          : isVideo
+                          ? 'Video & Stickers'
+                          : firstCard?.is_censored
+                          ? 'View-Once Censored'
+                          : 'Text & Drawing';
 
                         return (
                           <div
@@ -469,38 +480,23 @@ const MiiPage: React.FC = () => {
                             className="p-4 rounded-2xl border border-slate-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/60 flex flex-col justify-between hover:shadow-md transition-shadow group"
                           >
                             <div>
-                              {/* Author and Lifespan Header */}
-                              <div className="flex items-center justify-between mb-3">
-                                <div className="flex items-center gap-2">
-                                  <div className="relative">
-                                    <img
-                                      src={story.author_avatar || '/assets/branding/mbah_israel_obinna.jpeg'}
-                                      alt={story.author_name}
-                                      className={`w-9 h-9 rounded-full object-cover border-2 border-white dark:border-gray-900 ${
-                                        story.has_pulsating_ring ? 'ring-2 ring-emerald-500 animate-pulse' : 'ring-1 ring-slate-300'
-                                      }`}
-                                    />
-                                    {story.has_pulsating_ring && (
-                                      <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-gray-900" />
-                                    )}
-                                  </div>
-                                  <div>
-                                    <h4 className="font-bold text-xs text-slate-900 dark:text-white flex items-center gap-1">
-                                      {story.author_name}
-                                      {story.author_verified && (
-                                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
-                                      )}
-                                    </h4>
-                                    <span className="text-[10px] text-slate-700 font-semibold block">
-                                      {story.cards?.length || story.card_count || 1} Media Cards
-                                    </span>
-                                  </div>
-                                </div>
-
+                              {/* Duration & Cards Counter Header */}
+                              <div className="flex items-center justify-between mb-2">
                                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 border border-emerald-400 font-black">
                                   {durationLeft}
                                 </span>
+                                <span className="text-[10px] font-mono text-slate-700 font-bold">
+                                  {story.cards?.length || story.card_count || 1} Cards
+                                </span>
                               </div>
+
+                              {/* Story Title & Author Identity */}
+                              <h4 className="font-bold text-sm text-gray-900 dark:text-white line-clamp-1">
+                                {storyTitle}
+                              </h4>
+                              <p className="text-xs text-slate-700 mt-0.5 mb-3 font-medium">
+                                {storyType} • by {story.author_name}
+                              </p>
 
                               {/* Media Thumbnail Preview (Video / Image / Audio) */}
                               <div
@@ -530,7 +526,7 @@ const MiiPage: React.FC = () => {
                                     </span>
                                   ) : isAudio ? (
                                     <span className="bg-black/75 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                                      <Volume2 className="w-3 h-3 text-emerald-400" /> Voice Mii™
+                                      <Volume2 className="w-3 h-3 text-emerald-400" /> Voice Mii™ & Audio
                                     </span>
                                   ) : (
                                     <span className="bg-black/75 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -546,24 +542,22 @@ const MiiPage: React.FC = () => {
                                   </div>
                                 </div>
                               </div>
-
-                              <p className="text-xs font-bold text-slate-900 dark:text-white line-clamp-2">
-                                {firstCard?.caption || 'New Mii Moment from followed creator'}
-                              </p>
                             </div>
 
-                            {/* Actions */}
+                            {/* Actions with Working CTA Handlers */}
                             <div className="mt-4 pt-3 border-t border-slate-300 dark:border-gray-700 flex items-center justify-between">
                               <button
+                                type="button"
                                 onClick={() => {
                                   setSelectedStoryViewer(story);
                                   setViewerCardIndex(0);
                                 }}
-                                className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1"
+                                className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1.5 cursor-pointer"
                               >
-                                <Play className="w-3.5 h-3.5 fill-current" /> View Interactive Story
+                                <Play className="w-3.5 h-3.5 fill-current" /> View Story
                               </button>
                               <button
+                                type="button"
                                 onClick={() => {
                                   setActiveTab('chats');
                                   showToast(`Replying to ${story.author_name}'s story in encrypted chat`, 'info');
@@ -981,18 +975,75 @@ const MiiPage: React.FC = () => {
               {selectedStoryViewer.cards && selectedStoryViewer.cards[viewerCardIndex] ? (
                 selectedStoryViewer.cards[viewerCardIndex].media_type === 'video' ? (
                   <video
+                    key={selectedStoryViewer.cards[viewerCardIndex].id || viewerCardIndex}
                     src={selectedStoryViewer.cards[viewerCardIndex].media_url}
                     controls
                     autoPlay
                     playsInline
                     className="w-full h-full object-contain"
                   />
+                ) : selectedStoryViewer.cards[viewerCardIndex].media_type === 'audio' ? (
+                  <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center relative">
+                    {selectedStoryViewer.cards[viewerCardIndex].thumbnail_url && (
+                      <img
+                        src={selectedStoryViewer.cards[viewerCardIndex].thumbnail_url}
+                        alt="Voice Mii Background"
+                        className="absolute inset-0 w-full h-full object-cover opacity-25 filter blur-sm pointer-events-none"
+                      />
+                    )}
+                    <div className="relative z-10 space-y-4 max-w-xs flex flex-col items-center">
+                      <div className="w-20 h-20 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center animate-pulse shadow-lg">
+                        <Volume2 className="w-10 h-10 text-emerald-400" />
+                      </div>
+                      <div>
+                        <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-black uppercase tracking-wider">
+                          Voice Mii™ High-Fidelity Audio
+                        </span>
+                        <h4 className="text-white font-bold text-sm mt-2">
+                          {selectedStoryViewer.cards[viewerCardIndex].caption?.split(':')[0] || 'Sovereign Audio Session'}
+                        </h4>
+                      </div>
+
+                      {/* Animated Audio Waveform */}
+                      <div className="flex items-center justify-center gap-1.5 h-12 w-full py-2">
+                        {[40, 75, 55, 90, 60, 100, 45, 80, 65, 95, 50, 85, 70, 40].map((h, i) => (
+                          <div
+                            key={i}
+                            className="w-1.5 bg-emerald-400 rounded-full animate-pulse"
+                            style={{
+                              height: `${h}%`,
+                              animationDelay: `${(i * 0.1).toFixed(1)}s`,
+                              animationDuration: '0.8s'
+                            }}
+                          />
+                        ))}
+                      </div>
+
+                      <audio
+                        key={selectedStoryViewer.cards[viewerCardIndex].id || viewerCardIndex}
+                        src={selectedStoryViewer.cards[viewerCardIndex].media_url}
+                        controls
+                        autoPlay
+                        className="w-full mt-2 filter invert"
+                      />
+                    </div>
+                  </div>
                 ) : (
-                  <img
-                    src={selectedStoryViewer.cards[viewerCardIndex].media_url}
-                    alt={selectedStoryViewer.cards[viewerCardIndex].caption || 'Mii Story Card'}
-                    className="w-full h-full object-contain"
-                  />
+                  <div className="w-full h-full relative flex items-center justify-center">
+                    <img
+                      key={selectedStoryViewer.cards[viewerCardIndex].id || viewerCardIndex}
+                      src={selectedStoryViewer.cards[viewerCardIndex].media_url}
+                      alt={selectedStoryViewer.cards[viewerCardIndex].caption || 'Mii Story Card'}
+                      className="w-full h-full object-contain"
+                    />
+                    {selectedStoryViewer.cards[viewerCardIndex].custom_sound_url && (
+                      <audio
+                        src={selectedStoryViewer.cards[viewerCardIndex].custom_sound_url}
+                        autoPlay
+                        loop
+                      />
+                    )}
+                  </div>
                 )
               ) : (
                 <div className="text-white text-xs">No media loaded</div>
