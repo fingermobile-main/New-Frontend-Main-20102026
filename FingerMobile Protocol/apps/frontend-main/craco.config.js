@@ -38,6 +38,16 @@ module.exports = {
         zlib: false,
       };
 
+      // Suppress 3rd-party library expression warnings (e.g., maplibre-gl dynamic web worker expression)
+      webpackConfig.ignoreWarnings = [
+        ...(webpackConfig.ignoreWarnings || []),
+        {
+          module: /maplibre-gl/,
+          message: /Critical dependency: the request of a dependency is an expression/,
+        },
+        /Critical dependency: the request of a dependency is an expression/,
+      ];
+
       return webpackConfig;
     }
   },
