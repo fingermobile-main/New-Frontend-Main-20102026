@@ -1124,6 +1124,8 @@ export const MasterTributConsole: React.FC = () => {
                 </div>
               </div>
               <button
+                type="button"
+                aria-label="Close media upload modal"
                 onClick={() => setIsMediaPackModalOpen(false)}
                 className="p-1 rounded-lg text-slate-600 hover:bg-slate-100"
               >
@@ -1266,6 +1268,8 @@ export const MasterTributConsole: React.FC = () => {
                 {isEditPinModalOpen ? `Edit Tribut Pin: ${activePin?.title}` : 'Create New Tribut Showcase Pin'}
               </h3>
               <button
+                type="button"
+                aria-label="Close pin modal"
                 onClick={() => {
                   setIsAddPinModalOpen(false);
                   setIsEditPinModalOpen(false);
@@ -1501,6 +1505,8 @@ export const MasterTributConsole: React.FC = () => {
                 <h3 className="text-base font-black text-slate-900">Report & Moderate Pin</h3>
               </div>
               <button
+                type="button"
+                aria-label="Close report modal"
                 onClick={() => setIsReportModalOpen(false)}
                 className="p-1 rounded-lg text-slate-600 hover:bg-slate-100"
               >

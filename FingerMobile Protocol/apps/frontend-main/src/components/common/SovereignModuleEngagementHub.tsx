@@ -476,6 +476,7 @@ export const SovereignModuleEngagementHub: React.FC<SovereignModuleEngagementHub
           {searchQuery && (
             <button
               type="button"
+              aria-label="Clear search query"
               onClick={() => setSearchQuery('')}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
             >

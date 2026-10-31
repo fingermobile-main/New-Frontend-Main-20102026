@@ -421,7 +421,15 @@ export const CategoryBulletinFeedHeader: React.FC<CategoryBulletinFeedHeaderProp
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>Community Rules &amp; Publishing Code of Conduct</span>
               </div>
-              <button type="button" className="text-slate-600 hover:text-slate-900 dark:text-slate-300">
+              <button
+                type="button"
+                aria-label={showRules ? 'Collapse community rules' : 'Expand community rules'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowRules(!showRules);
+                }}
+                className="text-slate-600 hover:text-slate-900 dark:text-slate-300"
+              >
                 {showRules ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
             </div>

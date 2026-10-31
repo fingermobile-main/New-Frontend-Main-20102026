@@ -53,6 +53,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { getUserRoleTier, PRIMARY_ADMIN_EMAILS } from '../../services/platformRbac';
 import { FingerMobileEmojiPicker } from '../common/FingerMobileEmojiPicker';
 import { renderContentWithFingerMobileEmojis, replaceEmojisInHtml } from '../../utils/fingerMobileEmojiRenderer';
+import { renderContentWithMentionsAndEmojis } from '../../utils/richTextMentionsRenderer';
 import { sanitizeHtmlContent } from '../editor/RichTextEditor';
 import MediaEditorModal, { EditedMediaResult } from '../MediaEditorModal';
 import { formatTimeAgo } from '../../utils/time';
@@ -1144,7 +1145,16 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
         {/* Post Title & Content */}
         <div className="mt-3.5">
           <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-snug">
-            {renderContentWithFingerMobileEmojis(post.title)}
+            {renderContentWithMentionsAndEmojis(post.title, {
+              onMentionClick: (handle, isGlobal) => {
+                if (isGlobal) {
+                  notify(`Broadcast to channel members (@${handle})`, 'info');
+                } else {
+                  navigate(`/profile?member=${handle}`);
+                }
+              },
+              onHashtagClick: (tag) => navigate(`/discover?tag=${tag}`)
+            })}
           </h3>
           {/<[a-z][\s\S]*>/i.test(post.content) ? (
             <div
@@ -1155,7 +1165,16 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
             />
           ) : (
             <p className="text-[15px] sm:text-base text-slate-800 dark:text-slate-200 mt-2 whitespace-pre-wrap leading-relaxed font-normal">
-              {renderContentWithFingerMobileEmojis(post.content)}
+              {renderContentWithMentionsAndEmojis(post.content, {
+                onMentionClick: (handle, isGlobal) => {
+                  if (isGlobal) {
+                    notify(`Broadcast mention to channel members (@${handle})`, 'info');
+                  } else {
+                    navigate(`/profile?member=${handle}`);
+                  }
+                },
+                onHashtagClick: (tag) => navigate(`/discover?tag=${tag}`)
+              })}
             </p>
           )}
         </div>
@@ -1500,14 +1519,20 @@ export const ForumPostCard: React.FC<ForumPostCardProps> = ({
         {/* Tags */}
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-3">
-            {post.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-[10px] font-bold rounded-md border border-slate-200 dark:border-slate-700"
-              >
-                #{tag}
-              </span>
-            ))}
+            {post.tags.map((tag) => {
+              const cleanTag = tag.replace(/^#/, '');
+              return (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => navigate(`/discover?tag=${cleanTag}`)}
+                  className="px-2 py-0.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-950 dark:text-emerald-200 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-[10px] font-bold rounded-md border border-emerald-300 dark:border-emerald-700 cursor-pointer transition shadow-2xs"
+                  title={`Discover #${cleanTag} trends`}
+                >
+                  #{cleanTag}
+                </button>
+              );
+            })}
           </div>
         )}
 

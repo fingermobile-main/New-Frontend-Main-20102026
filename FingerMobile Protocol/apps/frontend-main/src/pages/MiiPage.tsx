@@ -917,6 +917,8 @@ const MiiPage: React.FC = () => {
               </div>
 
               <button
+                type="button"
+                aria-label="Close story viewer"
                 onClick={() => setSelectedStoryViewer(null)}
                 className="p-1.5 rounded-full bg-black/50 text-white hover:bg-white/20 transition-colors"
               >
@@ -1078,6 +1080,8 @@ const MiiPage: React.FC = () => {
                 </div>
               </div>
               <button
+                type="button"
+                aria-label="Close PIN download dialog"
                 onClick={() => setPinUnlockTarget(null)}
                 className="p-1 rounded-full text-slate-500 hover:bg-slate-100"
               >

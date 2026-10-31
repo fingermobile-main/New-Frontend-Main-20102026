@@ -558,6 +558,7 @@ export const MiiEncryptedPeerChat: React.FC<MiiEncryptedPeerChatProps> = ({
                     {/* Action 3-dots Menu */}
                     <button
                       type="button"
+                      aria-label="Message options"
                       onClick={() => setActiveMenuMessageId(isMenuOpen ? null : msg.id)}
                       className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 cursor-pointer"
                     >
@@ -662,6 +663,7 @@ export const MiiEncryptedPeerChat: React.FC<MiiEncryptedPeerChatProps> = ({
                               <div className="flex items-center gap-1 h-8 px-2 py-1 bg-white/70 dark:bg-slate-900/60 rounded-xl border border-emerald-200 dark:border-emerald-900/60">
                                 <button
                                   type="button"
+                                  aria-label={isPlaying ? 'Pause audio' : 'Play audio'}
                                   onClick={() => togglePlayAudio(`${msg.id}-${attIdx}`, att.url || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4')}
                                   className="p-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-500 transition cursor-pointer mr-2 shrink-0"
                                 >
@@ -876,6 +878,7 @@ export const MiiEncryptedPeerChat: React.FC<MiiEncryptedPeerChatProps> = ({
                               </div>
                               <button
                                 type="button"
+                                aria-label={`Download ${att.name || 'document'}`}
                                 onClick={() => showToast(`Downloading: ${att.name}`, 'info')}
                                 className="p-1.5 rounded-lg bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 hover:bg-slate-50 transition cursor-pointer"
                               >
@@ -1005,6 +1008,7 @@ export const MiiEncryptedPeerChat: React.FC<MiiEncryptedPeerChatProps> = ({
                 <span className="truncate max-w-[150px]">{att.name || att.title || att.question}</span>
                 <button
                   type="button"
+                  aria-label={`Remove ${att.type} attachment`}
                   onClick={() => handleRemoveAttachment(idx)}
                   className="p-0.5 text-slate-500 hover:text-red-600 cursor-pointer"
                 >
@@ -1139,6 +1143,7 @@ export const MiiEncryptedPeerChat: React.FC<MiiEncryptedPeerChatProps> = ({
               </div>
               <button
                 type="button"
+                aria-label="Close media picker"
                 onClick={() => setShowMediaPicker(false)}
                 className="p-1.5 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
               >
@@ -1541,6 +1546,7 @@ export const MiiEncryptedPeerChat: React.FC<MiiEncryptedPeerChatProps> = ({
               </div>
               <button
                 type="button"
+                aria-label="Close PIN unlock dialog"
                 onClick={() => setPinUnlockTarget(null)}
                 className="p-1 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
               >
@@ -1615,6 +1621,7 @@ export const MiiEncryptedPeerChat: React.FC<MiiEncryptedPeerChatProps> = ({
               </div>
               <button
                 type="button"
+                aria-label="Close manage PIN dialog"
                 onClick={() => setShowManagePinModal(false)}
                 className="p-1 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
               >

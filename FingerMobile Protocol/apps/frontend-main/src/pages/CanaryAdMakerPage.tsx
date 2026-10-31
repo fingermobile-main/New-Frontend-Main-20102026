@@ -1276,6 +1276,7 @@ export const CanaryAdMakerPage: React.FC = () => {
                   <button
                     key={plcId}
                     type="button"
+                    aria-label={`Preview ${spec?.name || plcId} placement`}
                     onClick={() => setActivePreviewPlacement(plcId)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                       isActive

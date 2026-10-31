@@ -1544,6 +1544,7 @@ const OwnitPage: React.FC = () => {
                 </div>
                 <button
                   type="button"
+                  aria-label="Close direct upload modal"
                   onClick={() => setShowDirectUploadModal(false)}
                   className="p-1.5 rounded-lg text-stone-400 hover:text-white hover:bg-stone-900"
                 >
@@ -1591,6 +1592,7 @@ const OwnitPage: React.FC = () => {
                 </h3>
                 <button
                   type="button"
+                  aria-label="Close report modal"
                   onClick={() => setShowReportModal(false)}
                   className="p-1 rounded text-stone-400 hover:text-white"
                 >

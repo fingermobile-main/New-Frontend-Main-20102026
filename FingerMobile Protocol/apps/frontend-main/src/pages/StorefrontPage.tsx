@@ -1902,6 +1902,7 @@ const StorefrontPage: React.FC = () => {
                 </div>
                 <button
                   type="button"
+                  aria-label="Close direct upload modal"
                   onClick={() => setShowDirectUploadModal(false)}
                   className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
                 >
@@ -1949,6 +1950,7 @@ const StorefrontPage: React.FC = () => {
                 </h3>
                 <button
                   type="button"
+                  aria-label="Close report modal"
                   onClick={() => setShowReportModal(false)}
                   className="p-1 rounded text-slate-400 hover:text-white"
                 >

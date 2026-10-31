@@ -580,6 +580,7 @@ export const PubliciteeSection: React.FC<PubliciteeSectionProps> = ({
                 {/* Like */}
                 <button
                   type="button"
+                  aria-label="Like video"
                   onClick={() => handleToggleLike(activeVideo)}
                   className="flex flex-col items-center gap-1 group"
                 >
@@ -594,6 +595,7 @@ export const PubliciteeSection: React.FC<PubliciteeSectionProps> = ({
                 {/* Comments Toggle */}
                 <button
                   type="button"
+                  aria-label="Toggle comments"
                   onClick={() => setShowComments(!showComments)}
                   className="flex flex-col items-center gap-1 group"
                 >
@@ -766,6 +768,7 @@ export const PubliciteeSection: React.FC<PubliciteeSectionProps> = ({
                   />
                   <button
                     type="submit"
+                    aria-label="Send comment"
                     disabled={submittingComment || !newCommentText.trim()}
                     className="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center"
                   >

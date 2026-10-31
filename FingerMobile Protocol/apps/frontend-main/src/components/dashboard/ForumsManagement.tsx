@@ -1081,6 +1081,7 @@ const ForumsManagement: React.FC = () => {
                         <button
                           key={color}
                           type="button"
+                          aria-label={`Select color preset ${color}`}
                           onClick={() => setCatStyleColor(color)}
                           style={{ backgroundColor: color }}
                           className={`w-6 h-6 rounded-md border ${

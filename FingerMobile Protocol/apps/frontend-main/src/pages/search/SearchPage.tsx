@@ -223,6 +223,7 @@ const SearchPage: React.FC = () => {
                     <div className="pt-3 border-t border-slate-200">
                       <a
                         href={getItemLink(item)}
+                        aria-label={getItemLinkLabel(item)}
                         className="text-sm font-bold text-blue-600 hover:text-blue-800"
                       >
                         {getItemLinkLabel(item)}
@@ -299,7 +300,11 @@ const SearchPage: React.FC = () => {
                     )}
                   </div>
                   <div className="pt-3 border-t border-slate-200">
-                    <a href={getItemLink(item)} className="text-sm font-bold text-blue-600 hover:text-blue-800">
+                    <a
+                      href={getItemLink(item)}
+                      aria-label={getItemLinkLabel(item)}
+                      className="text-sm font-bold text-blue-600 hover:text-blue-800"
+                    >
                       {getItemLinkLabel(item)}
                     </a>
                   </div>
