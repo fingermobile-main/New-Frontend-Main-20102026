@@ -46,10 +46,25 @@ class QueueService {
 
     this.notificationQueue.process(async (job) => {
       try {
-        logger.info(`Processing notification job ${job.id}:`, job.data);
-        return { success: true };
+        const { eventType, actorId, recipientId, referenceId, referenceType, payload, priority } = job.data;
+        logger.info(`[Queue] Processing notification job ${job.id}: ${eventType} → ${recipientId}`);
+
+        // Emit into the 4-phase pipeline
+        const pipelineService = require('./notificationPipelineService');
+        const result = await pipelineService.emit({
+          eventType,
+          actorId,
+          recipientId,
+          referenceId,
+          referenceType,
+          payload,
+          priority: priority || 'normal',
+        });
+
+        logger.info(`[Queue] Notification job ${job.id} delivered via pipeline:`, result?.id || 'batched');
+        return { success: true, eventId: result?.id };
       } catch (error) {
-        logger.error('Error processing notification job:', error);
+        logger.error(`[Queue] Error processing notification job ${job.id}:`, error.message);
         throw error;
       }
     });
