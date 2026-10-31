@@ -290,6 +290,6 @@ bash
 ./"FingerMobile Startup Script 26102026" --stop
 1:38 PM
 
-
+or in the mac terminal type the below: - cd "/Users/user/Documents/FingerMobile Protocol Communication" ./start-dev-lan.sh
 
 Now proceed!!!
