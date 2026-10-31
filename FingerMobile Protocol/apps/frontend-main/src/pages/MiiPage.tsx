@@ -20,7 +20,7 @@ import UniversalProfileCard from '../components/common/UniversalProfileCard';
 import ConnectWidget, { ConnectPeer } from '../components/widgets/ConnectWidget';
 import DiscoverWidget from '../components/widgets/DiscoverWidget';
 import MiiEncryptedPeerChat from '../components/mii/MiiEncryptedPeerChat';
-import SovereignModuleEngagementHub from '../components/common/SovereignModuleEngagementHub';
+import SovereignEngagementDropdownTrigger from '../components/common/SovereignEngagementDropdownTrigger';
 import {
   MiiPinExchangeModal,
   MiiFingerOrbitModal,
@@ -281,10 +281,18 @@ const MiiPage: React.FC = () => {
             </button>
             <button
               onClick={() => setShowPinModal(true)}
-              className="py-3 px-5 bg-emerald-800/80 hover:bg-emerald-800 text-white font-bold rounded-2xl border border-emerald-400/30 transition-all flex items-center justify-center gap-2 text-sm shadow-md"
+              className="py-3 px-5 bg-emerald-800/80 hover:bg-emerald-800 text-white font-bold rounded-2xl border border-emerald-400/30 transition-all flex items-center justify-center gap-2 text-sm shadow-md cursor-pointer"
             >
               <Lock className="w-4 h-4 text-emerald-300" />
                 PIN Exchange
+            </button>
+            <button
+              onClick={() => setShowMiniStoreModal(true)}
+              className="py-3 px-5 bg-purple-800/80 hover:bg-purple-800 text-white font-bold rounded-2xl border border-purple-400/30 transition-all flex items-center justify-center gap-2 text-sm shadow-md cursor-pointer"
+              title="Open Mii™ MiniStore: Two (2) Page Catalogue Lightbox"
+            >
+              <ShoppingBag className="w-4 h-4 text-purple-300" />
+              <span>MiniStore (2-Page)</span>
             </button>
           </div>
         </div>
@@ -346,8 +354,8 @@ const MiiPage: React.FC = () => {
 
         {/* Main Tabs Content Column */}
         <div className="lg:col-span-3 space-y-6">
-          {/* Sovereign Engagement & Activity Console */}
-          <SovereignModuleEngagementHub module="mii" />
+          {/* Sovereign Engagement & Activity Console Dropdown Trigger (Non-blocking) */}
+          <SovereignEngagementDropdownTrigger module="mii" label="Mii™" />
           {/* Tab 1: Moments & Live ShowCase */}
           {activeTab === 'moments' && (
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">

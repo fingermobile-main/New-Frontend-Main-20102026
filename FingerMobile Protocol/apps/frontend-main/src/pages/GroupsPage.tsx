@@ -12,7 +12,7 @@ import UniversalProfileCard from '../components/common/UniversalProfileCard';
 import PlatformWidgetsAndAdsRail from '../components/widgets/PlatformWidgetsAndAdsRail';
 import ConnectWidget from '../components/widgets/ConnectWidget';
 import DiscoverWidget from '../components/widgets/DiscoverWidget';
-import SovereignModuleEngagementHub from '../components/common/SovereignModuleEngagementHub';
+import SovereignEngagementDropdownTrigger from '../components/common/SovereignEngagementDropdownTrigger';
 import {
   Users,
   Search,
@@ -429,8 +429,8 @@ const GroupsPage: React.FC = () => {
 
           {/* Center Column: Scrollable Infinite Stream */}
           <div className="lg:col-span-6 space-y-6">
-            {/* Sovereign Engagement & Activity Console */}
-            <SovereignModuleEngagementHub module="groups" />
+            {/* Sovereign Engagement & Activity Console Dropdown Trigger (Non-blocking) */}
+            <SovereignEngagementDropdownTrigger module="groups" label="Groups" />
         {/* ======================================================== */}
         {/* TAB 1 & 2: DISCOVER & MY GROUPS */}
         {/* ======================================================== */}

@@ -58,7 +58,7 @@ import { DiscoverFeedSection } from '../components/forum/DiscoverFeedSection';
 import { CanaryAdsManager } from '../components/canary/CanaryAdsManager';
 import { PlatformWidgetsAndAdsRail } from '../components/widgets/PlatformWidgetsAndAdsRail';
 import voiceLineServiceInstance from '../services/VoiceLineService';
-import SovereignModuleEngagementHub from '../components/common/SovereignModuleEngagementHub';
+import SovereignEngagementDropdownTrigger from '../components/common/SovereignEngagementDropdownTrigger';
 import ConnectWidget from '../components/widgets/ConnectWidget';
 import DiscoverWidget from '../components/widgets/DiscoverWidget';
 import { CategoryBulletinFeedHeader, getCategoryEmoji } from '../components/forum/CategoryBulletinFeedHeader';
@@ -2518,6 +2518,9 @@ export const ForumPage: React.FC = () => {
               triggerToast={(msg, type) => triggerToast(msg, type === 'warning' ? 'info' : type)}
             />
 
+            {/* Sovereign Engagement & Activity Console Dropdown Trigger (Non-blocking) */}
+            <SovereignEngagementDropdownTrigger module="forum" label="Forum" />
+
             {/* Dedicated Category Space & Preferred Topics Feed Header */}
             {selectedCategoryId !== 'all' && (
               <CategoryBulletinFeedHeader
@@ -4269,9 +4272,6 @@ export const ForumPage: React.FC = () => {
               </form>
             </div>
             )}
-
-            {/* Sovereign Engagement & Activity Console (Comments, Mentions, Connects & Follows, Responded, Haven't Responded, Activity Log) */}
-            <SovereignModuleEngagementHub module="forum" />
 
             {/* 3. FEED POST STREAM */}
             <div className="space-y-4">

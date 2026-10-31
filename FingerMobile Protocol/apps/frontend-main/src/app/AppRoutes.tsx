@@ -325,6 +325,7 @@ const ContentPage = lazy(() => import('../pages/ContentPage'));
 const AdminSecurityEventsPage = lazy(() => import('../pages/admin/AdminSecurityEventsPage'));
 const CodeAgentPage = lazy(() => import('../pages/super-admin/CodeAgentPage'));
 const SiteMenusPage = lazy(() => import('../pages/dashboard/site-management/SiteMenusPage'));
+const EngagementHubPage = lazy(() => import('../pages/EngagementHubPage'));
 
 const redirectTo = (to: string) => <Navigate to={to} replace />;
 
@@ -763,6 +764,9 @@ export const routes: RouteObject[] = [
           { path: '/hallmarks', element: <HallmarksPage /> },
           { path: '/photocredit/:id', element: <PhotoCreditDetailPage /> },
           { path: '/photocreditdetail', element: <PhotoCreditDetailPage /> },
+          { path: '/engagement-hub', element: <EngagementHubPage /> },
+          { path: '/engagement-hub/:module', element: <EngagementHubPage /> },
+          { path: '/activity-console', element: redirectTo('/engagement-hub') },
           { path: '/profile', element: <ProfilePage /> },
           { path: '/profile/:id', element: <ProfilePage /> },
           { path: '/wall', element: <ProfilePage /> },

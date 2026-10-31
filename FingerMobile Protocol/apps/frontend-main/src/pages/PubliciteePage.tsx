@@ -5,7 +5,7 @@ import MainLayout from '../components/layout/MainLayout';
 import { PubliciteeSection, PubliciteeItem } from '../components/PubliciteeSection';
 import { CreatePubliciteeShortsModal } from '../components/CreatePubliciteeShortsModal';
 import { API_BASE_URL } from '../services/api';
-import SovereignModuleEngagementHub from '../components/common/SovereignModuleEngagementHub';
+import SovereignEngagementDropdownTrigger from '../components/common/SovereignEngagementDropdownTrigger';
 import {
   Film, Sparkles, Clock, DollarSign,
   Layers, Upload, Video, ShieldCheck,
@@ -304,8 +304,8 @@ const PubliciteePage: React.FC = () => {
           </button>
         </div>
 
-        {/* Sovereign Engagement & Activity Console */}
-        <SovereignModuleEngagementHub module="publicitee" />
+        {/* Sovereign Engagement & Activity Console Dropdown Trigger (Non-blocking) */}
+        <SovereignEngagementDropdownTrigger module="publicitee" label="Publicitee" />
 
         {/* TAB 1: EXPLORE REELS */}
         {activeMainTab === 'explore' && (
