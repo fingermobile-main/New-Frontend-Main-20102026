@@ -232,15 +232,13 @@ Frontend listens on 0.0.0.0:3000 (HOST=0.0.0.0 in .env).
 Dynamic CORS Subnet Validator: Allows RFC 1918 subnets (192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12), localhost, and .local mDNS domains with credentials enabled.
 Dynamic Client-Side Hostname Resolution:
 
-
 api.ts
-
 
 authService.ts
 
-
 apiService.ts
 Automatically detects window.location.hostname (e.g., 192.168.1.15) and directs API traffic to port 5001.
+
 4. Health & Verification Status
 Service / Test	Target URL	Expected Result	Verified Status
 Backend Express Health	http://192.168.1.15:5001/api/health	{"success":true,"message":"API is running smoothly"}	Passed (200 OK)
@@ -252,6 +250,7 @@ Frontend UI (LAN)	http://192.168.1.15:3000/login	Clean Login UI (Pills Hidden)	P
 Frontend UI (Local)	http://localhost:3000/login	Clean Login UI (Pills Hidden)	Passed (200 OK)
 PostgreSQL Database	Port 5433 (fingermobile_platform_db)	Authentic accounts validated with bcrypt	Active & Connected
 Auto-Commit Watcher	Background Process	Real-time code change tracking	Active
+
 5. External Device Connection Checklist
 To connect from any external PC, smartphone, or tablet on the same Wi-Fi:
 
