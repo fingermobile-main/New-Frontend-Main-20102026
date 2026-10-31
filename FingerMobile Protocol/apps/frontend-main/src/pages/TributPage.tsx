@@ -126,6 +126,8 @@ export const TributPage: React.FC = () => {
               colorPalette: dbPin.color_palette || [],
               priority: (dbPin.priority || 'high') as any,
               tags: dbPin.tags || [],
+              comments: dbPin.live_comments || [],
+              commentsCount: Number(dbPin.actual_comments_count || dbPin.comments_count || 0),
               author: {
                 id: dbPin.author_id || dbPin.uploader_id || 'creator-member-1',
                 name: dbPin.author_name || dbPin.uploader_name || 'Creator Member',
@@ -139,7 +141,7 @@ export const TributPage: React.FC = () => {
                 downloads: Number(dbPin.downloads_count || 8),
                 closeups: Number(dbPin.closeups_count || 65),
                 outboundClicks: Number(dbPin.outbound_clicks || 14),
-                likes: Number(dbPin.likes_count || 45),
+                likes: Number(dbPin.actual_likes_count || dbPin.likes_count || 45),
                 shelfLifeDays: Number(dbPin.shelf_life_days || 90)
               },
               pillars: {
@@ -677,7 +679,7 @@ export const TributPage: React.FC = () => {
                           <span className="font-bold text-slate-900">{st.label}</span>
                           <span className="text-[10px] text-slate-700 font-semibold">{st.layoutCount}</span>
                         </div>
-                        <span className="text-[11px] text-slate-600 line-clamp-1">{st.description}</span>
+                        <span className="text-[11px] text-slate-700 line-clamp-1">{st.description}</span>
                       </button>
                     ))}
                   </div>
@@ -767,7 +769,7 @@ export const TributPage: React.FC = () => {
                       Guardian AI Search Engine
                     </label>
                     <div className="relative">
-                      <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
+                      <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-700" />
                       <input
                         type="text"
                         value={searchQuery}
@@ -1073,7 +1075,7 @@ export const TributPage: React.FC = () => {
                     <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                       <div>
                         <h3 className="font-bold text-slate-900 text-base">{board.name}</h3>
-                        <span className="text-xs text-slate-600 font-semibold">{board.pinCount} Curated Pins</span>
+                        <span className="text-xs text-slate-700 font-bold">{board.pinCount} Curated Pins</span>
                       </div>
 
                       <div className="space-y-2">
@@ -1084,7 +1086,7 @@ export const TributPage: React.FC = () => {
                           }}
                           className="w-full py-2 px-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-900 text-xs font-bold transition flex items-center justify-center gap-1.5"
                         >
-                          <EyeIcon className="w-4 h-4 text-slate-600" />
+                          <EyeIcon className="w-4 h-4 text-slate-700" />
                           Explore Board Pins
                         </button>
 
@@ -1296,7 +1298,7 @@ export const TributPage: React.FC = () => {
                 <div className="flex justify-between items-start">
                   <div>
                     <h3 className="text-lg font-black text-slate-900">Save to Project Board</h3>
-                    <p className="text-xs text-slate-600">Select where to save "{showSaveToBoardModal.title}".</p>
+                    <p className="text-xs text-slate-700 font-medium">Select where to save "{showSaveToBoardModal.title}".</p>
                   </div>
                   <button type="button" aria-label="Close"
                     onClick={() => setShowSaveToBoardModal(null)}

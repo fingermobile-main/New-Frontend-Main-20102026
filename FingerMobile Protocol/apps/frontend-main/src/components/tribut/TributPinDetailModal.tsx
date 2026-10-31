@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   XMarkIcon,
-  BookmarkIcon,
   ShareIcon,
   ShoppingBagIcon,
   ArrowsPointingOutIcon,
@@ -50,7 +49,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
 }) => {
   // Swipe & Touch gesture tracking
   const [touchStartPos, setTouchStartPos] = useState<{ x: number; y: number } | null>(null);
-  const [isSwiping, setIsSwiping] = useState(false);
+  const [_isSwiping, setIsSwiping] = useState(false);
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showComments, setShowComments] = useState(true);
@@ -135,43 +134,132 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
     }
   };
 
-  // Like toggle
-  const handleToggleLike = () => {
-    if (isLiked) {
-      setLikeCount((prev) => prev - 1);
-      setIsLiked(false);
-    } else {
-      setLikeCount((prev) => prev + 1);
-      setIsLiked(true);
+  // Live comments state persisted in PostgreSQL
+  const [pinComments, setPinComments] = useState<PinCommentItem[]>(pin.comments || []);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchLiveComments = async () => {
+      try {
+        const res = await fetch(`/api/tribut/pins/${pin.id}/comments`);
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && isMounted) {
+          setPinComments(json.data);
+        }
+      } catch {
+        // Fallback to local pin.comments
+      }
+    };
+    fetchLiveComments();
+    return () => { isMounted = false; };
+  }, [pin.id]);
+
+  // Like & Vote toggle with PostgreSQL persistence
+  const handleToggleLike = async () => {
+    const nextIsLiked = !isLiked;
+    setIsLiked(nextIsLiked);
+    setLikeCount((prev) => (nextIsLiked ? prev + 1 : Math.max(0, prev - 1)));
+
+    try {
+      const res = await fetch(`/api/tribut/pins/${pin.id}/vote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ voteType: 'up' })
+      });
+      const json = await res.json();
+      if (json.success && json.data) {
+        setLikeCount(json.data.likesCount);
+        setIsLiked(json.data.isVoted);
+      }
+    } catch {
+      // Local fallback retained
     }
   };
 
-  // Add Comment submit
-  const handleCommentSubmit = (e: React.FormEvent) => {
+  // Add Comment submit with PostgreSQL persistence
+  const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!commentText.trim()) return;
 
-    const newComment: PinCommentItem = {
-      id: `comm-${Date.now()}`,
+    const payload = {
+      content: commentText.trim(),
       authorName: 'Ibrahim Danjuma (You)',
       authorHandle: '@ibrahim_d',
-      authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-      content: commentText.trim(),
-      createdAt: 'Just now',
-      likes: 1,
-      isLiked: true,
+      authorAvatar: '/assets/branding/mbah_israel_obinna.jpeg',
       critiqueTag: 'Community Note'
     };
 
-    onAddComment(pin.id, newComment);
+    try {
+      const res = await fetch(`/api/tribut/pins/${pin.id}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (json.success && json.data) {
+        setPinComments((prev) => [json.data, ...prev]);
+        onAddComment(pin.id, json.data);
+      } else {
+        const fallbackComment: PinCommentItem = {
+          id: `comm-${Date.now()}`,
+          authorName: payload.authorName,
+          authorHandle: payload.authorHandle,
+          authorAvatar: payload.authorAvatar,
+          content: payload.content,
+          createdAt: 'Just now',
+          likes: 1,
+          isLiked: true,
+          critiqueTag: payload.critiqueTag
+        };
+        setPinComments((prev) => [fallbackComment, ...prev]);
+        onAddComment(pin.id, fallbackComment);
+      }
+    } catch {
+      const fallbackComment: PinCommentItem = {
+        id: `comm-${Date.now()}`,
+        authorName: payload.authorName,
+        authorHandle: payload.authorHandle,
+        authorAvatar: payload.authorAvatar,
+        content: payload.content,
+        createdAt: 'Just now',
+        likes: 1,
+        isLiked: true,
+        critiqueTag: payload.critiqueTag
+      };
+      setPinComments((prev) => [fallbackComment, ...prev]);
+      onAddComment(pin.id, fallbackComment);
+    }
     setCommentText('');
   };
 
   const isSaved = savedPinIds.includes(pin.id);
 
-  // Swatches for skin tone range / color palette (mirrors the screenshot's "More in your skin tone range")
-  const defaultSwatches = ['#F5D1C4', '#E6A88C', '#BD7454', '#793F29', '#3D1C0F'];
-  const paletteSwatches = pin.colorPalette && pin.colorPalette.length > 0 ? pin.colorPalette : defaultSwatches;
+  // High-contrast text calculation for skin tone swatches
+  const getContrastTextColor = (hex: string) => {
+    const cleanHex = hex.replace('#', '');
+    const r = parseInt(cleanHex.substring(0, 2), 16) || 0;
+    const g = parseInt(cleanHex.substring(2, 4), 16) || 0;
+    const b = parseInt(cleanHex.substring(4, 6), 16) || 0;
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.55 ? 'text-slate-900 font-black' : 'text-white font-black';
+  };
+
+  // Structured Skin Tone Spectrum Range
+  const skinToneSpectrum = [
+    { family: 'Espresso', label: 'Deep Rich Umber & Obsidian', code: '#1C0E07' },
+    { family: 'Cocoa', label: 'Rich Dark Cocoa', code: '#3D1C0F' },
+    { family: 'Chestnut', label: 'Warm Chestnut', code: '#793F29' },
+    { family: 'Bronze', label: 'Golden Bronze', code: '#BD7454' },
+    { family: 'Caramel', label: 'Warm Amber & Caramel', code: '#E6A88C' },
+    { family: 'Almond', label: 'Luminous Almond Sand', code: '#F5D1C4' }
+  ];
+
+  // Video media detection
+  const isVideoMedia = Boolean(
+    pin.videoUrl ||
+    pin.mediaType === 'video' ||
+    (pin.mediaUrl && (pin.mediaUrl.endsWith('.mp4') || pin.mediaUrl.endsWith('.webm') || pin.mediaUrl.includes('video')))
+  );
 
   // Multi-media urls if present
   const mediaList = pin.multiMediaUrls && pin.multiMediaUrls.length > 0 ? pin.multiMediaUrls : [pin.mediaUrl];
@@ -179,7 +267,17 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
 
   // Filter related pins
   const relatedPins = allPins
-    .filter((p) => p.id !== pin.id && (p.category === pin.category || p.boardName === pin.boardName))
+    .filter((p) => {
+      if (p.id === pin.id) return false;
+      if (selectedColorSwatch) {
+        return (
+          p.colorPalette?.includes(selectedColorSwatch) ||
+          p.category === pin.category ||
+          p.boardName === pin.boardName
+        );
+      }
+      return p.category === pin.category || p.boardName === pin.boardName;
+    })
     .slice(0, 10);
 
   return (
@@ -189,23 +287,23 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
     >
       {/* Top Floating Gesture Bar */}
       <div
-        className="w-full max-w-6xl mb-3 flex items-center justify-between text-xs text-white/90 px-3 py-1.5 rounded-full bg-slate-900/80 border border-slate-700/80 backdrop-blur-md shadow-lg"
+        className="w-full max-w-6xl mb-3 flex items-center justify-between text-xs text-white px-3 py-1.5 rounded-full bg-slate-900/90 border border-slate-700 backdrop-blur-md shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-700 font-bold transition"
+          className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold transition"
         >
           <ChevronLeftIcon className="w-4 h-4" />
           <span>Back to Feed</span>
         </button>
 
-        <div className="hidden sm:flex items-center gap-3 text-slate-300 font-medium">
+        <div className="hidden sm:flex items-center gap-3 text-white font-bold">
           <span className="flex items-center gap-1 text-purple-300">
             <SparklesIcon className="w-3.5 h-3.5" />
             <span>Swipe Left or Up for Next Photo/Video</span>
           </span>
-          <span className="text-slate-600 font-bold">•</span>
+          <span className="text-slate-400 font-bold">•</span>
           <span>{currentIndex + 1} of {allPins.length}</span>
         </div>
 
@@ -262,7 +360,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
               <span className="text-xs font-black uppercase tracking-wider text-purple-700 block">
                 {pin.categoryLabel || 'SOVEREIGN TRIBUT'}
               </span>
-              <span className="text-[11px] text-slate-600 font-semibold">
+              <span className="text-[11px] text-slate-700 font-semibold">
                 Board: <strong>{pin.boardName}</strong>
               </span>
             </div>
@@ -331,7 +429,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                     }}
                     className="w-full px-4 py-2 text-left font-bold text-slate-800 hover:bg-slate-100 flex items-center gap-2"
                   >
-                    <ShareIcon className="w-4 h-4 text-slate-600" />
+                    <ShareIcon className="w-4 h-4 text-slate-700" />
                     Copy Design Link
                   </button>
                   <button
@@ -357,7 +455,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                 className="flex items-center gap-1 px-3 py-2 rounded-full text-xs font-bold text-slate-950 bg-slate-100 hover:bg-slate-200 transition border border-slate-400 font-black"
               >
                 <span className="truncate max-w-[90px]">{selectedBoardName}</span>
-                <ChevronDownIcon className="w-3.5 h-3.5 text-slate-600" />
+                <ChevronDownIcon className="w-3.5 h-3.5 text-slate-700" />
               </button>
 
               {showBoardDropdown && (
@@ -400,12 +498,13 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
           <div className="lg:col-span-6 bg-slate-950 relative flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden select-none">
             {/* Visual media container with aspect ratio handling */}
             <div className="relative max-h-[680px] w-full flex items-center justify-center">
-              {pin.videoUrl ? (
+              {isVideoMedia ? (
                 <video
-                  src={pin.videoUrl}
+                  src={pin.videoUrl || activeMediaUrl}
                   controls
                   autoPlay
                   loop
+                  playsInline
                   className="max-h-[640px] w-auto max-w-full rounded-2xl object-contain shadow-2xl"
                 />
               ) : (
@@ -644,10 +743,10 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                   className="w-full flex items-center justify-between text-left py-1 text-slate-900 hover:text-purple-700 transition"
                 >
                   <span className="text-base font-black text-slate-900">
-                    {pin.comments?.length || 14} Comments & Design Notes
+                    {pinComments.length} Comments & Design Notes
                   </span>
                   <ChevronDownIcon
-                    className={`w-5 h-5 text-slate-600 transition-transform duration-200 ${
+                    className={`w-5 h-5 text-slate-700 transition-transform duration-200 ${
                       showComments ? 'rotate-180' : ''
                     }`}
                   />
@@ -657,8 +756,8 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                   <div className="space-y-3 pt-1">
                     {/* Comments List */}
                     <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
-                      {pin.comments && pin.comments.length > 0 ? (
-                        pin.comments.map((comm) => (
+                      {pinComments.length > 0 ? (
+                        pinComments.map((comm) => (
                           <div key={comm.id} className="flex items-start gap-2.5 text-xs">
                             <img
                               src={comm.authorAvatar}
@@ -678,7 +777,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                                   {comm.critiqueTag}
                                 </span>
                               )}
-                              <div className="flex items-center gap-3 pt-1 text-[11px] font-semibold text-slate-600">
+                              <div className="flex items-center gap-3 pt-1 text-[11px] font-semibold text-slate-700">
                                 <button
                                   type="button"
                                   aria-label={`Reply to ${comm.authorName || 'this comment'}`}
@@ -697,7 +796,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                           </div>
                         ))
                       ) : (
-                        <div className="text-xs text-slate-600 py-2">
+                        <div className="text-xs text-slate-700 py-2 font-medium">
                           No design notes yet. Be the first to discuss this pin!
                         </div>
                       )}
@@ -719,7 +818,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                           <button
                             type="button"
                             onClick={() => setActiveEmojiPicker(!activeEmojiPicker)}
-                            className="p-1.5 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-200 transition"
+                            className="p-1.5 text-slate-700 hover:text-slate-900 rounded-full hover:bg-slate-200 transition"
                             title="Insert Emoji"
                           >
                             <EmojiHappyIcon className="w-4 h-4" />
@@ -727,7 +826,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                           <button
                             type="button"
                             onClick={() => setCommentText((prev) => prev + ' [Design Spec Review] ')}
-                            className="p-1.5 text-slate-600 hover:text-slate-900 rounded-full hover:bg-slate-200 transition text-[10px] font-black"
+                            className="p-1.5 text-slate-700 hover:text-slate-900 rounded-full hover:bg-slate-200 transition text-[10px] font-black"
                             title="Add Critique Tag"
                           >
                             GIF
@@ -747,7 +846,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                             type="button"
                             onClick={() => fileInputRef.current?.click()}
                             className={`p-1.5 rounded-full hover:bg-slate-200 transition cursor-pointer ${
-                              attachedAsset ? 'text-emerald-600 bg-emerald-50' : 'text-slate-600 hover:text-slate-900'
+                              attachedAsset ? 'text-emerald-600 bg-emerald-50' : 'text-slate-700 hover:text-slate-900'
                             }`}
                             title={attachedAsset ? `Attached: ${attachedAsset}` : 'Attach Photo'}
                           >
@@ -760,7 +859,7 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
                             className={`px-3 py-1.5 rounded-full text-xs font-bold transition ${
                               commentText.trim()
                                 ? 'bg-purple-600 hover:bg-purple-500 text-white'
-                                : 'bg-slate-200 text-slate-500 font-bold cursor-not-allowed'
+                                : 'bg-slate-200 text-slate-700 font-bold cursor-not-allowed'
                             }`}
                           >
                             Post
@@ -816,37 +915,50 @@ export const TributPinDetailModal: React.FC<TributPinDetailModalProps> = ({
         {/* ================= BOTTOM SECTION: "MORE IN THIS PALETTE / SKIN TONE RANGE" & RELATED PINS ================= */}
         <div className="p-6 sm:p-8 bg-slate-50 border-t border-slate-200 space-y-6">
           {/* Palette Swatches Bar (Mirrors the screenshot's "More in your skin tone range") */}
-          <div className="space-y-2.5">
-            <div className="flex items-center justify-between">
+          <div className="space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <SwatchIcon className="w-4 h-4 text-purple-700" />
-                <h4 className="text-sm font-black text-slate-900">
-                  More in your skin tone range & color palette
-                </h4>
+                <SwatchIcon className="w-5 h-5 text-purple-700" />
+                <div>
+                  <h4 className="text-sm font-black text-slate-900">
+                    More in your skin tone range & color palette
+                  </h4>
+                  <p className="text-xs text-slate-700">
+                    Curated melanin-balanced undertones & editorial lighting grades
+                  </p>
+                </div>
               </div>
-              <span className="text-xs text-slate-600 font-semibold">
-                Click a swatch to filter matching pins
+              <span className="text-xs text-slate-800 font-bold">
+                {selectedColorSwatch ? `Filtering: ${selectedColorSwatch} (Click to reset)` : 'Select a swatch to filter matching skin tones & aesthetics'}
               </span>
             </div>
 
-            <div className="flex items-center gap-3 overflow-x-auto pb-1">
-              {paletteSwatches.map((color, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedColorSwatch(selectedColorSwatch === color ? null : color)}
-                  className={`w-16 h-8 rounded-lg shadow-sm border transition-all transform hover:scale-105 flex items-center justify-center ${
-                    selectedColorSwatch === color
-                      ? 'ring-2 ring-purple-600 ring-offset-2 scale-105 border-white'
-                      : 'border-slate-300'
-                  }`}
-                  style={{ backgroundColor: color }}
-                  title={`Color: ${color}`}
-                >
-                  <span className="text-[10px] font-bold text-slate-700 drop-shadow-md">
-                    {color}
-                  </span>
-                </button>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+              {skinToneSpectrum.map((swatch, idx) => {
+                const isSelected = selectedColorSwatch === swatch.code;
+                const textColor = getContrastTextColor(swatch.code);
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setSelectedColorSwatch(isSelected ? null : swatch.code)}
+                    className={`py-2.5 px-3 rounded-2xl border text-xs font-bold transition-all transform hover:scale-[1.03] flex flex-col items-center justify-between shadow-sm min-h-[64px] ${
+                      isSelected
+                        ? 'ring-2 ring-purple-600 ring-offset-2 scale-105 border-white shadow-md'
+                        : 'border-slate-300'
+                    }`}
+                    style={{ backgroundColor: swatch.code }}
+                    title={`Skin Tone Range: ${swatch.label} (${swatch.code})`}
+                  >
+                    <span className={`text-[10px] font-black uppercase tracking-wider ${textColor}`}>
+                      {swatch.family}
+                    </span>
+                    <span className={`text-[11px] font-mono font-bold ${textColor} drop-shadow-sm`}>
+                      {swatch.code}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 

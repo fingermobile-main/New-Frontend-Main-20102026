@@ -5,9 +5,7 @@ import {
 } from '../../data/tributData';
 import {
   BookmarkIcon,
-  SparklesIcon,
-  ShoppingBagIcon,
-  ArrowsPointingOutIcon
+  SparklesIcon
 } from '../../icons';
 import { Check } from 'lucide-react';
 
@@ -45,6 +43,12 @@ export const TributDisplayStyleRenderer: React.FC<TributDisplayStyleRendererProp
   ) => {
     const isSaved = savedPinIds.includes(pin.id);
     const isSelected = selectedIds.includes(pin.id);
+    const isVideo = !!(
+      pin.videoUrl ||
+      pin.mediaType === 'video' ||
+      (pin.mediaUrl && (pin.mediaUrl.endsWith('.mp4') || pin.mediaUrl.endsWith('.webm') || pin.mediaUrl.includes('video')))
+    );
+    const videoSrc = pin.videoUrl || (isVideo ? pin.mediaUrl : undefined);
 
     return (
       <div
@@ -63,15 +67,21 @@ export const TributDisplayStyleRenderer: React.FC<TributDisplayStyleRendererProp
         } ${customExtraClasses}`}
       >
         {/* Visual Media */}
-        {pin.videoUrl ? (
-          <video
-            src={pin.videoUrl}
-            muted
-            loop
-            autoPlay
-            playsInline
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
+        {isVideo && videoSrc ? (
+          <div className="w-full h-full relative">
+            <video
+              src={videoSrc}
+              muted
+              loop
+              autoPlay
+              playsInline
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute bottom-2 left-2 px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-sm text-white text-[9px] font-black uppercase tracking-wider flex items-center gap-1 pointer-events-none">
+              <span>▶</span>
+              <span>Video</span>
+            </div>
+          </div>
         ) : (
           <img
             src={pin.mediaUrl}
@@ -213,7 +223,7 @@ export const TributDisplayStyleRenderer: React.FC<TributDisplayStyleRendererProp
                   <span className="w-2.5 h-2.5 rounded-full bg-purple-600" />
                   {isTriptych ? 'Sequential Triptych Story' : 'Diptych Contrast Pair'}
                 </span>
-                <span className="text-slate-600 font-semibold">
+                <span className="text-slate-700 font-semibold">
                   {chunk[0]?.boardName || 'Curated Design Series'}
                 </span>
               </div>
@@ -457,7 +467,7 @@ export const TributDisplayStyleRenderer: React.FC<TributDisplayStyleRendererProp
                 {beforeAfterPin.title}
               </h3>
             </div>
-            <span className="text-xs text-slate-600 font-semibold">
+            <span className="text-xs text-slate-700 font-semibold">
               Drag slider or click image to inspect design notes
             </span>
           </div>

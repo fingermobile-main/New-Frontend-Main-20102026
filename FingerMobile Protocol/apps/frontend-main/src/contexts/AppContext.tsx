@@ -811,6 +811,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
           email: u.email || '',
           avatar: u.avatar || u.avatarUrl || '/assets/branding/default-avatar.svg',
           role: u.role || 'Member',
+          permissions: u.permissions || [],
           status: u.status || 'Active',
           tier: u.tier || 'Gold',
           kycStatus: u.kycStatus || 'Verified',
@@ -819,7 +820,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
           lastActive: u.lastActive || new Date().toISOString(),
           walletAddress: u.walletAddress || '0x7498...22',
           ficBalance: u.ficBalance || 1000
-        } as Member;
+        } as unknown as Member;
       } catch {
         return null;
       }
@@ -845,6 +846,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
               email: updated.email || '',
               avatar: updated.avatar || '/assets/branding/default-avatar.svg',
               role: 'Member',
+              permissions: (updated as any).permissions || [],
               status: 'Active',
               tier: 'Gold',
               kycStatus: 'Verified',
@@ -853,7 +855,7 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
               lastActive: new Date().toISOString(),
               walletAddress: '0x7498...22',
               ficBalance: 1000
-            } as Member;
+            } as unknown as Member;
           }
           return {
             ...prev,

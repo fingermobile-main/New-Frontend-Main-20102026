@@ -28,7 +28,7 @@ import {
   Music, Tv, ShieldAlert, Plus,
   Clock, AlertTriangle, Send, Play, Video,
   Image as ImageIcon, CheckCircle2, ChevronLeft, ChevronRight,
-  Coins, Gem, Sparkles, Download, Eye, X, Volume2
+  Coins, Gem, Download, X, Volume2
 } from 'lucide-react';
 import voiceLineServiceInstance from '../services/VoiceLineService';
 
@@ -57,7 +57,7 @@ const MiiPage: React.FC = () => {
   const [viewerCardIndex, setViewerCardIndex] = useState(0);
 
   // FingerOrbit Inline State
-  const [orbitFolders, setOrbitFolders] = useState<any[]>([]);
+  const [_orbitFolders, setOrbitFolders] = useState<any[]>([]);
   const [orbitVideoItems, setOrbitVideoItems] = useState<any[]>([]);
   const [orbitImageItems, setOrbitImageItems] = useState<any[]>([]);
   const [activeOrbitTab, setActiveOrbitTab] = useState<'video' | 'image'>('video');
@@ -920,6 +920,206 @@ const MiiPage: React.FC = () => {
         onClose={() => setShowMiniStoreModal(false)}
         showToast={showToast}
       />
+
+      {/* Interactive 48h Mii Story Viewer Modal */}
+      {selectedStoryViewer && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/90 backdrop-blur-md animate-fade-in"
+          onClick={() => setSelectedStoryViewer(null)}
+        >
+          <div
+            className="relative w-full max-w-lg bg-black rounded-3xl overflow-hidden shadow-2xl border border-slate-700 flex flex-col aspect-[9/16] max-h-[88vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Story Progress Indicators */}
+            <div className="absolute top-3 left-3 right-3 z-30 flex items-center gap-1.5">
+              {(selectedStoryViewer.cards || [1]).map((_: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="h-1 flex-1 rounded-full bg-white/30 overflow-hidden"
+                >
+                  <div
+                    className={`h-full bg-white transition-all duration-300 ${
+                      idx === viewerCardIndex ? 'w-full' : idx < viewerCardIndex ? 'w-full opacity-60' : 'w-0'
+                    }`}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Top Author Details and Close */}
+            <div className="absolute top-6 left-4 right-4 z-30 flex items-center justify-between text-white">
+              <div className="flex items-center gap-2">
+                <img
+                  src={selectedStoryViewer.author_avatar || '/assets/branding/mbah_israel_obinna.jpeg'}
+                  alt={selectedStoryViewer.author_name}
+                  className="w-9 h-9 rounded-full object-cover border border-white"
+                />
+                <div>
+                  <h4 className="text-xs font-bold flex items-center gap-1">
+                    {selectedStoryViewer.author_name}
+                    {selectedStoryViewer.author_verified && (
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    )}
+                  </h4>
+                  <span className="text-[10px] text-white/80">
+                    Card {viewerCardIndex + 1} of {selectedStoryViewer.cards?.length || 1} • {selectedStoryViewer.hours_remaining ? `${Math.round(parseFloat(selectedStoryViewer.hours_remaining))}h remaining` : '48h'}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setSelectedStoryViewer(null)}
+                className="p-1.5 rounded-full bg-black/50 text-white hover:bg-white/20 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Main Media Card Content */}
+            <div className="relative flex-1 flex items-center justify-center bg-black overflow-hidden">
+              {selectedStoryViewer.cards && selectedStoryViewer.cards[viewerCardIndex] ? (
+                selectedStoryViewer.cards[viewerCardIndex].media_type === 'video' ? (
+                  <video
+                    src={selectedStoryViewer.cards[viewerCardIndex].media_url}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <img
+                    src={selectedStoryViewer.cards[viewerCardIndex].media_url}
+                    alt={selectedStoryViewer.cards[viewerCardIndex].caption || 'Mii Story Card'}
+                    className="w-full h-full object-contain"
+                  />
+                )
+              ) : (
+                <div className="text-white text-xs">No media loaded</div>
+              )}
+
+              {/* Prev / Next Click Zones */}
+              <div
+                className="absolute inset-y-0 left-0 w-1/3 z-20 cursor-pointer"
+                onClick={() => setViewerCardIndex((prev) => Math.max(0, prev - 1))}
+              />
+              <div
+                className="absolute inset-y-0 right-0 w-1/3 z-20 cursor-pointer"
+                onClick={() => {
+                  if (selectedStoryViewer.cards && viewerCardIndex < selectedStoryViewer.cards.length - 1) {
+                    setViewerCardIndex((prev) => prev + 1);
+                  } else {
+                    setSelectedStoryViewer(null);
+                  }
+                }}
+              />
+            </div>
+
+            {/* Bottom Caption and Actions */}
+            <div className="p-4 bg-gradient-to-t from-black via-black/80 to-transparent z-30 text-white space-y-3">
+              {selectedStoryViewer.cards && selectedStoryViewer.cards[viewerCardIndex]?.caption && (
+                <p className="text-xs text-white/95 font-medium line-clamp-2">
+                  {selectedStoryViewer.cards[viewerCardIndex].caption}
+                </p>
+              )}
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setSelectedStoryViewer(null);
+                    setActiveTab('chats');
+                    showToast(`Replying to ${selectedStoryViewer.author_name}'s story`, 'info');
+                  }}
+                  className="flex-1 py-2 px-3 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-bold backdrop-blur-md transition-colors text-center"
+                >
+                  Send Reply in Chat
+                </button>
+                <button
+                  onClick={() => showToast('❤️ Reacted to story!', 'success')}
+                  className="p-2 rounded-xl bg-white/20 hover:bg-white/30 text-white backdrop-blur-md transition-colors"
+                >
+                  ❤️
+                </button>
+                <button
+                  onClick={() => showToast('🔥 Reacted to story!', 'success')}
+                  className="p-2 rounded-xl bg-white/20 hover:bg-white/30 text-white backdrop-blur-md transition-colors"
+                >
+                  🔥
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tokenized Download PIN Verification Modal */}
+      {pinUnlockTarget && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in"
+          onClick={() => setPinUnlockTarget(null)}
+        >
+          <div
+            className="bg-white dark:bg-gray-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-300 dark:border-gray-800 space-y-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-gray-800">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-900 flex items-center justify-center font-bold">
+                  <Lock className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm text-slate-900 dark:text-white">Tokenized PIN Download</h4>
+                  <span className="text-[10px] text-slate-700 font-semibold">FingerOrbit™ Sovereign DRM</span>
+                </div>
+              </div>
+              <button
+                onClick={() => setPinUnlockTarget(null)}
+                className="p-1 rounded-full text-slate-500 hover:bg-slate-100"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-700 leading-relaxed">
+              Unlocking <strong>&quot;{pinUnlockTarget.title}&quot;</strong> requires entering the mutual 6–8 Digit Peer PIN code exchanged with the asset creator.
+            </p>
+
+            <form onSubmit={handleExecutePinDownload} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-800 dark:text-slate-200 mb-1">
+                  6 to 8 Digit PIN Code
+                </label>
+                <input
+                  type="password"
+                  maxLength={8}
+                  required
+                  value={pinCodeInput}
+                  onChange={(e) => setPinCodeInput(e.target.value.replace(/\D/g, ''))}
+                  placeholder="e.g. 789456"
+                  className="w-full px-3 py-2.5 text-sm font-mono tracking-widest bg-white dark:bg-gray-800 border border-slate-300 dark:border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-bold"
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPinUnlockTarget(null)}
+                  className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isAuthorizingPin}
+                  className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-colors shadow flex items-center justify-center gap-1.5"
+                >
+                  {isAuthorizingPin ? 'Verifying PIN...' : 'Authorize & Download'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Sovereign Mobile Navigation Quick Dock */}
       <nav

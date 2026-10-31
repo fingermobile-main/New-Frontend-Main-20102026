@@ -1127,7 +1127,7 @@ export const ProfilePage: React.FC = () => {
           firstName: parts[0] || authUser.firstName,
           lastName: parts.slice(1).join(' ') || authUser.lastName,
           username: updated.username,
-          avatar: profile.avatarUrl,
+          avatar: profile.avatarUrl || undefined,
           bio: updated.bio || updated.headline,
           location: updated.location
         });

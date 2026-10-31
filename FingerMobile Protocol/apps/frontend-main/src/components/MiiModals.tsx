@@ -743,16 +743,18 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
 
                   <div className="grid grid-cols-2 gap-2">
                     <button
+                      disabled={isPurchasing}
                       onClick={() => handleBuy(product, 'FIC')}
-                      className="py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors"
+                      className="py-1.5 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
                     >
-                      Pay FIC
+                      {isPurchasing ? 'Processing...' : 'Pay FIC'}
                     </button>
                     <button
+                      disabled={isPurchasing}
                       onClick={() => handleBuy(product, 'Gems')}
-                      className="py-1.5 px-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-bold transition-colors"
+                      className="py-1.5 px-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-bold transition-colors disabled:opacity-50"
                     >
-                      Pay Gems
+                      {isPurchasing ? 'Processing...' : 'Pay Gems'}
                     </button>
                   </div>
                 </div>
