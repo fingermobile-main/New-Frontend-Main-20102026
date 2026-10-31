@@ -1699,3 +1699,4 @@ export const MiiEncryptedPeerChat: React.FC<MiiEncryptedPeerChatProps> = ({
 };
 
 export default MiiEncryptedPeerChat;
+
