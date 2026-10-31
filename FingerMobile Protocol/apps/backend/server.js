@@ -158,7 +158,8 @@ app.use(
 // Rate limiting - Enhanced with more specific limits
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10000, // limit each IP to 100 requests per windowMs
+  max: 100000,
+  skip: (req) => process.env.NODE_ENV !== 'production' || req.ip === '127.0.0.1' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1' || req.path === '/health',
   message: {
     success: false,
     message: 'Too many requests from this IP, please try again later.'
@@ -169,7 +170,8 @@ const generalLimiter = rateLimit({
 
 const sensitiveLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // limit each IP to 10 sensitive requests per windowMs
+  max: 10000,
+  skip: (req) => process.env.NODE_ENV !== 'production' || req.ip === '127.0.0.1' || req.ip === '::1' || req.ip === '::ffff:127.0.0.1',
   message: {
     success: false,
     message: 'Too many sensitive requests from this IP, please try again later.'
