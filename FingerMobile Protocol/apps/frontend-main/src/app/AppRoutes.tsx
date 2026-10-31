@@ -84,6 +84,7 @@ const CommunityPages = lazy(() => import('../pages/CommunityPages'));
 const CommunityManagementPage = lazy(() => import('../pages/dashboard/community/CommunityManagementPage'));
 const CommunityGuidelinesPage = lazy(() => import('../pages/legal/CommunityGuidelinesPage'));
 const CommunityStandardsNudityPage = lazy(() => import('../pages/legal/CommunityStandardsNudityPage'));
+const CSAEPolicyPage = lazy(() => import('../pages/legal/CSAEPolicyPage'));
 const GroupsPage = lazy(() => import('../pages/GroupsPage')); // Consolidated standard
 const GroupDetailPage = lazy(() => import('../pages/groups/GroupDetailPage')); // Consolidated standard
 const CreateGroupPage = lazy(() => import('../pages/CreateGroupPage'));
@@ -389,6 +390,10 @@ export const routes: RouteObject[] = [
           { path: '/community-standards-nudity', element: <CommunityStandardsNudityPage /> },
           { path: '/legal/community-standards-nudity', element: <CommunityStandardsNudityPage /> },
           { path: '/legal/nudity-policy', element: <CommunityStandardsNudityPage /> },
+          { path: '/csaepolicy', element: <CSAEPolicyPage /> },
+          { path: '/csae-policy', element: <CSAEPolicyPage /> },
+          { path: '/legal/csae-policy', element: <CSAEPolicyPage /> },
+          { path: '/legal/csaepolicy', element: <CSAEPolicyPage /> },
           { path: '/privacy', element: redirectTo('/privacypolicy') },
           { path: '/privacy-policy', element: redirectTo('/privacypolicy') },
           { path: '/privacypolicy', element: <PrivacyPolicyPage /> },
@@ -836,7 +841,6 @@ export const routes: RouteObject[] = [
           { path: '/resources', element: redirectTo('/mydownloads') },
           { path: '/success', element: <SuccessPage /> },
           { path: '/community-guidelines', element: redirectTo('/communityguidelines') },
-          { path: '/csae-policy', element: redirectTo('/csaepolicy') },
           { path: '/live-spaces', element: redirectTo('/livestreaming') },
           { path: '/fic/wallet', element: redirectTo('/wallet') },
           { path: '/financials/vault', element: redirectTo('/vault') },
