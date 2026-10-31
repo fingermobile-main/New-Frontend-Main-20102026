@@ -151,8 +151,10 @@ const soundRiverConsoleRoutes = require('./sound-river-console');
 const luminaGalleryConsoleRoutes = require('./lumina-gallery-console');
 const subscriptionModelsConsoleRoutes = require('./subscription-models-console');
 const userConsentRoutes = require('./userConsentRoutes');
+const moduleInteractionsRoutes = require('./moduleInteractions');
 
 // Mount individual route modules under their respective paths
+router.use('/module-interactions', moduleInteractionsRoutes);
 router.use('/communities-console', communitiesConsoleRoutes);
 router.use('/media-streaming-console', mediaStreamingConsoleRoutes);
 router.use('/media-console', mediaStreamingConsoleRoutes);

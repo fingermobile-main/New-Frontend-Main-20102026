@@ -17,6 +17,7 @@ import { PlatformWidgetsAndAdsRail } from '../components/widgets/PlatformWidgets
 import ConnectWidget from '../components/widgets/ConnectWidget';
 import DiscoverWidget from '../components/widgets/DiscoverWidget';
 import voiceLineServiceInstance from '../services/VoiceLineService';
+import SovereignModuleEngagementHub from '../components/common/SovereignModuleEngagementHub';
 import {
   ShieldCheck,
   Sparkles,
@@ -632,6 +633,8 @@ const BlogsPage: React.FC = () => {
 
                 {/* CENTER COLUMN (6 cols): Scrollable, no load more, no end */}
                 <div className="lg:col-span-6 space-y-6">
+                  {/* Sovereign Engagement & Activity Console */}
+                  <SovereignModuleEngagementHub module="blogs" />
                   {filteredPosts.length > 0 ? (
                     <div
                       className={
