@@ -629,3 +629,4 @@ export const LiveSelfieCaptureModal: React.FC<LiveSelfieCaptureModalProps> = ({
     </div>
   );
 };
+
