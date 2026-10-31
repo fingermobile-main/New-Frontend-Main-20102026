@@ -48,6 +48,14 @@ class MiiController {
     this.exchangePin = this.exchangePin.bind(this);
     this.acceptPin = this.acceptPin.bind(this);
     this.revokePin = this.revokePin.bind(this);
+
+    // Direct Encrypted Mii Peer Chat & Folder Permissions
+    this.getPeerMessages = this.getPeerMessages.bind(this);
+    this.sendPeerMessage = this.sendPeerMessage.bind(this);
+    this.handleMessageAction = this.handleMessageAction.bind(this);
+    this.reportPeerMessage = this.reportPeerMessage.bind(this);
+    this.getPeerConversations = this.getPeerConversations.bind(this);
+    this.updatePinPermission = this.updatePinPermission.bind(this);
     this.getContactsList = this.getContactsList.bind(this);
 
     // FingerOrbit™©®
