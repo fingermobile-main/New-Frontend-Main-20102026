@@ -209,7 +209,7 @@ export const PeopleYouMayKnowCarousel: React.FC<PeopleYouMayKnowCarouselProps> =
       {/* Horizontal Carousel Track */}
       <div
         ref={scrollContainerRef}
-        className="flex items-stretch gap-4 overflow-x-auto pb-2 scroll-smooth no-scrollbar"
+        className="flex items-stretch gap-4 overflow-x-auto pb-2 scroll-smooth no-scrollbar scrollbar-none"
         style={{ scrollSnapType: 'x mandatory' }}
       >
         {recommendations.map((rec) => {

@@ -398,14 +398,24 @@ export const ProfilePage: React.FC = () => {
             }
             // Propagate Source of Truth to UserProfileSyncService for my own profile ONLY
             if ((!id || id === 'me' || id === activeUser?.id) && activeUser?.id) {
-              userProfileSyncService.updateProfile({
-                name: data.header.display_name,
-                username: data.header.username,
-                avatar: data.header.avatar_url,
-                coverImage: data.header.cover_url,
-                headline: data.about.bio,
-                location: data.about.location
-              });
+              const currentSync = userProfileSyncService.getProfile();
+              if (
+                data.header.display_name !== currentSync.name ||
+                data.header.username !== currentSync.username ||
+                (data.header.avatar_url && data.header.avatar_url !== currentSync.avatar) ||
+                (data.header.cover_url && data.header.cover_url !== currentSync.coverImage) ||
+                (data.about.bio && data.about.bio !== currentSync.headline) ||
+                (data.about.location && data.about.location !== currentSync.location)
+              ) {
+                userProfileSyncService.updateProfile({
+                  name: data.header.display_name,
+                  username: data.header.username,
+                  avatar: data.header.avatar_url,
+                  coverImage: data.header.cover_url,
+                  headline: data.about.bio,
+                  location: data.about.location
+                });
+              }
             }
           }
         }
@@ -472,7 +482,7 @@ export const ProfilePage: React.FC = () => {
     };
 
     fetchBackendProfile();
-  }, [id, member]);
+  }, [id, member?.id]);
 
   // Live reactive subscription to userProfileSyncService for immediate cross-tab sync
   useEffect(() => {
@@ -490,7 +500,7 @@ export const ProfilePage: React.FC = () => {
       });
       return unsub;
     }
-  }, [id, member]);
+  }, [id, member?.id]);
 
   // Wall Posts formatted according to http://localhost:3000/forum Post Card specification
   const [wallPosts, setWallPosts] = useState<FeedPost[]>([
@@ -1271,7 +1281,7 @@ export const ProfilePage: React.FC = () => {
       )}
 
       {/* RELATIONSHIP ROLE SIMULATOR / CHARTER TESTER TOOLBAR */}
-      <div className="bg-slate-900 text-white px-4 py-2 border-b border-slate-800 text-xs">
+      <div className="bg-slate-900 text-white px-4 py-2 border-b border-slate-800 text-xs pl-14 sm:pl-32">
         <div className="w-full max-w-[1536px] 2xl:max-w-[1680px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Sliders className="w-4 h-4 text-orange-400" />
@@ -1903,7 +1913,7 @@ export const ProfilePage: React.FC = () => {
           <main className="lg:col-span-8 space-y-6">
 
             {/* MULTI-TAB NAVIGATION BAR */}
-            <div className="bg-white rounded-3xl border border-slate-300 p-2 shadow-sm overflow-x-auto">
+            <div className="bg-white rounded-3xl border border-slate-300 p-2 shadow-sm overflow-x-auto scrollbar-none no-scrollbar">
               <nav className="flex items-center gap-1.5 min-w-max">
                 {[
                   { id: 'wall' as ProfileTab, label: 'Wall Posts', icon: MessageSquare, count: visiblePosts.length },

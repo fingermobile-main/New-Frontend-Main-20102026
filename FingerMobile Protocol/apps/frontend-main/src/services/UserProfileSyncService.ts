@@ -530,6 +530,23 @@ class UserProfileSyncService {
 
   public updateProfile(updates: Partial<ComprehensiveUserProfile>): ComprehensiveUserProfile {
     const current = this.getProfile();
+
+    // Check if any provided field actually differs from current state
+    const keys = Object.keys(updates) as (keyof ComprehensiveUserProfile)[];
+    const hasMeaningfulDifference = keys.some((key) => {
+      const newVal = updates[key];
+      const curVal = current[key];
+      if (newVal === undefined) return false;
+      if (typeof newVal === 'object' && newVal !== null) {
+        return JSON.stringify(newVal) !== JSON.stringify(curVal);
+      }
+      return newVal !== curVal;
+    });
+
+    if (!hasMeaningfulDifference) {
+      return current;
+    }
+
     const updated: ComprehensiveUserProfile = {
       ...current,
       ...updates,

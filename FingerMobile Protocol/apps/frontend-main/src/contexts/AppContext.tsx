@@ -857,12 +857,26 @@ export const AppProvider: React.FC<Props> = ({ children }) => {
               ficBalance: 1000
             } as unknown as Member;
           }
+          const newName = updated.name || prev.name;
+          const newUsername = updated.username || prev.username;
+          const newAvatar = updated.avatar || prev.avatar;
+          const newEmail = updated.email || prev.email;
+
+          if (
+            prev.name === newName &&
+            prev.username === newUsername &&
+            prev.avatar === newAvatar &&
+            prev.email === newEmail
+          ) {
+            return prev;
+          }
+
           return {
             ...prev,
-            name: updated.name || prev.name,
-            username: updated.username || prev.username,
-            avatar: updated.avatar || prev.avatar,
-            email: updated.email || prev.email
+            name: newName,
+            username: newUsername,
+            avatar: newAvatar,
+            email: newEmail
           };
         });
       }
