@@ -661,22 +661,22 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-3xl shadow-2xl border border-slate-300 dark:border-gray-800 overflow-hidden">
-        {/* Header */}
-        <div className="px-6 py-4 bg-gradient-to-r from-purple-700 to-indigo-800 text-white flex items-center justify-between">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md overflow-y-auto animate-fade-in">
+      <div className="bg-white dark:bg-gray-900 rounded-3xl w-full max-w-4xl shadow-2xl border border-slate-300 dark:border-gray-800 flex flex-col max-h-[90vh] overflow-hidden my-auto">
+        {/* Header - Pinned in Viewport */}
+        <div className="px-6 py-4 bg-gradient-to-r from-purple-700 to-indigo-800 text-white flex items-center justify-between shrink-0">
           <div className="flex items-center space-x-2">
-            <ShoppingBag className="w-5 h-5" />
-            <h3 className="font-bold text-lg">Mii™ MiniStore: Two (2) Page Catalogue</h3>
+            <ShoppingBag className="w-5 h-5 text-amber-300" />
+            <h3 className="font-black text-base sm:text-lg tracking-tight">Mii™ MiniStore: Two (2) Page Catalogue</h3>
           </div>
-          <button aria-label="Close" type="button" onClick={onClose} className="p-1 rounded-full hover:bg-white/20 transition-colors">
+          <button aria-label="Close" type="button" onClick={onClose} className="p-1.5 rounded-full hover:bg-white/20 transition-colors cursor-pointer">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Page Switcher indicator */}
-        <div className="flex items-center justify-between px-6 py-3 bg-gray-50 dark:bg-gray-800/40 border-b border-slate-300 dark:border-gray-800">
-          <div className="text-xs font-bold text-gray-700 dark:text-gray-300">
+        {/* Page Switcher indicator - Pinned in Viewport */}
+        <div className="flex items-center justify-between px-6 py-3 bg-slate-50 dark:bg-gray-800/40 border-b border-slate-300 dark:border-gray-800 shrink-0">
+          <div className="text-xs font-bold text-slate-800 dark:text-gray-200">
             {currentPage === 1 ? 'Page 1: Physical Merch & Collectibles' : 'Page 2: Digital Passes & Creative Packs'}
           </div>
 
@@ -684,24 +684,24 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
             <button
               disabled={currentPage === 1}
               onClick={() => setCurrentPage(1)}
-              className={`p-1.5 rounded-lg border text-xs font-bold flex items-center gap-1 ${
+              className={`p-1.5 px-3 rounded-xl border text-xs font-bold flex items-center gap-1 transition-all ${
                 currentPage === 1
-                  ? 'opacity-40 cursor-not-allowed border-gray-300 dark:border-gray-700'
-                  : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-100'
+                  ? 'opacity-40 cursor-not-allowed border-slate-300 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50'
+                  : 'bg-white dark:bg-gray-800 border-slate-300 dark:border-gray-600 hover:bg-slate-100 text-slate-900 dark:text-white cursor-pointer shadow-xs'
               }`}
             >
               <ChevronLeft className="w-4 h-4" /> Page 1
             </button>
-            <span className="text-xs font-mono font-bold text-purple-600 dark:text-purple-400">
+            <span className="text-xs font-mono font-bold text-purple-700 dark:text-purple-400 px-2 py-0.5 rounded-md bg-purple-50 dark:bg-purple-950/50 border border-purple-200 dark:border-purple-800">
               [{currentPage} / 2]
             </span>
             <button
               disabled={currentPage === 2}
               onClick={() => setCurrentPage(2)}
-              className={`p-1.5 rounded-lg border text-xs font-bold flex items-center gap-1 ${
+              className={`p-1.5 px-3 rounded-xl border text-xs font-bold flex items-center gap-1 transition-all ${
                 currentPage === 2
-                  ? 'opacity-40 cursor-not-allowed border-gray-300 dark:border-gray-700'
-                  : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:bg-gray-100'
+                  ? 'opacity-40 cursor-not-allowed border-slate-300 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50'
+                  : 'bg-white dark:bg-gray-800 border-slate-300 dark:border-gray-600 hover:bg-slate-100 text-slate-900 dark:text-white cursor-pointer shadow-xs'
               }`}
             >
               Page 2 <ChevronRight className="w-4 h-4" />
@@ -709,8 +709,8 @@ export const MiiMiniStoreModal: React.FC<MiniStoreModalProps> = ({
           </div>
         </div>
 
-        {/* Products Grid */}
-        <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Products Grid - Scrollable inside modal so it NEVER overflows the viewport */}
+        <div className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 overflow-y-auto flex-1 scrollbar-none no-scrollbar">
           {catalogProducts.map((product) => (
             <div
               key={product.id}
