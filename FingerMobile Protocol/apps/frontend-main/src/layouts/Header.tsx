@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Bars3Icon,
   BellIcon,
@@ -14,17 +15,19 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({
-  sidebarOpen,
+  sidebarOpen: _sidebarOpen,
   onToggleSidebar,
   user
 }) => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const isOnboarded = checkIsOnboarded(user);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle search logic here
-    console.log('Searching for:', searchQuery);
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   return (

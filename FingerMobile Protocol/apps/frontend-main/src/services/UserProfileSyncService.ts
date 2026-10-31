@@ -533,8 +533,8 @@ class UserProfileSyncService {
         } catch {
           // Non-blocking network fallback
         }
-      } catch (err) {
-        console.warn('LocalStorage error while syncing profile', err);
+      } catch {
+        // LocalStorage fallback
       }
     }
 

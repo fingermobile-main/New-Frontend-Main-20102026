@@ -1,5 +1,5 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../contexts/AppContext';
 import {
   BellIcon,
@@ -13,6 +13,8 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
   const {
     unreadNotifications,
     toggleNotifications,
@@ -20,6 +22,14 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
     showSearch,
     setShowSearch
   } = useAppContext();
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setShowSearch?.(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F5F9F6] flex flex-col">
@@ -58,16 +68,19 @@ export default function MainLayout({ children, pageTitle }: MainLayoutProps) {
                       <MagnifyingGlassIcon className="h-5 w-5" />
                     </button>
                   ) : (
-                    <div className="relative w-48 sm:w-64">
+                    <form onSubmit={handleSearchSubmit} className="relative w-48 sm:w-64">
                       <input
                         type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search protocol..."
                         className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-xl text-slate-900 font-bold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 shadow-2xs"
-                        onBlur={() => setShowSearch?.(false)}
                         autoFocus
                       />
-                      <MagnifyingGlassIcon className="absolute left-2.5 top-2 h-4 w-4 text-slate-600" />
-                    </div>
+                      <button type="submit" className="absolute left-2.5 top-2 text-slate-600 hover:text-emerald-700" title="Execute Search">
+                        <MagnifyingGlassIcon className="h-4 w-4" />
+                      </button>
+                    </form>
                   )}
                 </div>
 

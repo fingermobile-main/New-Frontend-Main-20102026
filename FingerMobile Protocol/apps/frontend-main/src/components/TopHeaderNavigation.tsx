@@ -41,7 +41,7 @@ const TopHeaderNavigation: React.FC = () => {
   ];
 
   // Network submenu items
-  const networkSubmenu = [
+  const _networkSubmenu = [
     { label: 'Connections', path: '/network/connections' },
     { label: 'Invitations', path: '/network/invitations' },
     { label: 'People You May Know', path: '/network/suggestions' },
@@ -49,7 +49,7 @@ const TopHeaderNavigation: React.FC = () => {
   ];
 
   // Communities submenu items
-  const communitiesSubmenu = [
+  const _communitiesSubmenu = [
     { label: 'My Communities', path: '/communities/my' },
     { label: 'Discover', path: '/communities/discover' },
     { label: 'Create Community', path: '/communities/create' }
