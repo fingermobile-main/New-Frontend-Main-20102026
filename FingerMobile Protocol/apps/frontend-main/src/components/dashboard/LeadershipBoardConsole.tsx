@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { API_BASE_URL } from '../../services/api';
 import {
   Trophy,
   Award,
@@ -80,7 +81,7 @@ export const LeadershipBoardConsole: React.FC = () => {
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('http://localhost:5001/api/leaderboards/ecosystem-matrix');
+      const res = await fetch('${API_BASE_URL}/leaderboards/ecosystem-matrix');
       const json = await res.json();
       if (json.success) {
         setMatrixData(json.data);
@@ -104,7 +105,7 @@ export const LeadershipBoardConsole: React.FC = () => {
   // Recalculate ranks across engines
   const handleRecalculate = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/leaderboards/recalculate', { method: 'POST' });
+      const res = await fetch('${API_BASE_URL}/leaderboards/recalculate', { method: 'POST' });
       const data = await res.json();
       if (data.success) {
         showNotification('success', data.message);
@@ -118,7 +119,7 @@ export const LeadershipBoardConsole: React.FC = () => {
   // Distribute rewards to top leaders
   const handleDistributeRewards = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/leaderboards/reward-distribution', { method: 'POST' });
+      const res = await fetch('${API_BASE_URL}/leaderboards/reward-distribution', { method: 'POST' });
       const data = await res.json();
       if (data.success) {
         showNotification('success', data.message);
@@ -132,7 +133,7 @@ export const LeadershipBoardConsole: React.FC = () => {
   // Two-way reconcile with Discover
   const handleSyncDiscover = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/leaderboards/sync-discover', { method: 'POST' });
+      const res = await fetch('${API_BASE_URL}/leaderboards/sync-discover', { method: 'POST' });
       const data = await res.json();
       if (data.success) {
         showNotification('success', data.message);
@@ -155,7 +156,7 @@ export const LeadershipBoardConsole: React.FC = () => {
       const badgeList = entryBadges.split(',').map(b => b.trim()).filter(Boolean);
 
       if (editingEntry) {
-        const res = await fetch(`http://localhost:5001/api/leaderboards/entry/${editingEntry.id}`, {
+        const res = await fetch(`${API_BASE_URL}/leaderboards/entry/${editingEntry.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -173,7 +174,7 @@ export const LeadershipBoardConsole: React.FC = () => {
           fetchData();
         }
       } else {
-        const res = await fetch('http://localhost:5001/api/leaderboards/entry', {
+        const res = await fetch('${API_BASE_URL}/leaderboards/entry', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -201,7 +202,7 @@ export const LeadershipBoardConsole: React.FC = () => {
   const handleDeleteEntry = async (id: string) => {
     if (!window.confirm('Remove this member from the leaderboard?')) return;
     try {
-      const res = await fetch(`http://localhost:5001/api/leaderboards/entry/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/leaderboards/entry/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         showNotification('success', 'Member removed.');

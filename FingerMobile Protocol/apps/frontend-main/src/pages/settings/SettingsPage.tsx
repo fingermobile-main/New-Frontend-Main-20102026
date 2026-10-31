@@ -24,6 +24,7 @@ import {
 import voiceLineServiceInstance, { VoiceLineSettings } from '../../services/VoiceLineService';
 import userProfileSyncService from '../../services/UserProfileSyncService';
 import UserService from '../../services/UserService';
+import { API_BASE_URL } from '../../services/api';
 
 type SettingsTab =
   | 'profile'
@@ -177,7 +178,7 @@ export const SettingsPage: React.FC = () => {
       // 2. Synchronize directly with /profile Charter API (Source of Truth)
       try {
         const targetId = user?.id || (user as any)?.userId || '00000000-0000-0000-0000-000000000001';
-        await fetch(`http://localhost:5001/api/v1/profiles/${targetId}`, {
+        await fetch(`${API_BASE_URL}/v1/profiles/${targetId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

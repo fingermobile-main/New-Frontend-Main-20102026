@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../services/api';
 
 export const useWidgets = () => {
   const [widgets, setWidgets] = useState<{
@@ -30,7 +31,7 @@ export const useWidgets = () => {
         // Or if the backend returns 401, we might need a test token
       }
 
-      const res = await fetch('http://localhost:5001/api/dashboard/widgets', { headers });
+      const res = await fetch(`${API_BASE_URL}/dashboard/widgets`, { headers });
       const data = await res.json();
 
       if (data.success) {

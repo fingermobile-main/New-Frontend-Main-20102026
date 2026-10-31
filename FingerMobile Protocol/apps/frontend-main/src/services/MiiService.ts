@@ -1,5 +1,6 @@
 import axios from 'axios';
 import logger from '../utils/logger';
+import { API_BASE_URL } from './api';
 
 export interface MiiAvatar {
   id: number;
@@ -69,7 +70,7 @@ export interface CustomizeAvatarRequest {
 
 class MiiService {
   private api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api',
+    baseURL: API_BASE_URL,
     headers: {
       'Content-Type': 'application/json'
     }

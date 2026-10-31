@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { API_BASE_URL } from '../../services/api';
 import {
   Diamond,
   Disc,
@@ -127,10 +128,10 @@ export const SoundOceanMasterConsole: React.FC = () => {
     setIsLoading(true);
     try {
       const [telRes, mastersRes, royRes, crewRes] = await Promise.all([
-        fetch('http://localhost:5001/api/beatwave/soundocean/telemetry').then(r => r.json()),
-        fetch('http://localhost:5001/api/beatwave/soundocean/masters').then(r => r.json()),
-        fetch('http://localhost:5001/api/beatwave/soundocean/fic-royalties').then(r => r.json()),
-        fetch('http://localhost:5001/api/beatwave/soundocean/mysub/crews').then(r => r.json())
+        fetch('${API_BASE_URL}/beatwave/soundocean/telemetry').then(r => r.json()),
+        fetch('${API_BASE_URL}/beatwave/soundocean/masters').then(r => r.json()),
+        fetch('${API_BASE_URL}/beatwave/soundocean/fic-royalties').then(r => r.json()),
+        fetch('${API_BASE_URL}/beatwave/soundocean/mysub/crews').then(r => r.json())
       ]);
 
       if (telRes.success) setTelemetry(telRes.data);
@@ -180,7 +181,7 @@ export const SoundOceanMasterConsole: React.FC = () => {
         formData.append('stemArchive', selectedStemArchive);
       }
 
-      const res = await fetch('http://localhost:5001/api/beatwave/soundocean/upload-master', {
+      const res = await fetch('${API_BASE_URL}/beatwave/soundocean/upload-master', {
         method: 'POST',
         body: formData
       });
@@ -209,7 +210,7 @@ export const SoundOceanMasterConsole: React.FC = () => {
   const handleDeleteMaster = async (id: string) => {
     if (!window.confirm('Revoke this master from SoundOcean?')) return;
     try {
-      const res = await fetch(`http://localhost:5001/api/beatwave/soundocean/masters/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/beatwave/soundocean/masters/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         showNotification('success', 'Master revoked.');
@@ -224,7 +225,7 @@ export const SoundOceanMasterConsole: React.FC = () => {
   const handleDistributeRoyalties = async (masterId?: string) => {
     setIsDistributing(true);
     try {
-      const res = await fetch('http://localhost:5001/api/beatwave/soundocean/fic-royalties/distribute', {
+      const res = await fetch('${API_BASE_URL}/beatwave/soundocean/fic-royalties/distribute', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ masterId, amountFIC: 150.0 })
@@ -247,7 +248,7 @@ export const SoundOceanMasterConsole: React.FC = () => {
     if (!newCrewName.trim()) return;
 
     try {
-      const res = await fetch('http://localhost:5001/api/beatwave/soundocean/mysub/crews', {
+      const res = await fetch('${API_BASE_URL}/beatwave/soundocean/mysub/crews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ crewName: newCrewName, monthlyPassFIC: newCrewCost })

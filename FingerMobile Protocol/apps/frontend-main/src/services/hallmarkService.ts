@@ -5,10 +5,10 @@ import React, {} from 'react';
  */
 
 import axios from 'axios';
-import { api as genericApi } from './api';
+import { api as genericApi, API_BASE_URL } from './api';
 import type { Hallmark } from '../types';
 
-const HALLMARKS_API_URL = process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+const HALLMARKS_API_URL = API_BASE_URL;
 
 const api = axios.create({
   baseURL: HALLMARKS_API_URL,

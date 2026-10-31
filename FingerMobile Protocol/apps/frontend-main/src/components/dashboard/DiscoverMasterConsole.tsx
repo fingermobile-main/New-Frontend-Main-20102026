@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { API_BASE_URL } from '../../services/api';
 import {
   Compass,
   Radio,
@@ -130,10 +131,10 @@ export const DiscoverMasterConsole: React.FC = () => {
     setIsLoading(true);
     try {
       const [statsRes, topicsRes, hashtagsRes, contentRes] = await Promise.all([
-        fetch('http://localhost:5001/api/discover/console/stats').then(r => r.json()),
-        fetch('http://localhost:5001/api/discover/topics').then(r => r.json()),
-        fetch('http://localhost:5001/api/discover/hashtags').then(r => r.json()),
-        fetch('http://localhost:5001/api/discover/content?limit=50').then(r => r.json())
+        fetch('${API_BASE_URL}/discover/console/stats').then(r => r.json()),
+        fetch('${API_BASE_URL}/discover/topics').then(r => r.json()),
+        fetch('${API_BASE_URL}/discover/hashtags').then(r => r.json()),
+        fetch('${API_BASE_URL}/discover/content?limit=50').then(r => r.json())
       ]);
 
       if (statsRes.success) setStats(statsRes.data);
@@ -179,7 +180,7 @@ export const DiscoverMasterConsole: React.FC = () => {
         formData.append('file', selectedFile);
       }
 
-      const res = await fetch('http://localhost:5001/api/discover/content/dispatch', {
+      const res = await fetch('${API_BASE_URL}/discover/content/dispatch', {
         method: 'POST',
         body: formData
       });
@@ -206,7 +207,7 @@ export const DiscoverMasterConsole: React.FC = () => {
   const handleDeleteContent = async (id: string) => {
     if (!window.confirm('Are you sure you want to delete this content item from Discover?')) return;
     try {
-      const res = await fetch(`http://localhost:5001/api/discover/content/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/discover/content/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         showNotification('success', 'Content item deleted.');
@@ -229,7 +230,7 @@ export const DiscoverMasterConsole: React.FC = () => {
     try {
       if (editingTopic) {
         // Update
-        const res = await fetch(`http://localhost:5001/api/discover/topics/${editingTopic.id}`, {
+        const res = await fetch(`${API_BASE_URL}/discover/topics/${editingTopic.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -247,7 +248,7 @@ export const DiscoverMasterConsole: React.FC = () => {
         }
       } else {
         // Create
-        const res = await fetch('http://localhost:5001/api/discover/topics', {
+        const res = await fetch('${API_BASE_URL}/discover/topics', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -272,7 +273,7 @@ export const DiscoverMasterConsole: React.FC = () => {
   const handleDeleteTopic = async (id: string) => {
     if (!window.confirm('Delete this topic category?')) return;
     try {
-      const res = await fetch(`http://localhost:5001/api/discover/topics/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/discover/topics/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         showNotification('success', 'Topic removed from engine.');
@@ -287,7 +288,7 @@ export const DiscoverMasterConsole: React.FC = () => {
   const handleSaveHashtag = async () => {
     if (!newHashtagName.trim()) return;
     try {
-      const res = await fetch('http://localhost:5001/api/discover/hashtags', {
+      const res = await fetch('${API_BASE_URL}/discover/hashtags', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ tag: newHashtagName, category: newHashtagCategory, trendContributionPct: 32 })
@@ -310,7 +311,7 @@ export const DiscoverMasterConsole: React.FC = () => {
     if (!window.confirm(`Delete hashtag ${tag}?`)) return;
     try {
       const encoded = encodeURIComponent(tag);
-      const res = await fetch(`http://localhost:5001/api/discover/hashtags/${encoded}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/discover/hashtags/${encoded}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         showNotification('success', `Hashtag ${tag} removed.`);
@@ -324,7 +325,7 @@ export const DiscoverMasterConsole: React.FC = () => {
   // 5. P2P Swarm Rebalance
   const handleRebalanceSwarm = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/discover/p2p-swarm/rebalance', {
+      const res = await fetch('${API_BASE_URL}/discover/p2p-swarm/rebalance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ boostRatio: 1.25 })
@@ -342,7 +343,7 @@ export const DiscoverMasterConsole: React.FC = () => {
   // 6. Trends 30% Syndication Push
   const handleTriggerTrendsPush = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/discover/trends-syndication/push', {
+      const res = await fetch('${API_BASE_URL}/discover/trends-syndication/push', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });

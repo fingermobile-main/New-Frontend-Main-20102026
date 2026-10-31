@@ -39,6 +39,7 @@ import {
 import { StructuredAboutSection } from '../../components/profile/StructuredAboutSection';
 import { ReelsSection } from '../../components/profile/ReelsSection';
 import userProfileSyncService from '../../services/UserProfileSyncService';
+import { API_BASE_URL } from '../../services/api';
 import {
   User,
   ShieldCheck,
@@ -325,7 +326,7 @@ export const ProfilePage: React.FC = () => {
 
     const targetId = id || member?.id || '00000000-0000-0000-0000-000000000001';
     try {
-      await fetch(`http://localhost:5001/api/v1/profiles/${targetId}/cover`, {
+      await fetch(`${API_BASE_URL}/v1/profiles/${targetId}/cover`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -369,7 +370,7 @@ export const ProfilePage: React.FC = () => {
 
       try {
         setLoading(true);
-        const res = await fetch(`http://localhost:5001/api/v1/profiles/${targetId}`, {
+        const res = await fetch(`${API_BASE_URL}/v1/profiles/${targetId}`, {
           headers: {
             'x-viewer-id': activeUser?.id || targetId
           }
@@ -427,7 +428,7 @@ export const ProfilePage: React.FC = () => {
 
         // Fetch Wall Posts from Backend API
         try {
-          const wallRes = await fetch(`http://localhost:5001/api/v1/profiles/${targetId}/wall`, {
+          const wallRes = await fetch(`${API_BASE_URL}/v1/profiles/${targetId}/wall`, {
             headers: {
               'x-viewer-id': member?.id || '00000000-0000-0000-0000-000000000001'
             }
@@ -444,7 +445,7 @@ export const ProfilePage: React.FC = () => {
 
         // Fetch Recommendations for Connections Carousel
         try {
-          const recRes = await fetch(`http://localhost:5001/api/v1/profiles/${targetId}/recommendations`);
+          const recRes = await fetch(`${API_BASE_URL}/v1/profiles/${targetId}/recommendations`);
           if (recRes.ok) {
             const recData = await recRes.json();
             if (recData && Array.isArray(recData.recommendations) && recData.recommendations.length > 0) {
@@ -917,7 +918,7 @@ export const ProfilePage: React.FC = () => {
     );
     const targetId = id || member?.id || '00000000-0000-0000-0000-000000000001';
     try {
-      await fetch(`http://localhost:5001/api/v1/profiles/${targetId}/wall/${postId}/tip`, {
+      await fetch(`${API_BASE_URL}/v1/profiles/${targetId}/wall/${postId}/tip`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: 50 })
@@ -943,7 +944,7 @@ export const ProfilePage: React.FC = () => {
     );
     const targetId = id || member?.id || '00000000-0000-0000-0000-000000000001';
     try {
-      await fetch(`http://localhost:5001/api/v1/profiles/${targetId}/wall/${postId}/like`, {
+      await fetch(`${API_BASE_URL}/v1/profiles/${targetId}/wall/${postId}/like`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -980,7 +981,7 @@ export const ProfilePage: React.FC = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5001/api/v1/profiles/${id || '00000000-0000-0000-0000-000000000001'}/pin-handshake`,
+        `${API_BASE_URL}/v1/profiles/${id || '00000000-0000-0000-0000-000000000001'}/pin-handshake`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1153,7 +1154,7 @@ export const ProfilePage: React.FC = () => {
       }
 
       // Synchronize with backend consolidated profile update endpoint
-      await fetch(`http://localhost:5001/api/v1/profiles/${targetId || '00000000-0000-0000-0000-000000000001'}`, {
+      await fetch(`${API_BASE_URL}/v1/profiles/${targetId || '00000000-0000-0000-0000-000000000001'}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1193,7 +1194,7 @@ export const ProfilePage: React.FC = () => {
           else if (catKey === 'contact_info') fields = { email: updated.contact_email, phone: updated.phone, node_address: updated.node_address };
           else if (catKey === 'privacy_legal') fields = { encryption_tier: updated.encryption_tier, privacy: updated.privacy };
 
-          return fetch(`http://localhost:5001/api/v1/profiles/${targetId || '00000000-0000-0000-0000-000000000001'}/about-category/${catKey}`, {
+          return fetch(`${API_BASE_URL}/v1/profiles/${targetId || '00000000-0000-0000-0000-000000000001'}/about-category/${catKey}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ fields, audience, title: catKey })
@@ -1617,7 +1618,7 @@ export const ProfilePage: React.FC = () => {
           onConnect={(memberId) => {
             showToast('Connection request dispatched to member!', 'success');
             const targetId = id || member?.id || '00000000-0000-0000-0000-000000000001';
-            fetch(`http://localhost:5001/api/v1/profiles/${targetId}/friend-requests`, {
+            fetch(`${API_BASE_URL}/v1/profiles/${targetId}/friend-requests`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ recipient_id: memberId })
@@ -1975,7 +1976,7 @@ export const ProfilePage: React.FC = () => {
                       showToast('Wall post published to your sovereign timeline!', 'success');
                       const targetId = id || member?.id || '00000000-0000-0000-0000-000000000001';
                       try {
-                        await fetch(`http://localhost:5001/api/v1/profiles/${targetId}/wall`, {
+                        await fetch(`${API_BASE_URL}/v1/profiles/${targetId}/wall`, {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify(newPost)
@@ -2025,7 +2026,7 @@ export const ProfilePage: React.FC = () => {
                         }
                         showToast('Wall post link copied to clipboard!', 'success');
                         const targetId = id || member?.id || '00000000-0000-0000-0000-000000000001';
-                        fetch(`http://localhost:5001/api/v1/profiles/${targetId}/wall/${post.id}/share`, {
+                        fetch(`${API_BASE_URL}/v1/profiles/${targetId}/wall/${post.id}/share`, {
                           method: 'POST',
                           headers: { 'Content-Type': 'application/json' }
                         }).catch(() => null);

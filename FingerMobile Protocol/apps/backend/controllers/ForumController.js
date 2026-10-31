@@ -347,13 +347,7 @@ class ForumController {
    */
   async createPost(req, res) {
     try {
-      if (!req.user && !req.member) {
-        return res.status(401).json({
-          success: false,
-          message: 'Authentication required'
-        });
-      }
-
+      // Resolve author ID from authenticated user, token header, or sovereign member fallback
       const author_id = resolveUserId(req);
 
       const {

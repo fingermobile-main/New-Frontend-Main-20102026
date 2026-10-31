@@ -1,13 +1,8 @@
-import React, {} from 'react';
 /**
  * FINGERMOBILE MONETIZATION & INVENTORY MANAGEMENT ENGINE
  * PROTOCOL: Storefront Service Core v2.4 (Enterprise Pipeline Archetype)
  * SECURITY: Transaction Hold/Escrow Escapes, Operational Taxation Routing, and Audited Ledger Safety.
  */
-
-import axios, { AxiosInstance } from 'axios';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 // ==========================================
 // 📋 STRICT DOMAIN SCHEMAS & INTERFACES

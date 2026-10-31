@@ -6,8 +6,7 @@
 import axios from 'axios';
 import * as THREE from 'three';
 import { SuperViCharacter, SuperViAchievement, SuperViLeaderboardRecord, SuperViDailyChallenge } from '../types/supervi';
-
-const API_BASE = process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+import { API_BASE_URL as API_BASE } from './api';
 
 // Fallback seed for The Six SuperVi Heroes
 const SEED_CHARACTERS: SuperViCharacter[] = [

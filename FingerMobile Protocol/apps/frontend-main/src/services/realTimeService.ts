@@ -2,6 +2,7 @@
 // Implements WebSocket connections for chat voice, and video communication
 
 import { WebSocketService } from './webSocketService';
+import { getWsBaseUrl } from './api';
 import {
   JoinRoomData,
   ChatMessageSendData,
@@ -13,7 +14,7 @@ import {
 
 class RealTimeService extends WebSocketService {
   constructor() {
-    super({prodEndpoint: 'wss://api.fingermobileprotocol.com/ws', devEndpoint: 'ws://localhost:5001/ws'});
+    super({prodEndpoint: 'wss://api.fingermobileprotocol.com/ws', devEndpoint: getWsBaseUrl()});
   }
 
   // Join a chat room

@@ -3,8 +3,7 @@ import React, {} from 'react';
 // Production-grade Collaboration & Monetized Creator Workspace Hub Service
 
 import axios, { AxiosInstance } from 'axios';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+import { API_BASE_URL } from './api';
 
 // --- Domain Models & Interfaces ---
 

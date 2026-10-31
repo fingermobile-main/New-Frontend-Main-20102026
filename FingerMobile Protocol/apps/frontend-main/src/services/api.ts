@@ -4,10 +4,21 @@ import axios, { AxiosInstance as InternalAxiosInstance } from 'axios';
 type AxiosInstance = InternalAxiosInstance;
 
 // Base API configuration
-export const getApiBaseUrl = () => {
-  const envUrl = process.env.REACT_APP_API_URL;
+export const getServerUrl = (): string => {
+  const envUrl = process.env.REACT_APP_BACKEND_URL;
   if (envUrl) {
-    return envUrl;
+    return envUrl.replace(/\/+$/, '');
+  }
+  const host = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : 'localhost';
+  return `http://${host}:5001`;
+};
+
+export const SERVER_URL = getServerUrl();
+
+export const getApiBaseUrl = (): string => {
+  const envUrl = process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL;
+  if (envUrl) {
+    return envUrl.replace(/\/+$/, '');
   }
   if (typeof window !== 'undefined' && window.location.port === '8000') {
     return '/api';
@@ -17,6 +28,11 @@ export const getApiBaseUrl = () => {
 };
 
 export const API_BASE_URL = getApiBaseUrl();
+
+export const getWsBaseUrl = (): string => {
+  const host = typeof window !== 'undefined' && window.location.hostname ? window.location.hostname : 'localhost';
+  return `ws://${host}:5001/ws`;
+};
 
 // Create axios instance with defaults
 const api: AxiosInstance = axios.create({
@@ -80,7 +96,7 @@ api.interceptors.response.use(
   }
 );
 
-export { api, API_BASE_URL };
+export { api };
 
 // Define custom methods on the api instance
 api.register = async (userData) => {

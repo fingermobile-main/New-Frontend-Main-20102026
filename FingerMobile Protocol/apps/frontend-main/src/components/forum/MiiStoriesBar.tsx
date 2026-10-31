@@ -28,6 +28,7 @@ import {
   TrashIcon
 } from '@heroicons/react/24/outline';
 import MediaEditorModal, { EditedMediaResult } from '../MediaEditorModal';
+import { API_BASE_URL } from '../../services/api';
 
 export interface MiiItem {
   id: string;
@@ -165,7 +166,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
         const headers: Record<string, string> = {};
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        const res = await fetch('/api/mii/status/feed', { headers });
+        const res = await fetch(`${API_BASE_URL}/mii/status/feed`, { headers });
         const json = await res.json();
         if (isMounted && json.success && Array.isArray(json.data) && json.data.length > 0) {
           const liveMii: MiiItem[] = json.data.map((status: any, idx: number) => {
@@ -415,7 +416,7 @@ export const MiiStoriesBar: React.FC<MiiStoriesBarProps> = ({
           localStorage.getItem('token');
         const headers: Record<string, string> = { 'Content-Type': 'application/json' };
         if (token) headers['Authorization'] = `Bearer ${token}`;
-        fetch('/api/mii/status', {
+        fetch(`${API_BASE_URL}/mii/status`, {
           method: 'POST',
           headers,
           body: JSON.stringify({

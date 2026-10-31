@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { API_BASE_URL } from '../../services/api';
 import {
   Waves,
   Music,
@@ -134,11 +135,11 @@ export const SoundRiverMasterConsole: React.FC = () => {
     setIsLoading(true);
     try {
       const [telRes, tracksRes, podRes, aggRes, colaboRes] = await Promise.all([
-        fetch('http://localhost:5001/api/beatwave/soundriver/telemetry').then(r => r.json()),
-        fetch('http://localhost:5001/api/beatwave/soundriver/tracks').then(r => r.json()),
-        fetch('http://localhost:5001/api/beatwave/soundriver/podcasts').then(r => r.json()),
-        fetch('http://localhost:5001/api/beatwave/soundriver/aggregator').then(r => r.json()),
-        fetch('http://localhost:5001/api/beatwave/soundriver/colabo').then(r => r.json())
+        fetch('${API_BASE_URL}/beatwave/soundriver/telemetry').then(r => r.json()),
+        fetch('${API_BASE_URL}/beatwave/soundriver/tracks').then(r => r.json()),
+        fetch('${API_BASE_URL}/beatwave/soundriver/podcasts').then(r => r.json()),
+        fetch('${API_BASE_URL}/beatwave/soundriver/aggregator').then(r => r.json()),
+        fetch('${API_BASE_URL}/beatwave/soundriver/colabo').then(r => r.json())
       ]);
 
       if (telRes.success) setTelemetry(telRes.data);
@@ -183,7 +184,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
         formData.append('audio', selectedAudioFile);
       }
 
-      const res = await fetch('http://localhost:5001/api/beatwave/soundriver/upload', {
+      const res = await fetch('${API_BASE_URL}/beatwave/soundriver/upload', {
         method: 'POST',
         body: formData
       });
@@ -210,7 +211,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
   const handleDeleteTrack = async (id: string) => {
     if (!window.confirm('Delete this track from SoundRiver?')) return;
     try {
-      const res = await fetch(`http://localhost:5001/api/beatwave/soundriver/tracks/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API_BASE_URL}/beatwave/soundriver/tracks/${id}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         showNotification('success', 'Track removed.');
@@ -235,7 +236,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
         formData.append('audio', selectedPodcastFile);
       }
 
-      const res = await fetch('http://localhost:5001/api/beatwave/soundriver/podcasts', {
+      const res = await fetch('${API_BASE_URL}/beatwave/soundriver/podcasts', {
         method: 'POST',
         body: formData
       });
@@ -257,7 +258,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
   // 4. Sync Public Aggregator
   const handleSyncAggregator = async () => {
     try {
-      const res = await fetch('http://localhost:5001/api/beatwave/soundriver/aggregator/sync', { method: 'POST' });
+      const res = await fetch('${API_BASE_URL}/beatwave/soundriver/aggregator/sync', { method: 'POST' });
       const data = await res.json();
       if (data.success) {
         showNotification('success', 'Internet Archive & FMA open catalog synchronized.');
@@ -274,7 +275,7 @@ export const SoundRiverMasterConsole: React.FC = () => {
     if (!colaboTitle.trim()) return;
 
     try {
-      const res = await fetch('http://localhost:5001/api/beatwave/soundriver/colabo', {
+      const res = await fetch('${API_BASE_URL}/beatwave/soundriver/colabo', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: colaboTitle, description: colaboDesc })

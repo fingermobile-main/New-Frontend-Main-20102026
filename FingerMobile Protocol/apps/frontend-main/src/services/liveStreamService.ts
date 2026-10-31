@@ -3,8 +3,7 @@ import React, {} from 'react';
 // Super-enhanced service for managing secure livestream orchestration, monetization logistics, and trending discovery algorithms.
 
 import axios, { AxiosInstance } from 'axios';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+import { API_BASE_URL } from './api';
 
 // --- Interfaces & Domain Models ---
 

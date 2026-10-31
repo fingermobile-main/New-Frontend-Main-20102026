@@ -8,6 +8,7 @@
  */
 
 import { io, Socket } from 'socket.io-client';
+import { SERVER_URL } from './api';
 
 export type CallType = 'audio' | 'video' | 'pipecat-ai';
 export type CallState = 'idle' | 'initiating' | 'ringing' | 'connecting' | 'connected' | 'ended' | 'failed';
@@ -83,7 +84,7 @@ export class WebRtcCallingService {
    */
   private initializeSocket() {
     try {
-      const serverUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const serverUrl = SERVER_URL;
       const token = localStorage.getItem('token') || localStorage.getItem('fm_token') || 'dev_guest_token';
 
       this.socket = io(serverUrl, {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_BASE_URL } from './api';
 
 export interface Hallmark {
   id: number;
@@ -72,7 +73,7 @@ export interface CheckMilestonesRequest {
 
 class HallmarksService {
   private api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api',
+    baseURL: API_BASE_URL,
     headers: {
       'Content-Type': 'application/json'
     }

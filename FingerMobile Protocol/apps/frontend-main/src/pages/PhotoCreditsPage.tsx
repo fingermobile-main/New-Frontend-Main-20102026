@@ -8,6 +8,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { ApiService } from '../services/apiService';
+import { SERVER_URL } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {
   Camera,
@@ -674,11 +675,11 @@ const PhotoCreditsPage: React.FC = () => {
 
         let imgUrl = typeof item.image_url === 'string' ? item.image_url : (typeof item.imageUrl === 'string' ? item.imageUrl : '');
         if (imgUrl.startsWith('/uploads')) {
-          imgUrl = `http://localhost:5001${imgUrl}`;
+          imgUrl = `${SERVER_URL}${imgUrl}`;
         }
         let thumbUrl = typeof item.thumbnail_url === 'string' ? item.thumbnail_url : (typeof item.thumbnailUrl === 'string' ? item.thumbnailUrl : imgUrl);
         if (thumbUrl.startsWith('/uploads')) {
-          thumbUrl = `http://localhost:5001${thumbUrl}`;
+          thumbUrl = `${SERVER_URL}${thumbUrl}`;
         }
 
         let resolvedLocation = '';
@@ -1633,7 +1634,7 @@ Status: VALIDATED & PERMANENTLY RECORDED
             createdItems = responseData.items.map((it: any, idx: number) => {
               let imgUrl = it.imageUrl || it.image_url;
               if (imgUrl && imgUrl.startsWith('/uploads')) {
-                imgUrl = `http://localhost:5001${imgUrl}`;
+                imgUrl = `${SERVER_URL}${imgUrl}`;
               }
               const matchingSelected = selectedFiles[idx];
               return {

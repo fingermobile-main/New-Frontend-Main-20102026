@@ -5,6 +5,7 @@ import React, {} from 'react';
  */
 
 import { WebSocketMessage, ConnectionStatus } from '../types/realTime';
+import { getWsBaseUrl } from './api';
 
 export interface WebSocketConfig {
   prodEndpoint: string;
@@ -17,7 +18,7 @@ export interface WebSocketConfig {
 
 export const DEFAULT_WS_CONFIG: WebSocketConfig = {
   prodEndpoint: 'wss://api.fingermobileprotocol.com/ws',
-  devEndpoint: 'ws://localhost:5001/ws',
+  devEndpoint: getWsBaseUrl(),
   maxReconnectAttempts: 5,
   baseReconnectDelay: 1000,
   heartbeatInterval: 30000,
