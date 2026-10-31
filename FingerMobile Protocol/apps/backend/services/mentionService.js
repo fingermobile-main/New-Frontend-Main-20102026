@@ -273,3 +273,4 @@ class MentionService {
 }
 
 module.exports = new MentionService();
+
